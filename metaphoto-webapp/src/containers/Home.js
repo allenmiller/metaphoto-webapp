@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Home.css";
 import config from '../config';
 
-import Amplify, { API } from "aws-amplify";
+import { API } from "aws-amplify";
 
 export default class Home extends Component {
 
@@ -16,17 +16,6 @@ export default class Home extends Component {
     }
 
     getTime()  {
-         const apiConfig = {
-            API: {
-                endpoints: [
-                    {
-                        name: config.apiGateway.NAME,
-                        endpoint: config.apiGateway.URL
-                    }
-                ]
-            }
-        };
-        Amplify.configure(apiConfig);
         let apiName = config.apiGateway.NAME;
         let apiPath = "/time";
         let secureApiPath = "/timesecure";

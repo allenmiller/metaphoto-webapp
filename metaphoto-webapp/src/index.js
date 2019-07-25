@@ -17,16 +17,16 @@ Amplify.configure({
     },
     Storage: {
         region: config.s3.REGION,
-        bucket: config.s3.BUCKET,
+        bucket: config.s3.DATA_BUCKET,
         identityPoolId: config.cognito.IDENTITY_POOL_ID
     },
     API: {
         endpoints: [
             {
-                name: "notes",
+                name: config.apiGateway.NAME,
                 endpoint: config.apiGateway.URL,
                 region: config.apiGateway.REGION
-            },
+            }
         ]
     }
 });
