@@ -2,13 +2,10 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - cd webapp/metaphoto-client
-      - echo Installing source NPM dependencies...
+      - cd metaphoto-webapp
       - npm install
   build:
     commands:
-      - echo Build started on `date`
-      - env
       - npm run build
   post_build:
     commands:
@@ -30,5 +27,3 @@ phases:
       - >
         aws cloudfront create-invalidation --distribution-id ${Distribution}
         --paths /index.html /service-worker.js
-      - ls -al
-      - find build
