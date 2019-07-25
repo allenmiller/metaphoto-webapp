@@ -37,7 +37,7 @@ export default class Home extends Component {
             })
             .catch(error => {
                 console.log(error);
-                this.setState({secureTime: error.message});
+                this.setState({time: error.message});
             });
         API.get(apiName, secureApiPath, myInit)
             .then(response => {
