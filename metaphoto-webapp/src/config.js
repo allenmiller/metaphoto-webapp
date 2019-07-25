@@ -5,6 +5,7 @@ export default {
     },
     apiGateway: {
         REGION: "us-west-2",
+        NAME: "metaphoto-api",
         URL: "https://api.metaphoto.ajmiller.net/dev"
     },
     cognito: {
