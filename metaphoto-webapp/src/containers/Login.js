@@ -29,7 +29,13 @@ export default class Login extends Component {
         event.preventDefault();
         this.setState({isLoading: true});
         try {
-            await Auth.signIn(this.state.email, this.state.password);
+            const user = await Auth.signIn(this.state.email, this.state.password);
+            if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+                console.log("new password required");
+                const loggedUser = await Auth.completeNewPassword(user, "1234.Test", {"email":"test@ajmiller.net", "phone_number":"970-555-1212"});
+
+
+            }
             this.props.userHasAuthenticated(true);
             this.props.history.push("/");
         } catch (e) {
