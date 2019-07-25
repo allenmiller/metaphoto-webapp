@@ -6,6 +6,7 @@ phases:
       - npm install
   build:
     commands:
+      - env
       - npm run build
   post_build:
     commands:
