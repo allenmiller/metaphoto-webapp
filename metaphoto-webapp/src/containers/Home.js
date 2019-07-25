@@ -31,12 +31,23 @@ export default class Home extends Component {
         let apiPath = "/time";
         let secureApiPath = "/timesecure";
         let myInit = {};
-        API.get(apiName, apiPath, myInit).then(response => {
-            this.setState({time: response.data});
-        });
-        API.get(apiName, secureApiPath, myInit).then(response => {
-            this.setState({secureTime: response.data});
-        });
+        API.get(apiName, apiPath, myInit)
+            .then(response => {
+                this.setState({time: response.data});
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({secureTime: error});
+            });
+        API.get(apiName, secureApiPath, myInit)
+            .then(response => {
+                this.setState({secureTime: response.data});
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({secureTime: error});
+            })
+        ;
     };
 
     render() {
