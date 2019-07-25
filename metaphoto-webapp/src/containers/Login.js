@@ -32,8 +32,8 @@ export default class Login extends Component {
             const user = await Auth.signIn(this.state.email, this.state.password);
             if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
                 console.log("new password required");
-                const loggedUser = await Auth.completeNewPassword(user, "1234.Test", {"email":"test@ajmiller.net", "phone_number":"+19705551212"});
-
+//                const loggedUser = await Auth.completeNewPassword(user, "ZZZZZZZZ", {"email":"test@ajmiller.net", "phone_number":"+19705551212"});
+//                console.log(loggedUser);
 
             }
             this.props.userHasAuthenticated(true);
