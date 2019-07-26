@@ -6,16 +6,17 @@ import { Link, withRouter } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+
+import { setIsAuthenticated, setIsAuthenticating } from "./actions/actions";
 
 class App extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            isAuthenticated: false,
-            isAuthenticating: true
-        };
+        props.setIsAuthenticating(true);
     }
+
     async componentDidMount() {
         try {
             await Auth.currentSession();
@@ -26,12 +27,11 @@ class App extends Component {
                 alert(e);
             }
         }
-
-        this.setState({ isAuthenticating: false });
+        this.props.setIsAuthenticating(false);
     }
 
     userHasAuthenticated = authenticated => {
-        this.setState({ isAuthenticated: authenticated });
+        this.props.setIsAuthenticated(authenticated);
     };
 
     handleLogout = async event => {
@@ -41,13 +41,8 @@ class App extends Component {
     };
 
     render() {
-        const childProps = {
-            isAuthenticated: this.state.isAuthenticated,
-            userHasAuthenticated: this.userHasAuthenticated
-        };
-
         return (
-            !this.state.isAuthenticating &&
+            !this.props.isAuthenticating &&
             <div className="App container">
                 <Navbar fluid collapseOnSelect>
                     <Navbar.Header>
@@ -58,7 +53,7 @@ class App extends Component {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav pullRight>
-                            {this.state.isAuthenticated
+                            {this.props.isAuthenticated
                                 ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
                                 : <Fragment>
                                     <LinkContainer to="/signup">
@@ -72,10 +67,20 @@ class App extends Component {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-                <Routes childProps={childProps}/>
+                <Routes />
             </div>
         );
     }
 }
 
-export default withRouter(App);
+const mapReduxStoreToProps = store => ({
+    isAuthenticated: store.authentication.isAuthenticated,
+    isAuthenticating: store.authentication.isAuthenticating
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setIsAuthenticating,
+    setIsAuthenticated
+}, dispatch);
+
+export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(App));
