@@ -9,26 +9,29 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 
-import {setIsAuthenticated, setIsLoading} from "../actions/actions";
+import {setIsAuthenticated, setIsLoading, setEmail, setPassword} from "../actions/actions";
 
 class Login extends Component {
     constructor(props) {
         super(props);
         props.setIsLoading(false);
-        this.state = {
-            email: "",
-            password: ""
-        };
     }
 
     validateForm() {
-        return this.state.email.length > 0 && this.state.password.length > 0;
+        return this.props.email.length > 0 && this.props.password.length > 0;
     }
 
     handleChange = event => {
-        this.setState({
-            [event.target.id]: event.target.value
-        });
+        switch (event.target.id) {
+            case "email":
+                this.props.setEmail(event.target.value);
+                break;
+            case "password":
+                this.props.setPassword(event.target.value);
+                break;
+            default:
+                console.log("ERROR, unexpected event: ", event.target.id)
+        }
     };
 
     handleSubmit = async event => {
@@ -43,6 +46,7 @@ class Login extends Component {
 
             }
             this.props.setIsAuthenticated(true);
+            this.props.setPassword("");
             this.props.history.push("/");
         } catch (e) {
             alert(e.message);
@@ -60,14 +64,14 @@ class Login extends Component {
                         <FormControl
                             autoFocus
                             type="email"
-                            value={this.state.email}
+                            value={this.props.email}
                             onChange={this.handleChange}
                         />
                     </FormGroup>
                     <FormGroup controlId="password" bsSize="large">
                         <ControlLabel>Password</ControlLabel>
                         <FormControl
-                            value={this.state.password}
+                            value={this.props.password}
                             onChange={this.handleChange}
                             type="password"
                         />
@@ -89,12 +93,16 @@ class Login extends Component {
 
 const mapReduxStoreToProps = store => ({
     isAuthenticated: store.authentication.isAuthenticated,
+    email: store.authentication.email,
+    password: store.authentication.password,
     isLoading: store.feedback.isLoading
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setIsAuthenticated,
-    setIsLoading
+    setIsLoading,
+    setEmail,
+    setPassword
 }, dispatch);
 
 export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(Login));
