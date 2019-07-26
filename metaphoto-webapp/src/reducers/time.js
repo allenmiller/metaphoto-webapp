@@ -5,12 +5,10 @@ const initialState = {
 };
 
 export default(state = initialState, action) => {
-    switch (action.type) {
-        case SET_TIME:
-            return Object.assign({}, state, {
-                time: action.time
-            });
-        default:
-            return state;
+    if (action.type === SET_TIME) {
+        return Object.assign({}, state, {
+            time: action.time
+        });
     }
+    return state;
 }
