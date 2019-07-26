@@ -48,6 +48,14 @@ class App extends Component {
                         <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
+                        {this.props.isAuthenticated
+                            ? < Nav pullLeft>
+                                <LinkContainer to={"/filmStocks"}>
+                                    <NavItem>Film Stocks</NavItem>
+                                </LinkContainer>
+                            </Nav>
+                            : <p/>
+                        }
                         <Nav pullRight>
                             {this.props.isAuthenticated
                                 ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
