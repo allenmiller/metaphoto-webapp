@@ -50,6 +50,7 @@ class Login extends Component {
             this.props.history.push("/");
         } catch (e) {
             alert(e.message);
+            this.props.setPassword("");
             this.props.setIsLoading(false);
         }
     };
