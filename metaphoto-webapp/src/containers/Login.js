@@ -4,6 +4,10 @@ import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
 import { Auth } from "aws-amplify";
 
+import {setIsAuthenticated} from "../actions/actions";
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
+
 export default class Login extends Component {
     constructor(props) {
         super(props);
@@ -80,3 +84,13 @@ export default class Login extends Component {
         );
     }
 }
+
+const mapReduxStoreToProps = store => ({
+    isAuthenticated: store.authentication.isAuthenticated
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setIsAuthenticated
+}, dispatch);
+
+export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(App));
