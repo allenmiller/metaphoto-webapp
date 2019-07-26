@@ -44,7 +44,6 @@ class Login extends Component {
 
             }
             this.props.setIsAuthenticated(true);
-            this.props.history.push("/");
         } catch (e) {
             alert(e.message);
             this.setState({isLoading: false});

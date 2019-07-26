@@ -33,7 +33,6 @@ class App extends Component {
     handleLogout = async event => {
         await Auth.signOut();
         this.props.setIsAuthenticated(false);
-        this.props.history.push("/login");
     };
 
     render() {
