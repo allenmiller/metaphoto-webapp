@@ -20,11 +20,11 @@ class Home extends Component {
         let myInit = {};
         API.get(apiName, apiPath, myInit)
             .then(response => {
-                this.setState({time: response.data});
+                this.props.setTime(response.data);
             })
             .catch(error => {
                 console.log(error);
-                this.setState({time: error.message});
+                this.props.setTime(error.message);
             });
     };
 
@@ -42,7 +42,7 @@ class Home extends Component {
 }
 
 const mapReduxStoreToProps = store => ({
-   time: store.time
+   time: store.time.time
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
