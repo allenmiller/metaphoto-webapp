@@ -20,7 +20,7 @@ class App extends Component {
     async componentDidMount() {
         try {
             await Auth.currentSession();
-            this.userHasAuthenticated(true);
+            this.props.setIsAuthenticated(true);
         }
         catch(e) {
             if (e !== 'No current user') {
@@ -30,13 +30,9 @@ class App extends Component {
         this.props.setIsAuthenticating(false);
     }
 
-    userHasAuthenticated = authenticated => {
-        this.props.setIsAuthenticated(authenticated);
-    };
-
     handleLogout = async event => {
         await Auth.signOut();
-        this.userHasAuthenticated(false);
+        this.props.setIsAuthenticated(false);
         this.props.history.push("/login");
     };
 

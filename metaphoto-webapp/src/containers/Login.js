@@ -36,7 +36,7 @@ export default class Login extends Component {
 //                console.log(loggedUser);
 
             }
-            this.props.userHasAuthenticated(true);
+            this.props.setIsAuthenticated(true);
             this.props.history.push("/");
         } catch (e) {
             alert(e.message);
