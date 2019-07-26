@@ -3,14 +3,14 @@ import "./Home.css";
 import config from '../config';
 
 import { API } from "aws-amplify";
+import { bindActionCreators} from "redux";
+import { connect } from 'react-redux';
+import { setTime } from '../actions/actions';
 
-export default class Home extends Component {
+class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            time: "Initial time",
-        };
         this.getTime();
     }
 
@@ -34,9 +34,19 @@ export default class Home extends Component {
                 <div className="lander">
                     <h1>Metaphoto</h1>
                     <p>Keep track of all that photographic metadata</p>
-                    <p>{this.state.time}</p>
+                    <p>{this.props.time}</p>
                 </div>
             </div>
         );
     }
 }
+
+const mapReduxStoreToProps = store => ({
+   time: store.time
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setTime
+}, dispatch);
+
+export default connect(mapReduxStoreToProps, mapDispatchToProps)(Home)
