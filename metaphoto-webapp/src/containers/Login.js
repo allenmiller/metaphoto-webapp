@@ -9,14 +9,13 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 
-import {setIsAuthenticated} from "../actions/actions";
+import {setIsAuthenticated, setIsLoading} from "../actions/actions";
 
 class Login extends Component {
     constructor(props) {
         super(props);
-
+        props.setIsLoading(false);
         this.state = {
-            isLoading: false,
             email: "",
             password: ""
         };
@@ -34,7 +33,7 @@ class Login extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        this.setState({isLoading: true});
+        this.props.setIsLoading(true);
         try {
             const user = await Auth.signIn(this.state.email, this.state.password);
             if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
@@ -46,7 +45,7 @@ class Login extends Component {
             this.props.setIsAuthenticated(true);
         } catch (e) {
             alert(e.message);
-            this.setState({isLoading: false});
+            this.props.setIsLoading(false);
         }
     };
 
@@ -77,7 +76,7 @@ class Login extends Component {
                         bsSize="large"
                         disabled={!this.validateForm()}
                         type="submit"
-                        isLoading={this.state.isLoading}
+                        isLoading={this.props.isLoading}
                         text="Login"
                         loadingText="Logging in…"
                     />
@@ -88,11 +87,13 @@ class Login extends Component {
 }
 
 const mapReduxStoreToProps = store => ({
-    isAuthenticated: store.authentication.isAuthenticated
+    isAuthenticated: store.authentication.isAuthenticated,
+    isLoading: store.feedback.isLoading
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setIsAuthenticated
+    setIsAuthenticated,
+    setIsLoading
 }, dispatch);
 
 export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(Login));
