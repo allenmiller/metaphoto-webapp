@@ -17,7 +17,9 @@ class Home extends Component {
     getTime()  {
         let apiName = config.apiGateway.NAME;
         let apiPath = "/time";
-        let myInit = {};
+        let myInit = {
+            response: true
+        };
         console.log("calling /time", apiName);
         API.get(apiName, apiPath, myInit)
             .then(response => {
