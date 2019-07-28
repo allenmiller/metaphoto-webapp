@@ -18,8 +18,10 @@ class Home extends Component {
         let apiName = config.apiGateway.NAME;
         let apiPath = "/time";
         let myInit = {};
+        console.log("calling /time", apiName);
         API.get(apiName, apiPath, myInit)
             .then(response => {
+                console.log("in return callback", response);
                 this.props.setTime(response.data);
             })
             .catch(error => {
