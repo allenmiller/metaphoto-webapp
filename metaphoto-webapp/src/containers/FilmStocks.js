@@ -6,10 +6,25 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 
-import {setIsAuthenticated} from "../actions/actions";
+import {addFilmStock, setIsAuthenticated} from "../actions/actions";
 
 class FilmStocks extends Component {
 
+    constructor(props) {
+        super(props);
+        this.getFilmStocks();
+    }
+
+    getFilmStocks() {
+        let apiName = config.apiGateway.NAME;
+        let getFilmStocks = "/filmstocks";
+        console.log("getting all film stocks");
+        API.get(apiName, getFilmStocks)
+            .then(response => {
+                console.log("in callback", response);
+                this.props.addFilmStock(response.data)
+            })
+    }
     render() {
         return (
             <div className="FilmStocks">
@@ -25,7 +40,8 @@ const mapReduxStoreToProps = store => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setIsAuthenticated
+    setIsAuthenticated,
+    addFilmStock
 }, dispatch);
 
 export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(FilmStocks));
