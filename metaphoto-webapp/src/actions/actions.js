@@ -4,6 +4,7 @@ export const SET_IS_AUTHENTICATED = 'SET_IS_AUTHENTICATED';
 export const SET_IS_LOADING = 'SET_IS_LOADING';
 export const SET_EMAIL = 'SET_EMAIL';
 export const SET_PASSWORD = 'SET_PASSWORD';
+export const ADD_FILM_STOCK = 'ADD_FILM_STOCK';
 
 export function setTime(time) {
     return {
@@ -44,5 +45,12 @@ export function setPassword(password) {
     return {
         type: SET_PASSWORD,
         password
+    }
+}
+
+export function addFilmStock(filmStock) {
+    return {
+        type: ADD_FILM_STOCK,
+        filmStock
     }
 }

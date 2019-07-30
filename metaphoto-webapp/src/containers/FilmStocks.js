@@ -21,6 +21,7 @@ class FilmStocks extends Component {
 
 const mapReduxStoreToProps = store => ({
     isAuthenticated: store.authentication.isAuthenticated,
+    filmStocks: store.filmstocks.filmStocks
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
