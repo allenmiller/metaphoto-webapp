@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "./Login.css";
+import config from '../config';
 
+import { API } from "aws-amplify";
 import {bindActionCreators} from "redux";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
@@ -19,7 +21,7 @@ class FilmStocks extends Component {
         let apiName = config.apiGateway.NAME;
         let getFilmStocks = "/filmstocks";
         console.log("getting all film stocks");
-        API.get(apiName, getFilmStocks)
+        API.get(apiName, getFilmStocks, {})
             .then(response => {
                 console.log("in callback", response);
                 this.props.addFilmStock(response.data)
