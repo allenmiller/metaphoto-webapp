@@ -9,7 +9,7 @@ export default(state = initialState, action) => {
         case ADD_FILM_STOCKS:
             return {
                 ...state,
-                filmStocks: [...state.filmStocks, ...action.addFilmStocks]
+                filmStocks: [...state.filmStocks, action.addFilmStocks]
             };
         default:
             return state;
