@@ -45,6 +45,7 @@ class FilmStocks extends Component {
 
         ];
         return (
+            (this.props.filmStocks !== undefined) &&
             <div className="FilmStocks">
             Here are some film stocks.
                 <ReactTable
