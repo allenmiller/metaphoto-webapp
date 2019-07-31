@@ -1,7 +1,7 @@
 import { ADD_FILM_STOCK } from "../actions/actions";
 
 const initialState = {
-    filmStocks: []
+    filmStocks: [{}]
 };
 
 export default(state = initialState, action) => {
