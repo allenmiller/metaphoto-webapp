@@ -4,7 +4,8 @@ export const SET_IS_AUTHENTICATED = 'SET_IS_AUTHENTICATED';
 export const SET_IS_LOADING = 'SET_IS_LOADING';
 export const SET_EMAIL = 'SET_EMAIL';
 export const SET_PASSWORD = 'SET_PASSWORD';
-export const ADD_FILM_STOCKS = 'ADD_FILM_STOCKS';
+export const ADD_FILM_STOCK = 'ADD_FILM_STOCK';
+export const SET_FILM_STOCKS = 'SET_FILM_STOCKS';
 
 export function setTime(time) {
     return {
@@ -48,9 +49,16 @@ export function setPassword(password) {
     }
 }
 
-export function addFilmStocks(filmStocks) {
+export function addFilmStock(filmStock) {
     return {
-        type: ADD_FILM_STOCKS,
+        type: ADD_FILM_STOCK,
+        filmStock
+    }
+}
+
+export function setFilmStocks(filmStocks) {
+    return {
+        type: SET_FILM_STOCKS,
         filmStocks
     }
 }

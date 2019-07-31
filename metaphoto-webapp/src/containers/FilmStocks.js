@@ -9,12 +9,11 @@ import {connect} from "react-redux";
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-import {addFilmStocks, setIsAuthenticated} from "../actions/actions";
+import {setFilmStocks, setIsAuthenticated} from "../actions/actions";
 
 class FilmStocks extends Component {
 
-    constructor(props) {
-        super(props);
+    componentDidMount() {
         this.getFilmStocks();
     }
 
@@ -25,7 +24,7 @@ class FilmStocks extends Component {
         API.get(apiName, getFilmStocks, {})
             .then(response => {
                 console.log("in callback", response);
-                this.props.addFilmStocks(response)
+                this.props.setFilmStocks(response)
             })
             .catch(error => {
                 console.log("error in getFilmStocks()", error);
@@ -65,7 +64,7 @@ const mapReduxStoreToProps = store => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setIsAuthenticated,
-    addFilmStocks
+    setFilmStocks: setFilmStocks
 }, dispatch);
 
 export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(FilmStocks));

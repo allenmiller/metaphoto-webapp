@@ -14,7 +14,8 @@ const middleware = [
 ];
 
 if (config.env === 'dev') {
-    const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
+    const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({trace: true, traceLimit: 25});
 
     if (typeof devToolsExtension === 'function') {
         enhancers.push(devToolsExtension());
