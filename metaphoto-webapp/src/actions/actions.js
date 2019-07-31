@@ -51,6 +51,6 @@ export function setPassword(password) {
 export function addFilmStocks(filmStocks) {
     return {
         type: ADD_FILM_STOCKS,
-        ...filmStocks
+        filmStocks
     }
 }
