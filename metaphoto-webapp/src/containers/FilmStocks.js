@@ -40,7 +40,7 @@ class FilmStocks extends Component {
             },
             {
                 Header: "Format",
-                accessor: d => d.data.filmFormat
+                accessor:"primaryRangeKey"
             }
 
         ];
