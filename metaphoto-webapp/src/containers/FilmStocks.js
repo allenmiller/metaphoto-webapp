@@ -32,6 +32,7 @@ class FilmStocks extends Component {
     }
 
     render() {
+        const  MAX_TABLE_LENGTH = 10;
         const columns = [
             {
                 id: "filmName",
@@ -66,6 +67,7 @@ class FilmStocks extends Component {
             <div className="FilmStocks">
                 <ReactTable
                     data = {this.props.filmStocks}
+                    pageSize={(this.props.filmStocks.length > MAX_TABLE_LENGTH) ? MAX_TABLE_LENGTH : this.props.filmStocks.length}
                     columns = {columns}
                 />
             </div>
