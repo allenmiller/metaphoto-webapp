@@ -6,6 +6,7 @@ export const SET_EMAIL = 'SET_EMAIL';
 export const SET_PASSWORD = 'SET_PASSWORD';
 export const ADD_FILM_STOCK = 'ADD_FILM_STOCK';
 export const SET_FILM_STOCKS = 'SET_FILM_STOCKS';
+export const SET_SHOW_ADD_FILMSTOCK_MODAL = 'SET_SHOW_ADD_FILMSTOCK_MODAL';
 
 export function setTime(time) {
     return {
@@ -60,5 +61,12 @@ export function setFilmStocks(filmStocks) {
     return {
         type: SET_FILM_STOCKS,
         filmStocks
+    }
+}
+
+export function setShowAddFilmstockModal(showModal) {
+    return {
+        type: SET_SHOW_ADD_FILMSTOCK_MODAL,
+        showModal
     }
 }

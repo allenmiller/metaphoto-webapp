@@ -1,7 +1,8 @@
-import { ADD_FILM_STOCK, SET_FILM_STOCKS } from "../actions/actions";
+import {SET_FILM_STOCKS, SET_SHOW_ADD_FILMSTOCK_MODAL} from "../actions/actions";
 
 const initialState = {
-    filmStocks: []
+    filmStocks: [],
+    showAddFilmstockModal: false
 };
 
 export default(state = initialState, action) => {
@@ -11,11 +12,12 @@ export default(state = initialState, action) => {
             filmStocks: [...action.filmStocks]
         };
     }
-    if (action.type === ADD_FILM_STOCK) {
+
+    if (action.type === SET_SHOW_ADD_FILMSTOCK_MODAL) {
         return {
             ...state,
-            filmStocks: [...state.filmStocks, action.filmStocks]  //TODO: filter duplicates.
-        };
+            showAddFilmstockModal: action.showModal
+        }
     }
     return state;
 }

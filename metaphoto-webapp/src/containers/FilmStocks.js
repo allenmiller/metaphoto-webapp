@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import "./Login.css";
-import config from '../config';
 
 import {API} from "aws-amplify";
 import {bindActionCreators} from "redux";
@@ -9,8 +7,13 @@ import {connect} from "react-redux";
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-import {setFilmStocks, setIsAuthenticated} from "../actions/actions";
-import {Button, ButtonToolbar} from "react-bootstrap";
+import {setFilmStocks, setIsAuthenticated, setShowAddFilmstockModal} from "../actions/actions";
+import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
+import Button from "react-bootstrap/es/Button";
+
+import "./Login.css";
+import config from '../config';
+import AddFilmStockModal from "./AddFilmStockModal";
 
 class FilmStocks extends Component {
 
@@ -18,10 +21,14 @@ class FilmStocks extends Component {
         this.getFilmStocks();
     }
 
-    getFilmStocks() {
+    displayModal = () => {
+        console.log("in displayModal()");
+        this.props.setShowAddFilmstockModal(true);
+    };
+
+    getFilmStocks = () => {
         let apiName = config.apiGateway.NAME;
         let getFilmStocks = "/filmstocks";
-        console.log("getting all film stocks");
         API.get(apiName, getFilmStocks, {})
             .then(response => {
                 console.log("in callback", response);
@@ -30,7 +37,7 @@ class FilmStocks extends Component {
             .catch(error => {
                 console.log("error in getFilmStocks()", error);
             })
-    }
+    };
 
     handleSubmit = async event => {
         event.preventDefault();
@@ -76,19 +83,18 @@ class FilmStocks extends Component {
                     pageSize={(this.props.filmStocks.length > MAX_TABLE_LENGTH) ? MAX_TABLE_LENGTH : this.props.filmStocks.length}
                     columns = {columns}
                 />
-                <form onSubmit={this.handleSubmit}>
-                    <ButtonToolbar>
-                        <Button type="submit">
-                            Add
-                        </Button>
-                        <Button type="submit" disabled={true}>
-                            Edit
-                        </Button>
-                        <Button type="submit" disabled={true}>
-                            Delete
-                        </Button>
-                    </ButtonToolbar>
-                </form>
+                <ButtonToolbar>
+                    <Button onClick={this.displayModal}>
+                        Add
+                    </Button>
+                    <Button type="submit" disabled={true}>
+                        Edit
+                    </Button>
+                    <Button type="submit" disabled={true}>
+                        Delete
+                    </Button>
+                </ButtonToolbar>
+                <AddFilmStockModal show={this.props.showAddFilmstockModal}/>
             </div>
         );
     }
@@ -96,12 +102,14 @@ class FilmStocks extends Component {
 
 const mapReduxStoreToProps = store => ({
     isAuthenticated: store.authentication.isAuthenticated,
-    filmStocks: store.filmstocks.filmStocks
+    filmStocks: store.filmstocks.filmStocks,
+    showAddFilmstockModal: store.filmstocks.showAddFilmstockModal
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setIsAuthenticated,
-    setFilmStocks: setFilmStocks
+    setFilmStocks,
+    setShowAddFilmstockModal
 }, dispatch);
 
 export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(FilmStocks));
