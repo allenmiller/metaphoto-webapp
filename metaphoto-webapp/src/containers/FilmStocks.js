@@ -34,12 +34,29 @@ class FilmStocks extends Component {
     render() {
         const columns = [
             {
+                id: "filmName",
                 Header: "Name",
-                accessor: "primaryHashKey"
+                accessor: d => d.data.filmName
             },
             {
+                id: 'Format',
                 Header: "Format",
-                accessor:"primaryRangeKey"
+                accessor: d => d.data.filmFormat
+            },
+            {
+                id: 'filmCode',
+                Header: "Film Code",
+                accessor: d => d.data.filmCode
+            },
+            {
+                id: 'iso',
+                Header: 'ISO',
+                accessor: d => d.data.iso
+            },
+            {
+                id: 'filmType',
+                Header: 'Type',
+                accessor: d => d.data.filmType
             }
 
         ];
@@ -47,7 +64,6 @@ class FilmStocks extends Component {
             (this.props.filmStocks !== undefined) &&
             (this.props.filmStocks.length > 0) &&
             <div className="FilmStocks">
-            Here are some film stocks.
                 <ReactTable
                     data = {this.props.filmStocks}
                     columns = {columns}
