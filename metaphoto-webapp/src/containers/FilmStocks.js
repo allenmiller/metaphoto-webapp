@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Login.css";
 import config from '../config';
 
-import { API } from "aws-amplify";
+import {API} from "aws-amplify";
 import {bindActionCreators} from "redux";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
@@ -10,6 +10,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 import {setFilmStocks, setIsAuthenticated} from "../actions/actions";
+import {Button, ButtonToolbar} from "react-bootstrap";
 
 class FilmStocks extends Component {
 
@@ -30,6 +31,11 @@ class FilmStocks extends Component {
                 console.log("error in getFilmStocks()", error);
             })
     }
+
+    handleSubmit = async event => {
+        event.preventDefault();
+        console.log("adding new film Stock", event);
+    };
 
     render() {
         const  MAX_TABLE_LENGTH = 10;
@@ -70,6 +76,19 @@ class FilmStocks extends Component {
                     pageSize={(this.props.filmStocks.length > MAX_TABLE_LENGTH) ? MAX_TABLE_LENGTH : this.props.filmStocks.length}
                     columns = {columns}
                 />
+                <form onSubmit={this.handleSubmit}>
+                    <ButtonToolbar>
+                        <Button type="submit">
+                            Add
+                        </Button>
+                        <Button type="submit" disabled={true}>
+                            Edit
+                        </Button>
+                        <Button type="submit" disabled={true}>
+                            Delete
+                        </Button>
+                    </ButtonToolbar>
+                </form>
             </div>
         );
     }
