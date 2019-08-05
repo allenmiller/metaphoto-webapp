@@ -96,7 +96,13 @@ class AddFilmStockModal extends Component {
                 this.dismiss();
             })
             .catch( err => {
-                let errorString = `POST error ${err.response.status}: ${err.response.statusText}\n${err.response.data}`;
+                console.log(err);
+                let errorString = "POST error: ";
+                if (err.response) {
+                    errorString = `${err.response.status}: ${err.response.data}`;
+                } else if (err.message) {
+                    errorString = err.message;
+                }
                 console.log(errorString);
                 alert(errorString)
             })
