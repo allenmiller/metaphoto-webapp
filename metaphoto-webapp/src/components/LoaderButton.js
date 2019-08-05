@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, Glyphicon } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import "./LoaderButton.css";
+import {SyncIcon} from "react-octicons";
 
 export default ({
                     isLoading,
@@ -10,11 +11,12 @@ export default ({
                     disabled = false,
                     ...props
                 }) =>
+    //TODO: fix spin
     <Button
         className={`LoaderButton ${className}`}
         disabled={disabled || isLoading}
         {...props}
     >
-        {isLoading && <Glyphicon glyph="refresh" className="spinning" />}
+        {isLoading && <SyncIcon className="spinning" /> }
         {!isLoading ? text : loadingText}
     </Button>;
