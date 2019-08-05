@@ -1,4 +1,5 @@
 import React from 'react';
+import {API} from "aws-amplify";
 import {Component} from "react";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -17,6 +18,7 @@ import {Form} from "react-bootstrap";
 import {FormControl} from "react-bootstrap";
 import {FormGroup} from "react-bootstrap";
 
+import config from '../config';
 
 
 class AddFilmStockModal extends Component {
@@ -77,7 +79,27 @@ class AddFilmStockModal extends Component {
         let messages = this.validate();
         if (messages.length > 0) {
             alert("Please specify" + messages);
+            return;
         }
+        let request = {};
+        request.body = {
+            filmName: this.props.filmName,
+            filmFormat: this.props.filmFormat,
+            filmCode: this.props.filmCode,
+            iso: this.props.filmIso,
+            filmType: this.props.filmType
+        };
+        let postFilmStocks = "/filmstock";
+        API.post(config.apiGateway.NAME, postFilmStocks,request)
+            .then(response => {
+                console.log("POST response:", response);
+                this.dismiss();
+            })
+            .catch( err => {
+                let errorString = `POST error ${err.response.status}: ${err.response.statusText}\n${err.response.data}`;
+                console.log(errorString);
+                alert(errorString)
+            })
     };
 
     dismiss = () => {

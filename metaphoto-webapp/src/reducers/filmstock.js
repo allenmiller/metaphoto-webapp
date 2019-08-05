@@ -27,35 +27,35 @@ export default(state = initialState, action) => {
     if (action.type === SET_FILM_NAME) {
         return {
             ...state,
-            filmName: [action.filmName]
+            filmName: action.filmName
         }
     }
 
     if (action.type === SET_FILM_FORMAT) {
         return {
             ...state,
-            filmFormat: [action.filmFormat]
+            filmFormat: action.filmFormat
         }
     }
 
     if (action.type === SET_FILM_ISO) {
         return {
             ...state,
-            filmIso: [action.filmIso]
+            filmIso: action.filmIso
         }
     }
 
     if (action.type === SET_FILM_CODE) {
         return {
             ...state,
-            filmCode: [action.filmCode]
+            filmCode: action.filmCode
         }
     }
 
     if (action.type === SET_FILM_TYPE) {
         return {
             ...state,
-            filmType: [action.filmType]
+            filmType: action.filmType
         }
     }
 
