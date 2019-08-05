@@ -4,7 +4,11 @@ export const SET_IS_AUTHENTICATED = 'SET_IS_AUTHENTICATED';
 export const SET_IS_LOADING = 'SET_IS_LOADING';
 export const SET_EMAIL = 'SET_EMAIL';
 export const SET_PASSWORD = 'SET_PASSWORD';
-export const SET_FILMNAME = 'SET_FILMNAME';
+export const SET_FILM_NAME = 'SET_FILM_NAME';
+export const SET_FILM_FORMAT = 'SET_FILM_FORMAT';
+export const SET_FILM_ISO = 'SET_FILM_ISO';
+export const SET_FILM_CODE = 'SET_FILM_CODE';
+export const SET_FILM_TYPE = 'SET_FILM_TYPE';
 export const ADD_FILM_STOCK = 'ADD_FILM_STOCK';
 export const SET_FILM_STOCKS = 'SET_FILM_STOCKS';
 export const SET_SHOW_ADD_FILMSTOCK_MODAL = 'SET_SHOW_ADD_FILMSTOCK_MODAL';
@@ -51,10 +55,38 @@ export function setPassword(password) {
     }
 }
 
-export function setFilmname(filmName) {
+export function setFilmName(filmName) {
     return {
-        type: SET_FILMNAME,
+        type: SET_FILM_NAME,
         filmName
+    }
+}
+
+export function setFilmFormat(filmFormat) {
+    return {
+        type: SET_FILM_FORMAT,
+        filmFormat
+    }
+}
+
+export function setFilmIso(filmIso) {
+    return {
+        type: SET_FILM_ISO,
+        filmIso
+    }
+}
+
+export function setFilmCode(filmCode) {
+    return {
+        type: SET_FILM_CODE,
+        filmCode
+    }
+}
+
+export function setFilmType(filmType) {
+    return {
+        type: SET_FILM_TYPE,
+        filmType
     }
 }
 
