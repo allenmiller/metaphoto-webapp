@@ -13,7 +13,10 @@ import {
 } from '../actions/actions';
 import Button from "react-bootstrap/es/Button";
 import Modal from "react-bootstrap/es/Modal";
-import Form from "react-bootstrap/Form";
+import {Form} from "react-bootstrap";
+import {FormControl} from "react-bootstrap";
+import {FormGroup} from "react-bootstrap";
+
 
 
 class AddFilmStockModal extends Component {
@@ -90,56 +93,46 @@ class AddFilmStockModal extends Component {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Form.Group>
-                        <Form.Control
+                    <FormGroup>
+                        <FormControl
                             autoFocus
                             value={this.props.filmName}
                             onChange={this.handleNameChange}
                         />
-                        <Form.Text className="text-muted">
-                            Name
-                        </Form.Text>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Control
+                        Name
+                    </FormGroup>
+                    <FormGroup>
+                        <FormControl
                             autoFocus
                             value={this.props.filmFormat}
                             onChange={this.handleFormatChange}
                         />
-                        <Form.Text className="text-muted">
                             Format
-                        </Form.Text>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Control
+                    </FormGroup>
+                    <FormGroup>
+                        <FormControl
                             autoFocus
                             value={this.props.filmIso}
                             onChange={this.handleIsoChange}
                         />
-                        <Form.Text className="text-muted">
                             ISO
-                        </Form.Text>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Control
+                    </FormGroup>
+                    <FormGroup>
+                        <FormControl
                             autoFocus
                             value={this.props.filmCode}
                             onChange={this.handleCodeChange}
                         />
-                        <Form.Text className="text-muted">
                             Code
-                        </Form.Text>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Control
+                    </FormGroup>
+                    <FormGroup>
+                        <FormControl
                             autoFocus
                             value={this.props.filmType}
                             onChange={this.handleTypeChange}
                         />
-                        <Form.Text className="text-muted">
                             Type
-                        </Form.Text>
-                    </Form.Group>
+                    </FormGroup>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
