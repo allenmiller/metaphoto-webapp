@@ -24,11 +24,6 @@ import config from '../config';
 
 class AddFilmStockModal extends Component {
 
-    // componentDidMount() {
-    //     this.props.setFilmType(this.props.defaultFilmTypes[0].value);
-    //     this.props.setFilmFormat(this.props.defaultFilmFormats[0].value);
-    // }
-
     validate = () => {
         let messages=[];
         if (!this.props.filmName) {
@@ -74,13 +69,7 @@ class AddFilmStockModal extends Component {
         this.props.setFilmType(event.value);
     };
 
-
-    handleSubmit = event => {
-        console.log("in handleSubmit(): ", event);
-    };
-
     saveFilmStock = arg => {
-        console.log("in saveFilmStock()", arg);
         let messages = this.validate();
         if (messages.length > 0) {
             alert("Please specify" + messages);
@@ -97,18 +86,17 @@ class AddFilmStockModal extends Component {
         let postFilmStocks = "/filmstock";
         API.post(config.apiGateway.NAME, postFilmStocks,request)
             .then(response => {
-                console.log("POST response:", response);
                 this.dismiss();
             })
             .catch( err => {
-                console.log(err);
+                console.log("ERROR: ",err);
                 let errorString = "POST error: ";
                 if (err.response) {
                     errorString += `${err.response.status}: ${err.response.data}`;
                 } else if (err.message) {
                     errorString += err.message;
                 }
-                console.log(errorString);
+                console.log("ERROR: ",errorString);
                 alert(errorString)
             })
     };
@@ -118,11 +106,12 @@ class AddFilmStockModal extends Component {
     };
 
     render() {
-        console.log("in modal render()");
-        // let currentFilmType;
-        // if (this.props.filmType === "") {
-        //     currentFilmType = this.props.defaultFilmTypes[0];
-        // }
+        if (this.props.filmFormat === "" && this.props.defaultFilmFormats && this.props.defaultFilmFormats.length > 0) {
+            this.props.setFilmFormat(this.props.defaultFilmFormats[0].value);
+        }
+        if (this.props.filmType === "" && this.props.defaultFilmTypes && this.props.defaultFilmTypes.length > 0) {
+            this.props.setFilmType(this.props.defaultFilmTypes[0].value);
+        }
         return (
         <Modal show={this.props.showModal} onHide={this.dismiss} onExiting={this.props.onExiting}>
             <Modal.Header closeButton>
@@ -163,7 +152,7 @@ class AddFilmStockModal extends Component {
                     <FormGroup>
                         <Select
                             options={this.props.defaultFilmTypes}
-                            // value={currentFilmType}
+                            defaultValue={this.props.defaultFilmTypes[0]}
                             onChange={this.handleTypeChange}
                         />
                         Type
