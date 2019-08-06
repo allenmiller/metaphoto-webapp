@@ -7,7 +7,12 @@ import {connect} from "react-redux";
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-import {setFilmStocks, setIsAuthenticated, setShowAddFilmstockModal} from "../actions/actions";
+import {
+    setFilmStockDefaults,
+    setFilmStocks,
+    setIsAuthenticated,
+    setShowAddFilmstockModal
+} from "../actions/actions";
 import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
 import Button from "react-bootstrap/es/Button";
 
@@ -19,11 +24,25 @@ class FilmStocks extends Component {
 
     componentDidMount() {
         this.getFilmStocks();
+        this.getFilmStockDefaults();
     }
 
     displayModal = () => {
         console.log("in displayModal()");
         this.props.setShowAddFilmstockModal(true);
+    };
+
+    getFilmStockDefaults = () => {
+        let apiName = config.apiGateway.NAME;
+        let getFilmStockDefaults = "/filmstock/defaults";
+        API.get(apiName, getFilmStockDefaults, {})
+            .then(response => {
+                console.log("in callback", response);
+                this.props.setFilmStockDefaults(response)
+            })
+            .catch(error => {
+                console.log("error in getFilmStockDefaults()", error);
+            })
     };
 
     getFilmStocks = () => {
@@ -94,7 +113,11 @@ class FilmStocks extends Component {
                         Delete
                     </Button>
                 </ButtonToolbar>
-                <AddFilmStockModal show={this.props.showAddFilmstockModal} onExiting={this.getFilmStocks}/>
+                <AddFilmStockModal
+                    show={this.props.showAddFilmstockModal}
+                    onExiting={this.getFilmStocks}
+                    defaults={this.props.filmStockDefaults}
+                />
             </div>
         );
     }
@@ -103,12 +126,14 @@ class FilmStocks extends Component {
 const mapReduxStoreToProps = store => ({
     isAuthenticated: store.authentication.isAuthenticated,
     filmStocks: store.filmstocks.filmStocks,
+    filmStockDefaults: store.filmstock.defaults,
     showAddFilmstockModal: store.filmstocks.showAddFilmstockModal
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setIsAuthenticated,
     setFilmStocks,
+    setFilmStockDefaults,
     setShowAddFilmstockModal
 }, dispatch);
 

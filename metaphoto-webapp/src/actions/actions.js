@@ -12,6 +12,7 @@ export const SET_FILM_TYPE = 'SET_FILM_TYPE';
 export const ADD_FILM_STOCK = 'ADD_FILM_STOCK';
 export const SET_FILM_STOCKS = 'SET_FILM_STOCKS';
 export const SET_SHOW_ADD_FILMSTOCK_MODAL = 'SET_SHOW_ADD_FILMSTOCK_MODAL';
+export const SET_FILMSTOCK_DEFAULTS = 'SET_FILMSTOCK_DEFAULTS';
 
 export function setTime(time) {
     return {
@@ -108,5 +109,12 @@ export function setShowAddFilmstockModal(showModal) {
     return {
         type: SET_SHOW_ADD_FILMSTOCK_MODAL,
         showModal
+    }
+}
+
+export function setFilmStockDefaults(defaults) {
+    return {
+        type: SET_FILMSTOCK_DEFAULTS,
+        defaults
     }
 }

@@ -4,7 +4,8 @@ import {
     SET_FILM_FORMAT,
     SET_FILM_ISO,
     SET_FILM_NAME,
-    SET_FILM_TYPE
+    SET_FILM_TYPE,
+    SET_FILMSTOCK_DEFAULTS
 } from "../actions/actions";
 
 const initialState = {
@@ -13,7 +14,8 @@ const initialState = {
     filmFormat: "",
     filmIso: "",
     filmCode: "",
-    filmType: ""
+    filmType: "",
+    defaults: {}
 };
 
 export default(state = initialState, action) => {
@@ -56,6 +58,13 @@ export default(state = initialState, action) => {
         return {
             ...state,
             filmType: action.filmType
+        }
+    }
+
+    if (action.type === SET_FILMSTOCK_DEFAULTS) {
+        return {
+            ...state,
+            defaults: action.defaults
         }
     }
 

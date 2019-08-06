@@ -113,6 +113,7 @@ class AddFilmStockModal extends Component {
 
     render() {
         console.log("in modal render()");
+        console.log("defaults:", this.props.defaults)
         return (
         <Modal show={this.props.showModal} onHide={this.dismiss} onExiting={this.props.onExiting}>
             <Modal.Header closeButton>
