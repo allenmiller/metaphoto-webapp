@@ -23,8 +23,7 @@ import config from '../config';
 
 class AddFilmStockModal extends Component {
 
-    validate = newFilmstock => {
-        console.log(newFilmstock);
+    validate = () => {
         let messages=[];
         if (!this.props.filmName) {
             messages.push(" Name");
@@ -99,9 +98,9 @@ class AddFilmStockModal extends Component {
                 console.log(err);
                 let errorString = "POST error: ";
                 if (err.response) {
-                    errorString = `${err.response.status}: ${err.response.data}`;
+                    errorString += `${err.response.status}: ${err.response.data}`;
                 } else if (err.message) {
-                    errorString = err.message;
+                    errorString += err.message;
                 }
                 console.log(errorString);
                 alert(errorString)
@@ -115,7 +114,7 @@ class AddFilmStockModal extends Component {
     render() {
         console.log("in modal render()");
         return (
-        <Modal show={this.props.showModal} onHide={this.dismiss}>
+        <Modal show={this.props.showModal} onHide={this.dismiss} onExiting={this.props.onExiting}>
             <Modal.Header closeButton>
                 <Modal.Title>Add a new film stock</Modal.Title>
             </Modal.Header>

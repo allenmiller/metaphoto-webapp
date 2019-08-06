@@ -94,7 +94,7 @@ class FilmStocks extends Component {
                         Delete
                     </Button>
                 </ButtonToolbar>
-                <AddFilmStockModal show={this.props.showAddFilmstockModal}/>
+                <AddFilmStockModal show={this.props.showAddFilmstockModal} onExiting={this.getFilmStocks}/>
             </div>
         );
     }
