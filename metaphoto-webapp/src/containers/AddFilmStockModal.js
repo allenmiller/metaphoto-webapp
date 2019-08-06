@@ -24,10 +24,10 @@ import config from '../config';
 
 class AddFilmStockModal extends Component {
 
-    componentDidMount() {
-        this.props.setFilmType(this.props.defaultFilmTypes[0].value);
-        this.props.setFilmFormat(this.props.defaultFilmFormats[0].value);
-    }
+    // componentDidMount() {
+    //     this.props.setFilmType(this.props.defaultFilmTypes[0].value);
+    //     this.props.setFilmFormat(this.props.defaultFilmFormats[0].value);
+    // }
 
     validate = () => {
         let messages=[];
@@ -119,6 +119,10 @@ class AddFilmStockModal extends Component {
 
     render() {
         console.log("in modal render()");
+        // let currentFilmType;
+        // if (this.props.filmType === "") {
+        //     currentFilmType = this.props.defaultFilmTypes[0];
+        // }
         return (
         <Modal show={this.props.showModal} onHide={this.dismiss} onExiting={this.props.onExiting}>
             <Modal.Header closeButton>
@@ -159,7 +163,7 @@ class AddFilmStockModal extends Component {
                     <FormGroup>
                         <Select
                             options={this.props.defaultFilmTypes}
-                            defaultValue={this.props.defaultFilmTypes[0]}
+                            // value={currentFilmType}
                             onChange={this.handleTypeChange}
                         />
                         Type

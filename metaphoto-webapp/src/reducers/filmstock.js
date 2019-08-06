@@ -77,6 +77,7 @@ export default(state = initialState, action) => {
             defaultFilmFormats: defaultFilmFormats
         }
     }
+
     if (action.type === SET_DEFAULT_FILM_TYPES) {
         let defaultFilmTypes = [];
         console.log(action);

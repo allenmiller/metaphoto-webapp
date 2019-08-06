@@ -97,7 +97,6 @@ class FilmStocks extends Component {
         ];
         return (
             (this.props.filmStocks !== undefined) &&
-            (this.props.filmStocks.length > 0) &&
             <div className="FilmStocks">
                 <ReactTable
                     data = {this.props.filmStocks}
