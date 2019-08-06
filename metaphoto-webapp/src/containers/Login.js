@@ -1,15 +1,18 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
 import LoaderButton from "../components/LoaderButton";
-import "./Login.css";
 import { Auth } from "aws-amplify";
-
 import {bindActionCreators} from "redux";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
-
-import {setIsAuthenticated, setIsLoading, setEmail, setPassword} from "../actions/actions";
+import "./Login.css";
+import {
+    setIsAuthenticated,
+    setIsLoading,
+    setEmail,
+    setPassword
+} from "../actions/actions";
 
 class Login extends Component {
     constructor(props) {
@@ -59,34 +62,33 @@ class Login extends Component {
     render() {
         return (
             <div className="Login">
-                <form onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="email" bsSize="large">
-                        <ControlLabel>Email</ControlLabel>
-                        <FormControl
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Group controlId="email">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
                             autoFocus
                             type="email"
                             value={this.props.email}
                             onChange={this.handleChange}
                         />
-                    </FormGroup>
-                    <FormGroup controlId="password" bsSize="large">
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
+                    </Form.Group>
+                    <Form.Group controlId="password">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
                             value={this.props.password}
                             onChange={this.handleChange}
                             type="password"
                         />
-                    </FormGroup>
+                    </Form.Group>
                     <LoaderButton
                         block
-                        bsSize="large"
                         disabled={!this.validateForm()}
                         type="submit"
                         isLoading={this.props.isLoading}
                         text="Login"
                         loadingText="Logging in…"
                     />
-                </form>
+                </Form>
             </div>
         );
     }

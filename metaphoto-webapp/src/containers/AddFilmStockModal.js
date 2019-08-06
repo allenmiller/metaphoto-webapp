@@ -4,6 +4,10 @@ import {Component} from "react";
 import Select from "react-select";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+
 import {
     addFilmStock,
     setFilmName,
@@ -13,12 +17,6 @@ import {
     setFilmType,
     setShowAddFilmstockModal
 } from '../actions/actions';
-import Button from "react-bootstrap/es/Button";
-import Modal from "react-bootstrap/es/Modal";
-import {Form} from "react-bootstrap";
-import {FormControl} from "react-bootstrap";
-import {FormGroup} from "react-bootstrap";
-
 import config from '../config';
 
 
@@ -119,44 +117,44 @@ class AddFilmStockModal extends Component {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <FormGroup>
-                        <FormControl
+                    <Form.Group>
+                        <Form.Control
                             autoFocus
                             value={this.props.filmName}
                             onChange={this.handleNameChange}
                         />
                         Name
-                    </FormGroup>
-                    <FormGroup>
+                    </Form.Group>
+                    <Form.Group>
                         <Select
                             options={this.props.defaultFilmFormats}
                             defaultValue={this.props.defaultFilmFormats[0]}
                             onChange={this.handleFormatChange}
                         />
                         Format
-                    </FormGroup>
-                    <FormGroup>
-                        <FormControl
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Control
                             value={this.props.filmIso}
                             onChange={this.handleIsoChange}
                         />
                         ISO
-                    </FormGroup>
-                    <FormGroup>
-                        <FormControl
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Control
                             value={this.props.filmCode}
                             onChange={this.handleCodeChange}
                         />
                         Code
-                    </FormGroup>
-                    <FormGroup>
+                    </Form.Group>
+                    <Form.Group>
                         <Select
                             options={this.props.defaultFilmTypes}
                             defaultValue={this.props.defaultFilmTypes[0]}
                             onChange={this.handleTypeChange}
                         />
                         Type
-                    </FormGroup>
+                    </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>

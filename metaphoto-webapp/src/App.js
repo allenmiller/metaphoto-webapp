@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from "react";
-
-import "./App.css";
-import Routes from "./Routes";
 import { Link, withRouter } from "react-router-dom";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 
+import "./App.css";
+import Routes from "./Routes";
 import { setIsAuthenticated, setIsAuthenticating } from "./actions/actions";
 
 class App extends Component {
@@ -40,31 +40,29 @@ class App extends Component {
         return (
             !this.props.isAuthenticating &&
             <div className="App container">
-                <Navbar fluid collapseOnSelect>
-                    <Navbar.Header>
-                        <Navbar.Brand>
-                            <Link to="/">Metaphoto</Link>
-                        </Navbar.Brand>
-                        <Navbar.Toggle />
-                    </Navbar.Header>
+                <Navbar collapseOnSelect>
+                    <Navbar.Brand>
+                        <Link to="/">Metaphoto</Link>
+                    </Navbar.Brand>
+                    {/*<Navbar.Toggle />*/}
                     <Navbar.Collapse>
                         {this.props.isAuthenticated
-                            ? < Nav pullLeft>
+                            ? <Nav>
                                 <LinkContainer to={"/filmStocks"}>
-                                    <NavItem>Film Stocks</NavItem>
+                                    <Nav.Item>Film Stocks</Nav.Item>
                                 </LinkContainer>
                             </Nav>
                             : <p/>
                         }
-                        <Nav pullRight>
+                        <Nav className="justify-content-end">
                             {this.props.isAuthenticated
-                                ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                                ? <Nav.Item onClick={this.handleLogout}>Logout</Nav.Item>
                                 : <Fragment>
                                     <LinkContainer to="/signup">
-                                        <NavItem>Signup</NavItem>
+                                        <Nav.Item>Signup</Nav.Item>
                                     </LinkContainer>
                                     <LinkContainer to="/login">
-                                        <NavItem>Login</NavItem>
+                                        <Nav.Item>Login</Nav.Item>
                                     </LinkContainer>
                                 </Fragment>
                             }
