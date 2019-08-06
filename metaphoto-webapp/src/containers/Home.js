@@ -1,34 +1,7 @@
 import React, { Component } from "react";
 import "./Home.css";
-import config from '../config';
-
-import { API } from "aws-amplify";
-import { bindActionCreators} from "redux";
-import { connect } from 'react-redux';
-import { setTime } from '../actions/actions';
 
 class Home extends Component {
-
-    constructor(props) {
-        super(props);
-        this.getTime();
-    }
-
-    getTime()  {
-        let apiName = config.apiGateway.NAME;
-        let apiPath = "/time";
-        let myInit = {};
-        console.log("calling /time", apiName);
-        API.get(apiName, apiPath, myInit)
-            .then(response => {
-                console.log("in return callback", response);
-                this.props.setTime(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-                this.props.setTime(error.message);
-            });
-    };
 
     render() {
         return (
@@ -36,19 +9,10 @@ class Home extends Component {
                 <div className="lander">
                     <h1>Metaphoto</h1>
                     <p>Keep track of all that photographic metadata</p>
-                    <p>{this.props.time}</p>
                 </div>
             </div>
         );
     }
 }
 
-const mapReduxStoreToProps = store => ({
-   time: store.time.time
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-    setTime
-}, dispatch);
-
-export default connect(mapReduxStoreToProps, mapDispatchToProps)(Home)
+export default Home;

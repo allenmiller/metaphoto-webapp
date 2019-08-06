@@ -4,12 +4,10 @@ import authentication from "./authentication";
 import feedback from "./feedback";
 import filmstock from "./filmstock";
 import filmstocks from "./filmstocks";
-import time from "./time";
 
 export default combineReducers({
     authentication,
     feedback,
     filmstock,
-    filmstocks,
-    time
+    filmstocks
 })

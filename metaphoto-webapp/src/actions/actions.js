@@ -1,4 +1,3 @@
-export const SET_TIME = 'SET_TIME';
 export const SET_IS_AUTHENTICATING = 'SET_IS_AUTHENTICATING';
 export const SET_IS_AUTHENTICATED = 'SET_IS_AUTHENTICATED';
 export const SET_IS_LOADING = 'SET_IS_LOADING';
@@ -14,13 +13,6 @@ export const SET_FILM_STOCKS = 'SET_FILM_STOCKS';
 export const SET_SHOW_ADD_FILMSTOCK_MODAL = 'SET_SHOW_ADD_FILMSTOCK_MODAL';
 export const SET_DEFAULT_FILM_TYPES = 'SET_DEFAULT_FILM_TYPES';
 export const SET_DEFAULT_FILM_FORMATS = 'SET_DEFAULT_FILM_FORMATS';
-
-export function setTime(time) {
-    return {
-        type: SET_TIME,
-        time
-    }
-}
 
 export function setIsAuthenticating(isAuthenticating) {
     return {
