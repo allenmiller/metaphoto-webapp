@@ -10,13 +10,25 @@ const initialState = {
 export default(state = initialState, action) => {
     switch (action.type) {
         case SET_IS_AUTHENTICATED:
-            return Object.assign({}, state, {isAuthenticated: action.isAuthenticated});
+            return {
+                ...state,
+                isAuthenticated: action.isAuthenticated
+            };
         case SET_IS_AUTHENTICATING:
-            return Object.assign({}, state, {isAuthenticating: action.isAuthenticating});
+            return {
+                ...state,
+                isAuthenticating: action.isAuthenticating
+            };
         case SET_EMAIL:
-            return Object.assign({}, state, {email: action.email});
+            return {
+                ...state,
+                email: action.email
+            };
         case SET_PASSWORD:
-            return Object.assign({}, state, {password: action.password});
+            return {
+                ...state,
+                password: action.password
+            };
         default:
             return state;
     }
