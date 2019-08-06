@@ -5,7 +5,8 @@ import {
     SET_FILM_ISO,
     SET_FILM_NAME,
     SET_FILM_TYPE,
-    SET_FILMSTOCK_DEFAULTS
+    SET_DEFAULT_FILM_FORMATS,
+    SET_DEFAULT_FILM_TYPES
 } from "../actions/actions";
 
 const initialState = {
@@ -15,7 +16,8 @@ const initialState = {
     filmIso: "",
     filmCode: "",
     filmType: "",
-    defaults: {}
+    defaultFilmFormats: [],
+    defaultFilmTypes: []
 };
 
 export default(state = initialState, action) => {
@@ -61,10 +63,32 @@ export default(state = initialState, action) => {
         }
     }
 
-    if (action.type === SET_FILMSTOCK_DEFAULTS) {
+    if (action.type === SET_DEFAULT_FILM_FORMATS) {
+        let defaultFilmFormats = [];
+        console.log(action);
+        console.log(action.defaultFilmFormats);
+        action.defaultFilmFormats.filmFormats.forEach(e => {
+            console.log("e",e);
+            defaultFilmFormats.push({value:e, label:e});
+        });
+
         return {
             ...state,
-            defaults: action.defaults
+            defaultFilmFormats: defaultFilmFormats
+        }
+    }
+    if (action.type === SET_DEFAULT_FILM_TYPES) {
+        let defaultFilmTypes = [];
+        console.log(action);
+        console.log(action.defaultFilmTypes);
+        action.defaultFilmTypes.filmTypes.forEach(e => {
+            console.log("e",e);
+            defaultFilmTypes.push({value:e, label:e});
+        });
+
+        return {
+            ...state,
+            defaultFilmTypes: defaultFilmTypes
         }
     }
 

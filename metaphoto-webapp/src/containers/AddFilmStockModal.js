@@ -1,6 +1,7 @@
 import React from 'react';
 import {API} from "aws-amplify";
 import {Component} from "react";
+import Select from "react-select";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
@@ -22,6 +23,11 @@ import config from '../config';
 
 
 class AddFilmStockModal extends Component {
+
+    componentDidMount() {
+        this.props.setFilmType(this.props.defaultFilmTypes[0].value);
+        this.props.setFilmFormat(this.props.defaultFilmFormats[0].value);
+    }
 
     validate = () => {
         let messages=[];
@@ -53,7 +59,7 @@ class AddFilmStockModal extends Component {
     };
 
     handleFormatChange = event => {
-        this.props.setFilmFormat(event.target.value);
+        this.props.setFilmFormat(event.value);
     };
 
     handleIsoChange = event => {
@@ -65,7 +71,7 @@ class AddFilmStockModal extends Component {
     };
 
     handleTypeChange = event => {
-        this.props.setFilmType(event.target.value);
+        this.props.setFilmType(event.value);
     };
 
 
@@ -113,7 +119,6 @@ class AddFilmStockModal extends Component {
 
     render() {
         console.log("in modal render()");
-        console.log("defaults:", this.props.defaults)
         return (
         <Modal show={this.props.showModal} onHide={this.dismiss} onExiting={this.props.onExiting}>
             <Modal.Header closeButton>
@@ -130,36 +135,34 @@ class AddFilmStockModal extends Component {
                         Name
                     </FormGroup>
                     <FormGroup>
-                        <FormControl
-                            autoFocus
-                            value={this.props.filmFormat}
+                        <Select
+                            options={this.props.defaultFilmFormats}
+                            defaultValue={this.props.defaultFilmFormats[0]}
                             onChange={this.handleFormatChange}
                         />
-                            Format
+                        Format
                     </FormGroup>
                     <FormGroup>
                         <FormControl
-                            autoFocus
                             value={this.props.filmIso}
                             onChange={this.handleIsoChange}
                         />
-                            ISO
+                        ISO
                     </FormGroup>
                     <FormGroup>
                         <FormControl
-                            autoFocus
                             value={this.props.filmCode}
                             onChange={this.handleCodeChange}
                         />
-                            Code
+                        Code
                     </FormGroup>
                     <FormGroup>
-                        <FormControl
-                            autoFocus
-                            value={this.props.filmType}
+                        <Select
+                            options={this.props.defaultFilmTypes}
+                            defaultValue={this.props.defaultFilmTypes[0]}
                             onChange={this.handleTypeChange}
                         />
-                            Type
+                        Type
                     </FormGroup>
                 </Form>
             </Modal.Body>
@@ -183,7 +186,9 @@ const mapReduxStoreToProps = store => ({
     filmFormat: store.filmstock.filmFormat,
     filmIso: store.filmstock.filmIso,
     filmCode: store.filmstock.filmCode,
-    filmType: store.filmstock.filmType
+    filmType: store.filmstock.filmType,
+    defaultFilmFormats: store.filmstock.defaultFilmFormats,
+    defaultFilmTypes: store.filmstock.defaultFilmTypes
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -8,7 +8,8 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 import {
-    setFilmStockDefaults,
+    setDefaultFilmFormats,
+    setDefaultFilmTypes,
     setFilmStocks,
     setIsAuthenticated,
     setShowAddFilmstockModal
@@ -37,8 +38,9 @@ class FilmStocks extends Component {
         let getFilmStockDefaults = "/filmstock/defaults";
         API.get(apiName, getFilmStockDefaults, {})
             .then(response => {
-                console.log("in callback", response);
-                this.props.setFilmStockDefaults(response)
+                console.log("in getFilmStockDefaults callback", response);
+                this.props.setDefaultFilmTypes(response);
+                this.props.setDefaultFilmFormats(response);
             })
             .catch(error => {
                 console.log("error in getFilmStockDefaults()", error);
@@ -116,7 +118,6 @@ class FilmStocks extends Component {
                 <AddFilmStockModal
                     show={this.props.showAddFilmstockModal}
                     onExiting={this.getFilmStocks}
-                    defaults={this.props.filmStockDefaults}
                 />
             </div>
         );
@@ -133,7 +134,8 @@ const mapReduxStoreToProps = store => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     setIsAuthenticated,
     setFilmStocks,
-    setFilmStockDefaults,
+    setDefaultFilmFormats,
+    setDefaultFilmTypes,
     setShowAddFilmstockModal
 }, dispatch);
 
