@@ -6,13 +6,16 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import selectTableHOC from "react-table/lib/hoc/selectTable";
 
 import {
     setDefaultFilmFormats,
     setDefaultFilmTypes,
     setFilmStocks,
     setIsAuthenticated,
-    setShowAddFilmstockModal
+    setShowAddFilmstockModal,
+    setShowDeleteFilmstockButton,
+    setShowEditFilmstockButton
 } from "../actions/actions";
 import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
 import Button from "react-bootstrap/es/Button";
@@ -22,6 +25,7 @@ import config from '../config';
 import AddFilmStockModal from "./AddFilmStockModal";
 
 class FilmStocks extends Component {
+
 
     componentDidMount() {
         this.getFilmStocks();
@@ -38,7 +42,6 @@ class FilmStocks extends Component {
         let getFilmStockDefaults = "/filmstock/defaults";
         API.get(apiName, getFilmStockDefaults, {})
             .then(response => {
-                console.log("in getFilmStockDefaults callback", response);
                 this.props.setDefaultFilmTypes(response);
                 this.props.setDefaultFilmFormats(response);
             })
@@ -65,9 +68,25 @@ class FilmStocks extends Component {
         console.log("adding new film Stock", event);
     };
 
+    toggleSelection = (key, shift, row) => {
+        console.log("in toggleSelection()", key);
+        console.log("in toggleSelection()", shift);
+        console.log("in toggleSelection()", row);
+
+        // if (selection.indexOf(key) < 0) selection.push(key);
+        // this.props.setTableSelection(selection);
+    };
+
     render() {
+        const SelectTable = selectTableHOC(ReactTable);
         const  MAX_TABLE_LENGTH = 10;
         const columns = [
+            {
+                id: "primaryHashKey",
+                Header: "Key",
+                accessor: d => d.primaryHashKey,
+                show: false
+            },
             {
                 id: "filmName",
                 Header: "Name",
@@ -98,19 +117,22 @@ class FilmStocks extends Component {
         return (
             (this.props.filmStocks !== undefined) &&
             <div className="FilmStocks">
-                <ReactTable
+                <SelectTable
                     data = {this.props.filmStocks}
                     pageSize={(this.props.filmStocks.length > MAX_TABLE_LENGTH) ? MAX_TABLE_LENGTH : this.props.filmStocks.length}
                     columns = {columns}
+                    keyField="primaryHashKey"
+                    selectType="radio"
+                    toggleSelection={this.toggleSelection}
                 />
                 <ButtonToolbar>
                     <Button onClick={this.displayModal}>
                         Add
                     </Button>
-                    <Button type="submit" disabled={true}>
+                    <Button type="submit" disabled={!this.props.showEditFilmstockButton}>
                         Edit
                     </Button>
-                    <Button type="submit" disabled={true}>
+                    <Button type="submit" disabled={!this.props.showDeleteFilmstockButton}>
                         Delete
                     </Button>
                 </ButtonToolbar>
@@ -127,7 +149,9 @@ const mapReduxStoreToProps = store => ({
     isAuthenticated: store.authentication.isAuthenticated,
     filmStocks: store.filmstocks.filmStocks,
     filmStockDefaults: store.filmstock.defaults,
-    showAddFilmstockModal: store.filmstocks.showAddFilmstockModal
+    showAddFilmstockModal: store.filmstocks.showAddFilmstockModal,
+    showDeleteFilmstockButton: store.filmstocks.showDeleteFilmstockButton,
+    showEditFilmstockButton: store.filmstocks.showEditFilmstockButton
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -135,7 +159,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setFilmStocks,
     setDefaultFilmFormats,
     setDefaultFilmTypes,
-    setShowAddFilmstockModal
+    setShowAddFilmstockModal,
+    setShowDeleteFilmstockButton,
+    setShowEditFilmstockButton
 }, dispatch);
 
 export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(FilmStocks));
