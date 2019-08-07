@@ -14,8 +14,8 @@ import {
     setIsAuthenticated,
     setShowAddFilmstockModal
 } from "../actions/actions";
-import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
-import Button from "react-bootstrap/es/Button";
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import Button from "react-bootstrap/Button";
 
 import "./Login.css";
 import config from '../config';

@@ -44,25 +44,32 @@ class App extends Component {
                     <Navbar.Brand>
                         <Link to="/">Metaphoto</Link>
                     </Navbar.Brand>
-                    {/*<Navbar.Toggle />*/}
                     <Navbar.Collapse>
                         {this.props.isAuthenticated
                             ? <Nav>
                                 <LinkContainer to={"/filmStocks"}>
-                                    <Nav.Item>Film Stocks</Nav.Item>
+                                    <Navbar.Brand>
+                                        Film Stocks
+                                    </Navbar.Brand>
                                 </LinkContainer>
                             </Nav>
                             : <p/>
                         }
                         <Nav className="justify-content-end">
                             {this.props.isAuthenticated
-                                ? <Nav.Item onClick={this.handleLogout}>Logout</Nav.Item>
+                                ? <Navbar.Brand onClick={this.handleLogout}>
+                                    <Link to="/">Logout</Link>
+                                  </Navbar.Brand>
                                 : <Fragment>
                                     <LinkContainer to="/signup">
-                                        <Nav.Item>Signup</Nav.Item>
+                                        <Navbar.Brand>
+                                        Signup
+                                        </Navbar.Brand>
                                     </LinkContainer>
                                     <LinkContainer to="/login">
-                                        <Nav.Item>Login</Nav.Item>
+                                        <Navbar.Brand>
+                                        Login
+                                        </Navbar.Brand>
                                     </LinkContainer>
                                 </Fragment>
                             }
