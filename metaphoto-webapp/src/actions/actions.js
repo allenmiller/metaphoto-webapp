@@ -15,6 +15,7 @@ export const SET_SHOW_ADD_FILMSTOCK_BUTTON = 'SET_SHOW_ADD_FILMSTOCK_BUTTON';
 export const SET_SHOW_DELETE_FILMSTOCK_BUTTON = 'SET_SHOW_DELETE_FILMSTOCK_BUTTON';
 export const SET_SHOW_EDIT_FILMSTOCK_BUTTON = 'SET_SHOW_EDIT_FILMSTOCK_BUTTON';
 export const SET_SELECTED_FILMSTOCK_KEY = 'SET_SELECTED_FILMSTOCK_KEY';
+export const SET_SELECTED_FILMSTOCK_ROW = 'SET_SELECTED_FILMSTOCK_ROW';
 export const SET_DEFAULT_FILM_TYPES = 'SET_DEFAULT_FILM_TYPES';
 export const SET_DEFAULT_FILM_FORMATS = 'SET_DEFAULT_FILM_FORMATS';
 
@@ -106,6 +107,13 @@ export function setSelectedFilmstockKey(selectedFilmstockKey) {
     return {
         type: SET_SELECTED_FILMSTOCK_KEY,
         selectedFilmstockKey
+    }
+}
+
+export function setSelectedFilmstockRow(selectedFilmstockRow) {
+    return {
+        type: SET_SELECTED_FILMSTOCK_ROW,
+        selectedFilmstockRow
     }
 }
 

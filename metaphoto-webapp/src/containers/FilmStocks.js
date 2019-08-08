@@ -13,6 +13,7 @@ import {
     setDefaultFilmTypes,
     setFilmStocks,
     setSelectedFilmstockKey,
+    setSelectedFilmstockRow,
     setIsAuthenticated,
     setShowAddFilmstockModal,
     setShowAddFilmstockButton,
@@ -28,7 +29,6 @@ import AddFilmStockModal from "./AddFilmStockModal";
 
 class FilmStocks extends Component {
 
-
     componentDidMount() {
         this.getFilmStocks();
         this.getFilmStockDefaults();
@@ -36,6 +36,29 @@ class FilmStocks extends Component {
 
     displayModal = () => {
         this.props.setShowAddFilmstockModal(true);
+    };
+
+    deleteFilmstock = () => {
+        let hashKeyToDelete = this.props.selectedFilmstockRow.primaryHashKey;
+        let rangeKeyToDelete = this.props.selectedFilmstockRow.primaryRangeKey;
+        let apiName = config.apiGateway.NAME;
+        let deleteEndpoint = `/filmstock/${hashKeyToDelete}/${rangeKeyToDelete}`;
+        console.log(`DELETE ${deleteEndpoint}`);
+        API.del(apiName, deleteEndpoint, {})
+            .then(response => {
+                console.log("back from delete()", response);
+                this.props.setSelectedFilmstockKey("");
+                this.props.setSelectedFilmstockRow({});
+                this.props.setShowAddFilmstockButton(true);
+                this.props.setShowDeleteFilmstockButton(false);
+                this.props.setShowEditFilmstockButton(false);
+                this.getFilmStocks();  //TODO: don't need to re-read the entire table, just delete item from props.
+            })
+            .catch(error => {
+                console.log("Error deleting item", error);
+                alert("Error deleting item:" + error);
+                })
+
     };
 
     getFilmStockDefaults = () => {
@@ -73,11 +96,13 @@ class FilmStocks extends Component {
         let selectedFilmstockKey = this.props.selectedFilmstockKey;
         if (selectedFilmstockKey === key) {
             this.props.setSelectedFilmstockKey("");
+            this.props.setSelectedFilmstockRow({});
             this.props.setShowAddFilmstockButton(true);
             this.props.setShowDeleteFilmstockButton(false);
             this.props.setShowEditFilmstockButton(false);
         } else {
             this.props.setSelectedFilmstockKey(key);
+            this.props.setSelectedFilmstockRow(row);
             this.props.setShowAddFilmstockButton(false);
             this.props.setShowDeleteFilmstockButton(true);
             this.props.setShowEditFilmstockButton(true);
@@ -150,6 +175,7 @@ class FilmStocks extends Component {
                         Edit
                     </Button>
                     <Button
+                        onClick={this.deleteFilmstock}
                         disabled={!this.props.showDeleteFilmstockButton}
                     >
                         Delete
@@ -169,6 +195,7 @@ const mapReduxStoreToProps = store => ({
     filmStocks: store.filmstocks.filmStocks,
     filmStockDefaults: store.filmstock.defaults,
     selectedFilmstockKey: store.filmstocks.selectedFilmstockKey,
+    selectedFilmstockRow: store.filmstocks.selectedFilmstockRow,
     showAddFilmstockModal: store.filmstocks.showAddFilmstockModal,
     showAddFilmstockButton: store.filmstocks.showAddFilmstockButton,
     showDeleteFilmstockButton: store.filmstocks.showDeleteFilmstockButton,
@@ -179,6 +206,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setIsAuthenticated,
     setFilmStocks,
     setSelectedFilmstockKey,
+    setSelectedFilmstockRow,
     setDefaultFilmFormats,
     setDefaultFilmTypes,
     setShowAddFilmstockModal,
