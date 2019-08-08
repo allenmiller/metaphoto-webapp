@@ -7,7 +7,7 @@ import {
     SET_FILM_TYPE,
     SET_DEFAULT_FILM_FORMATS,
     SET_DEFAULT_FILM_TYPES
-} from "../actions/actions";
+} from "../actions/filmstock";
 
 const initialState = {
     filmStock: {},

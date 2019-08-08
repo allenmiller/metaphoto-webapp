@@ -9,7 +9,7 @@ import { Auth } from "aws-amplify";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
-import { setIsAuthenticated, setIsAuthenticating } from "./actions/actions";
+import { setIsAuthenticated, setIsAuthenticating } from "./actions/authentication";
 
 class App extends Component {
     constructor(props) {

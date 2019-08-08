@@ -1,4 +1,9 @@
-import { SET_IS_AUTHENTICATED, SET_IS_AUTHENTICATING, SET_EMAIL, SET_PASSWORD} from "../actions/actions";
+import {
+    SET_IS_AUTHENTICATED,
+    SET_IS_AUTHENTICATING,
+    SET_EMAIL,
+    SET_PASSWORD
+} from "../actions/authentication";
 
 const initialState = {
     isAuthenticated: false,

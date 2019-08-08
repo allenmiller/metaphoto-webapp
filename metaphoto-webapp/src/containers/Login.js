@@ -8,8 +8,12 @@ import {bindActionCreators} from "redux";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
-
-import {setIsAuthenticated, setIsLoading, setEmail, setPassword} from "../actions/actions";
+import {setIsLoading} from "../actions/feedback";
+import {
+    setIsAuthenticated,
+    setEmail,
+    setPassword
+} from "../actions/authentication";
 
 class Login extends Component {
     constructor(props) {
@@ -40,7 +44,7 @@ class Login extends Component {
         try {
             const user = await Auth.signIn(this.props.email, this.props.password);
             if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-                console.log("new password required");
+                console.log("new password required");  //TODO: add password reset
 //                const loggedUser = await Auth.completeNewPassword(user, "ZZZZZZZZ", {"email":"test@ajmiller.net", "phone_number":"+19705551212"});
 //                console.log(loggedUser);
 

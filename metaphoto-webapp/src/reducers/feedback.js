@@ -1,4 +1,4 @@
-import {SET_IS_LOADING} from "../actions/actions";
+import {SET_IS_LOADING} from "../actions/feedback";
 
 const initialState = {
     isLoading: false
