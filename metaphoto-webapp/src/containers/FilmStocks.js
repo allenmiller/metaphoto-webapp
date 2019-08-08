@@ -8,18 +8,21 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import selectTableHOC from "react-table/lib/hoc/selectTable";
 
+import {setIsAuthenticated} from "../actions/authentication";
 import {
     setDefaultFilmFormats,
-    setDefaultFilmTypes,
+    setDefaultFilmTypes
+} from "../actions/filmstock"
+import {
     setFilmStocks,
     setSelectedFilmstockKey,
     setSelectedFilmstockRow,
-    setIsAuthenticated,
     setShowAddFilmstockModal,
     setShowAddFilmstockButton,
     setShowDeleteFilmstockButton,
     setShowEditFilmstockButton
-} from "../actions/actions";
+} from "../actions/filmstocks";
+
 import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
 import Button from "react-bootstrap/es/Button";
 
@@ -57,7 +60,7 @@ class FilmStocks extends Component {
             .catch(error => {
                 console.log("Error deleting item", error);
                 alert("Error deleting item:" + error);
-                })
+            })
 
     };
 

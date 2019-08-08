@@ -6,7 +6,7 @@ import {
     SET_SHOW_ADD_FILMSTOCK_BUTTON,
     SET_SHOW_DELETE_FILMSTOCK_BUTTON,
     SET_SHOW_EDIT_FILMSTOCK_BUTTON
-} from "../actions/actions";
+} from "../actions/filmstocks";
 
 const initialState = {
     filmStocks: [],

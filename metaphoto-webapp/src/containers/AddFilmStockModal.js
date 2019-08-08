@@ -11,8 +11,12 @@ import {
     setFilmIso,
     setFilmCode,
     setFilmType,
+} from '../actions/filmstock';
+
+import {
     setShowAddFilmstockModal
-} from '../actions/actions';
+} from "../actions/filmstocks";
+
 import Button from "react-bootstrap/es/Button";
 import Modal from "react-bootstrap/es/Modal";
 import {Form} from "react-bootstrap";
