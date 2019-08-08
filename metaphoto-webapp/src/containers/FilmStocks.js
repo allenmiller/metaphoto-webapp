@@ -12,6 +12,7 @@ import {
     setDefaultFilmFormats,
     setDefaultFilmTypes,
     setFilmStocks,
+    setSelectedFilmstockKey,
     setIsAuthenticated,
     setShowAddFilmstockModal,
     setShowDeleteFilmstockButton,
@@ -33,7 +34,6 @@ class FilmStocks extends Component {
     }
 
     displayModal = () => {
-        console.log("in displayModal()");
         this.props.setShowAddFilmstockModal(true);
     };
 
@@ -69,12 +69,16 @@ class FilmStocks extends Component {
     };
 
     toggleSelection = (key, shift, row) => {
-        console.log("in toggleSelection()", key);
-        console.log("in toggleSelection()", shift);
-        console.log("in toggleSelection()", row);
+        let selectedFilmstockKey = this.props.selectedFilmstockKey;
+        if (selectedFilmstockKey === key) {
+            this.props.setSelectedFilmstockKey("");
+        } else {
+            this.props.setSelectedFilmstockKey(key);
+        }
+    };
 
-        // if (selection.indexOf(key) < 0) selection.push(key);
-        // this.props.setTableSelection(selection);
+    isSelected = (key) => {
+        return (this.props.selectedFilmstockKey === "select-" + key);
     };
 
     render() {
@@ -123,6 +127,7 @@ class FilmStocks extends Component {
                     columns = {columns}
                     keyField="primaryHashKey"
                     selectType="radio"
+                    isSelected={this.isSelected}
                     toggleSelection={this.toggleSelection}
                 />
                 <ButtonToolbar>
@@ -149,6 +154,7 @@ const mapReduxStoreToProps = store => ({
     isAuthenticated: store.authentication.isAuthenticated,
     filmStocks: store.filmstocks.filmStocks,
     filmStockDefaults: store.filmstock.defaults,
+    selectedFilmstockKey: store.filmstocks.selectedFilmstockKey,
     showAddFilmstockModal: store.filmstocks.showAddFilmstockModal,
     showDeleteFilmstockButton: store.filmstocks.showDeleteFilmstockButton,
     showEditFilmstockButton: store.filmstocks.showEditFilmstockButton
@@ -157,6 +163,7 @@ const mapReduxStoreToProps = store => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     setIsAuthenticated,
     setFilmStocks,
+    setSelectedFilmstockKey,
     setDefaultFilmFormats,
     setDefaultFilmTypes,
     setShowAddFilmstockModal,

@@ -13,6 +13,7 @@ export const SET_FILM_STOCKS = 'SET_FILM_STOCKS';
 export const SET_SHOW_ADD_FILMSTOCK_MODAL = 'SET_SHOW_ADD_FILMSTOCK_MODAL';
 export const SET_SHOW_DELETE_FILMSTOCK_BUTTON = 'SET_SHOW_DELETE_FILMSTOCK_BUTTON';
 export const SET_SHOW_EDIT_FILMSTOCK_BUTTON = 'SET_SHOW_EDIT_FILMSTOCK_BUTTON';
+export const SET_SELECTED_FILMSTOCK_KEY = 'SET_SELECTED_FILMSTOCK_KEY';
 export const SET_DEFAULT_FILM_TYPES = 'SET_DEFAULT_FILM_TYPES';
 export const SET_DEFAULT_FILM_FORMATS = 'SET_DEFAULT_FILM_FORMATS';
 
@@ -97,6 +98,13 @@ export function setFilmStocks(filmStocks) {
     return {
         type: SET_FILM_STOCKS,
         filmStocks
+    }
+}
+
+export function setSelectedFilmstockKey(selectedFilmstockKey) {
+    return {
+        type: SET_SELECTED_FILMSTOCK_KEY,
+        selectedFilmstockKey
     }
 }
 
