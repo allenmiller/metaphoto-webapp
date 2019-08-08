@@ -2,6 +2,7 @@ import {
     SET_FILM_STOCKS,
     SET_SELECTED_FILMSTOCK_KEY,
     SET_SHOW_ADD_FILMSTOCK_MODAL,
+    SET_SHOW_ADD_FILMSTOCK_BUTTON,
     SET_SHOW_DELETE_FILMSTOCK_BUTTON,
     SET_SHOW_EDIT_FILMSTOCK_BUTTON
 } from "../actions/actions";
@@ -9,6 +10,7 @@ import {
 const initialState = {
     filmStocks: [],
     showAddFilmstockModal: false,
+    showAddFilmstockButton: true,
     showDeleteFilmstockButton: false,
     showEditFilmstockButton: false,
     selectedFilmstockKey: ""
@@ -33,6 +35,13 @@ export default(state = initialState, action) => {
         return {
             ...state,
             showAddFilmstockModal: action.showModal
+        }
+    }
+
+    if (action.type === SET_SHOW_ADD_FILMSTOCK_BUTTON) {
+        return {
+            ...state,
+            showAddFilmstockButton: action.showButton
         }
     }
 

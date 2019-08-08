@@ -15,6 +15,7 @@ import {
     setSelectedFilmstockKey,
     setIsAuthenticated,
     setShowAddFilmstockModal,
+    setShowAddFilmstockButton,
     setShowDeleteFilmstockButton,
     setShowEditFilmstockButton
 } from "../actions/actions";
@@ -72,8 +73,14 @@ class FilmStocks extends Component {
         let selectedFilmstockKey = this.props.selectedFilmstockKey;
         if (selectedFilmstockKey === key) {
             this.props.setSelectedFilmstockKey("");
+            this.props.setShowAddFilmstockButton(true);
+            this.props.setShowDeleteFilmstockButton(false);
+            this.props.setShowEditFilmstockButton(false);
         } else {
             this.props.setSelectedFilmstockKey(key);
+            this.props.setShowAddFilmstockButton(false);
+            this.props.setShowDeleteFilmstockButton(true);
+            this.props.setShowEditFilmstockButton(true);
         }
     };
 
@@ -131,13 +138,20 @@ class FilmStocks extends Component {
                     toggleSelection={this.toggleSelection}
                 />
                 <ButtonToolbar>
-                    <Button onClick={this.displayModal}>
+                    <Button
+                        onClick={this.displayModal}
+                        disabled={!this.props.showAddFilmstockButton}
+                    >
                         Add
                     </Button>
-                    <Button type="submit" disabled={!this.props.showEditFilmstockButton}>
+                    <Button
+                        disabled={!this.props.showEditFilmstockButton}
+                    >
                         Edit
                     </Button>
-                    <Button type="submit" disabled={!this.props.showDeleteFilmstockButton}>
+                    <Button
+                        disabled={!this.props.showDeleteFilmstockButton}
+                    >
                         Delete
                     </Button>
                 </ButtonToolbar>
@@ -156,6 +170,7 @@ const mapReduxStoreToProps = store => ({
     filmStockDefaults: store.filmstock.defaults,
     selectedFilmstockKey: store.filmstocks.selectedFilmstockKey,
     showAddFilmstockModal: store.filmstocks.showAddFilmstockModal,
+    showAddFilmstockButton: store.filmstocks.showAddFilmstockButton,
     showDeleteFilmstockButton: store.filmstocks.showDeleteFilmstockButton,
     showEditFilmstockButton: store.filmstocks.showEditFilmstockButton
 });
@@ -167,6 +182,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setDefaultFilmFormats,
     setDefaultFilmTypes,
     setShowAddFilmstockModal,
+    setShowAddFilmstockButton,
     setShowDeleteFilmstockButton,
     setShowEditFilmstockButton
 }, dispatch);
