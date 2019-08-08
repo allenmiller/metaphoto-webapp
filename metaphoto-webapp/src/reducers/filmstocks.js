@@ -1,6 +1,7 @@
 import {
     SET_FILM_STOCKS,
     SET_SELECTED_FILMSTOCK_KEY,
+    SET_SELECTED_FILMSTOCK_ROW,
     SET_SHOW_ADD_FILMSTOCK_MODAL,
     SET_SHOW_ADD_FILMSTOCK_BUTTON,
     SET_SHOW_DELETE_FILMSTOCK_BUTTON,
@@ -13,7 +14,8 @@ const initialState = {
     showAddFilmstockButton: true,
     showDeleteFilmstockButton: false,
     showEditFilmstockButton: false,
-    selectedFilmstockKey: ""
+    selectedFilmstockKey: "",
+    selectedFilmstockRow: {}
 };
 
 export default(state = initialState, action) => {
@@ -28,6 +30,13 @@ export default(state = initialState, action) => {
         return {
             ...state,
             selectedFilmstockKey: action.selectedFilmstockKey
+        }
+    }
+
+    if (action.type === SET_SELECTED_FILMSTOCK_ROW) {
+        return {
+            ...state,
+            selectedFilmstockRow: action.selectedFilmstockRow
         }
     }
 
