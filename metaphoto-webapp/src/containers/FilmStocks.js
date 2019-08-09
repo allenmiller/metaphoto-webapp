@@ -15,6 +15,7 @@ import {
 } from "../actions/filmstock"
 import {
     setFilmStocks,
+    setModalMode,
     setSelectedFilmstockKey,
     setSelectedFilmstockRow,
     setShowAddFilmstockModal,
@@ -28,7 +29,7 @@ import Button from "react-bootstrap/es/Button";
 
 import "./Login.css";
 import config from '../config';
-import AddFilmStockModal from "./AddFilmStockModal";
+import AddEditFilmStockModal from "./AddEditFilmStockModal";
 
 class FilmStocks extends Component {
 
@@ -37,8 +38,37 @@ class FilmStocks extends Component {
         this.getFilmStockDefaults();
     }
 
-    displayModal = () => {
+    displayAddModal = () => {
+        this.props.setModalMode("ADD");
         this.props.setShowAddFilmstockModal(true);
+    };
+
+    displayEditModal = () => {
+        this.props.setModalMode("EDIT");
+        this.props.setShowAddFilmstockModal(true);
+    };
+
+    editFilmstock = () => {
+        let hashKeyToEdit = this.props.selectedFilmstockRow.primaryHashKey;
+        let rangeKeyToEdit = this.props.selectedFilmstockRow.primaryRangeKey;
+        let apiName = config.apiGateway.NAME;
+        let editEndpoint = `/filmstock/${hashKeyToEdit}/${rangeKeyToEdit}`;
+        console.log(`PUT ${editEndpoint}`);
+        API.put(apiName, editEndpoint, {})
+            .then(response => {
+                console.log("back from delete()", response);
+                this.props.setSelectedFilmstockKey("");
+                this.props.setSelectedFilmstockRow({});
+                this.props.setShowAddFilmstockButton(true);
+                this.props.setShowDeleteFilmstockButton(false);
+                this.props.setShowEditFilmstockButton(false);
+                this.getFilmStocks();  //TODO: don't need to re-read the entire table, just delete item from props.
+            })
+            .catch(error => {
+                console.log("Error deleting item", error);
+                alert("Error deleting item:" + error);
+            })
+
     };
 
     deleteFilmstock = () => {
@@ -167,12 +197,13 @@ class FilmStocks extends Component {
                 />
                 <ButtonToolbar>
                     <Button
-                        onClick={this.displayModal}
+                        onClick={this.displayAddModal}
                         disabled={!this.props.showAddFilmstockButton}
                     >
                         Add
                     </Button>
                     <Button
+                        onClick={this.displayEditModal}
                         disabled={!this.props.showEditFilmstockButton}
                     >
                         Edit
@@ -184,7 +215,7 @@ class FilmStocks extends Component {
                         Delete
                     </Button>
                 </ButtonToolbar>
-                <AddFilmStockModal
+                <AddEditFilmStockModal
                     show={this.props.showAddFilmstockModal}
                     onExiting={this.getFilmStocks}
                 />
@@ -197,6 +228,7 @@ const mapReduxStoreToProps = store => ({
     isAuthenticated: store.authentication.isAuthenticated,
     filmStocks: store.filmstocks.filmStocks,
     filmStockDefaults: store.filmstock.defaults,
+    modalMode: store.filmstocks.modalMode,
     selectedFilmstockKey: store.filmstocks.selectedFilmstockKey,
     selectedFilmstockRow: store.filmstocks.selectedFilmstockRow,
     showAddFilmstockModal: store.filmstocks.showAddFilmstockModal,
@@ -208,6 +240,7 @@ const mapReduxStoreToProps = store => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     setIsAuthenticated,
     setFilmStocks,
+    setModalMode,
     setSelectedFilmstockKey,
     setSelectedFilmstockRow,
     setDefaultFilmFormats,

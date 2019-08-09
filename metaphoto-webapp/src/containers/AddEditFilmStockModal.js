@@ -26,7 +26,7 @@ import {FormGroup} from "react-bootstrap";
 import config from '../config';
 
 
-class AddFilmStockModal extends Component {
+class AddEditFilmStockModal extends Component {
 
     validate = () => {
         let messages=[];
@@ -126,6 +126,7 @@ class AddFilmStockModal extends Component {
                     <FormGroup>
                         <FormControl
                             autoFocus
+                            disabled={this.props.modalMode === "EDIT"}
                             value={this.props.filmName}
                             onChange={this.handleNameChange}
                         />
@@ -133,6 +134,7 @@ class AddFilmStockModal extends Component {
                     </FormGroup>
                     <FormGroup>
                         <Select
+                            isDisabled={this.props.modalMode === "EDIT"}
                             options={this.props.defaultFilmFormats}
                             defaultValue={this.props.defaultFilmFormats[0]}
                             onChange={this.handleFormatChange}
@@ -177,8 +179,9 @@ class AddFilmStockModal extends Component {
 }
 
 const mapReduxStoreToProps = store => ({
-    filmStock: store.filmstock.filmStock,
+    modalMode: store.filmstocks.modalMode,
     showModal: store.filmstocks.showAddFilmstockModal,
+    filmStock: store.filmstock.filmStock,
     filmName: store.filmstock.filmName,
     filmFormat: store.filmstock.filmFormat,
     filmIso: store.filmstock.filmIso,
@@ -198,4 +201,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setShowAddFilmstockModal
 }, dispatch);
 
-export default connect(mapReduxStoreToProps, mapDispatchToProps)(AddFilmStockModal);
+export default connect(mapReduxStoreToProps, mapDispatchToProps)(AddEditFilmStockModal);
