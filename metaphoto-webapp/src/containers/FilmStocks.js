@@ -62,7 +62,7 @@ class FilmStocks extends Component {
                 this.props.setShowAddFilmstockButton(true);
                 this.props.setShowDeleteFilmstockButton(false);
                 this.props.setShowEditFilmstockButton(false);
-                this.getFilmStocks();  //TODO: don't need to re-read the entire table, just delete item from props.
+                this.getFilmStocks();  //TODO: don't need to re-read the entire table, just modify item from props.
             })
             .catch(error => {
                 console.log("Error deleting item", error);
