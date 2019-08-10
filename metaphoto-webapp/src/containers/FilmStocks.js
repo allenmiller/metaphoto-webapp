@@ -61,7 +61,6 @@ class FilmStocks extends Component {
         console.log(`DELETE ${deleteEndpoint}`);
         API.del(apiName, deleteEndpoint, {})
             .then(response => {
-                console.log("back from delete()", response);
                 this.props.setSelectedFilmstockKey("");
                 this.props.setSelectedFilmstockRow({});
                 this.props.setShowAddFilmstockButton(true);
@@ -94,7 +93,6 @@ class FilmStocks extends Component {
         let getFilmStocks = "/filmstocks";
         API.get(apiName, getFilmStocks, {})
             .then(response => {
-                console.log("in callback", response);
                 this.props.setFilmStocks(response)
             })
             .catch(error => {
@@ -104,7 +102,6 @@ class FilmStocks extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        console.log("adding new film Stock", event);
     };
 
     toggleSelection = (key, shift, row) => {

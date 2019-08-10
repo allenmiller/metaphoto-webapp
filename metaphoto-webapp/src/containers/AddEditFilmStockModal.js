@@ -136,7 +136,6 @@ class AddEditFilmStockModal extends Component {
         console.log(`PUT ${editEndpoint}`);
         API.put(apiName, editEndpoint, this.buildRequest())
             .then(response => {
-                console.log("back from put()", response);
                 this.props.setSelectedFilmstockKey("");
                 this.props.setSelectedFilmstockRow({});
                 this.props.setShowAddFilmstockButton(true);
