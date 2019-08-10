@@ -11,10 +11,16 @@ import selectTableHOC from "react-table/lib/hoc/selectTable";
 import {setIsAuthenticated} from "../actions/authentication";
 import {
     setDefaultFilmFormats,
-    setDefaultFilmTypes
+    setDefaultFilmTypes,
+    setFilmCode,
+    setFilmFormat,
+    setFilmIso,
+    setFilmName,
+    setFilmType,
 } from "../actions/filmstock"
 import {
     setFilmStocks,
+    setModalMode,
     setSelectedFilmstockKey,
     setSelectedFilmstockRow,
     setShowAddFilmstockModal,
@@ -28,7 +34,7 @@ import Button from "react-bootstrap/es/Button";
 
 import "./Login.css";
 import config from '../config';
-import AddFilmStockModal from "./AddFilmStockModal";
+import AddEditFilmStockModal from "./AddEditFilmStockModal";
 
 class FilmStocks extends Component {
 
@@ -37,7 +43,13 @@ class FilmStocks extends Component {
         this.getFilmStockDefaults();
     }
 
-    displayModal = () => {
+    displayAddModal = () => {
+        this.props.setModalMode("ADD");
+        this.props.setShowAddFilmstockModal(true);
+    };
+
+    displayEditModal = () => {
+        this.props.setModalMode("EDIT");
         this.props.setShowAddFilmstockModal(true);
     };
 
@@ -49,7 +61,6 @@ class FilmStocks extends Component {
         console.log(`DELETE ${deleteEndpoint}`);
         API.del(apiName, deleteEndpoint, {})
             .then(response => {
-                console.log("back from delete()", response);
                 this.props.setSelectedFilmstockKey("");
                 this.props.setSelectedFilmstockRow({});
                 this.props.setShowAddFilmstockButton(true);
@@ -82,7 +93,6 @@ class FilmStocks extends Component {
         let getFilmStocks = "/filmstocks";
         API.get(apiName, getFilmStocks, {})
             .then(response => {
-                console.log("in callback", response);
                 this.props.setFilmStocks(response)
             })
             .catch(error => {
@@ -92,7 +102,6 @@ class FilmStocks extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        console.log("adding new film Stock", event);
     };
 
     toggleSelection = (key, shift, row) => {
@@ -109,6 +118,11 @@ class FilmStocks extends Component {
             this.props.setShowAddFilmstockButton(false);
             this.props.setShowDeleteFilmstockButton(true);
             this.props.setShowEditFilmstockButton(true);
+            this.props.setFilmName(row.data.filmName);  // When selecting a row, load those values into state
+            this.props.setFilmFormat(row.data.filmFormat);
+            this.props.setFilmIso(row.data.iso);
+            this.props.setFilmCode(row.data.filmCode);
+            this.props.setFilmType(row.data.filmType);
         }
     };
 
@@ -167,12 +181,13 @@ class FilmStocks extends Component {
                 />
                 <ButtonToolbar>
                     <Button
-                        onClick={this.displayModal}
+                        onClick={this.displayAddModal}
                         disabled={!this.props.showAddFilmstockButton}
                     >
                         Add
                     </Button>
                     <Button
+                        onClick={this.displayEditModal}
                         disabled={!this.props.showEditFilmstockButton}
                     >
                         Edit
@@ -184,7 +199,7 @@ class FilmStocks extends Component {
                         Delete
                     </Button>
                 </ButtonToolbar>
-                <AddFilmStockModal
+                <AddEditFilmStockModal
                     show={this.props.showAddFilmstockModal}
                     onExiting={this.getFilmStocks}
                 />
@@ -195,8 +210,14 @@ class FilmStocks extends Component {
 
 const mapReduxStoreToProps = store => ({
     isAuthenticated: store.authentication.isAuthenticated,
-    filmStocks: store.filmstocks.filmStocks,
     filmStockDefaults: store.filmstock.defaults,
+    filmName: store.filmstock.filmName,
+    filmFormat: store.filmstock.filmFormat,
+    filmIso: store.filmstock.filmIso,
+    filmCode: store.filmstock.filmCode,
+    filmType: store.filmstock.filmType,
+    filmStocks: store.filmstocks.filmStocks,
+    modalMode: store.filmstocks.modalMode,
     selectedFilmstockKey: store.filmstocks.selectedFilmstockKey,
     selectedFilmstockRow: store.filmstocks.selectedFilmstockRow,
     showAddFilmstockModal: store.filmstocks.showAddFilmstockModal,
@@ -208,6 +229,12 @@ const mapReduxStoreToProps = store => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     setIsAuthenticated,
     setFilmStocks,
+    setFilmName,
+    setFilmFormat,
+    setFilmIso,
+    setFilmCode,
+    setFilmType,
+    setModalMode,
     setSelectedFilmstockKey,
     setSelectedFilmstockRow,
     setDefaultFilmFormats,

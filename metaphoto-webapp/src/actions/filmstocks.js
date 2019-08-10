@@ -5,6 +5,7 @@ export const SET_SHOW_DELETE_FILMSTOCK_BUTTON = 'SET_SHOW_DELETE_FILMSTOCK_BUTTO
 export const SET_SHOW_EDIT_FILMSTOCK_BUTTON = 'SET_SHOW_EDIT_FILMSTOCK_BUTTON';
 export const SET_SELECTED_FILMSTOCK_KEY = 'SET_SELECTED_FILMSTOCK_KEY';
 export const SET_SELECTED_FILMSTOCK_ROW = 'SET_SELECTED_FILMSTOCK_ROW';
+export const SET_MODAL_MODE = 'SET_MODAL_MODE';
 
 export function setFilmStocks(filmStocks) {
     return {
@@ -52,5 +53,12 @@ export function setShowEditFilmstockButton(showButton) {
     return {
         type: SET_SHOW_EDIT_FILMSTOCK_BUTTON,
         showButton
+    }
+}
+
+export function setModalMode(modalMode) {
+    return {
+        type : SET_MODAL_MODE,
+        modalMode
     }
 }

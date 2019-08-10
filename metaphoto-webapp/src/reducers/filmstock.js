@@ -65,10 +65,7 @@ export default(state = initialState, action) => {
 
     if (action.type === SET_DEFAULT_FILM_FORMATS) {
         let defaultFilmFormats = [];
-        console.log(action);
-        console.log(action.defaultFilmFormats);
         action.defaultFilmFormats.filmFormats.forEach(e => {
-            console.log("e",e);
             defaultFilmFormats.push({value:e, label:e});
         });
 
@@ -80,10 +77,7 @@ export default(state = initialState, action) => {
 
     if (action.type === SET_DEFAULT_FILM_TYPES) {
         let defaultFilmTypes = [];
-        console.log(action);
-        console.log(action.defaultFilmTypes);
         action.defaultFilmTypes.filmTypes.forEach(e => {
-            console.log("e",e);
             defaultFilmTypes.push({value:e, label:e});
         });
 

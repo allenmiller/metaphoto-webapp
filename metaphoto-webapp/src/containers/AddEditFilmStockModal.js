@@ -14,7 +14,12 @@ import {
 } from '../actions/filmstock';
 
 import {
-    setShowAddFilmstockModal
+    setShowAddFilmstockModal,
+    setSelectedFilmstockKey,
+    setSelectedFilmstockRow,
+    setShowAddFilmstockButton,
+    setShowEditFilmstockButton,
+    setShowDeleteFilmstockButton
 } from "../actions/filmstocks";
 
 import Button from "react-bootstrap/es/Button";
@@ -26,7 +31,7 @@ import {FormGroup} from "react-bootstrap";
 import config from '../config';
 
 
-class AddFilmStockModal extends Component {
+class AddEditFilmStockModal extends Component {
 
     validate = () => {
         let messages=[];
@@ -73,22 +78,40 @@ class AddFilmStockModal extends Component {
         this.props.setFilmType(event.value);
     };
 
-    saveFilmStock = arg => {
+    saveFilmStock = () => {
+        switch (this.props.modalMode) {
+            case "ADD":
+                this.saveNewFilmStock();
+                return;
+            case "EDIT":
+                this.editFilmstock();
+                return;
+            default:
+                console.log("ERROR: invalid modal mode ", this.props.modalMode);
+        }
+
+    };
+
+    buildRequest = () => {
+        return {
+            body: {
+                filmName: this.props.filmName,
+                filmFormat: this.props.filmFormat,
+                filmCode: this.props.filmCode,
+                iso: this.props.filmIso,
+                filmType: this.props.filmType
+            }
+        };
+    };
+
+    saveNewFilmStock = () => {
         let messages = this.validate();
         if (messages.length > 0) {
             alert("Please specify" + messages);
             return;
         }
-        let request = {};
-        request.body = {
-            filmName: this.props.filmName,
-            filmFormat: this.props.filmFormat,
-            filmCode: this.props.filmCode,
-            iso: this.props.filmIso,
-            filmType: this.props.filmType
-        };
         let postFilmStocks = "/filmstock";
-        API.post(config.apiGateway.NAME, postFilmStocks,request)
+        API.post(config.apiGateway.NAME, postFilmStocks,this.buildRequest())
             .then(response => {
                 this.dismiss();
             })
@@ -103,6 +126,28 @@ class AddFilmStockModal extends Component {
                 console.log("ERROR: ",errorString);
                 alert(errorString)
             })
+    };
+
+    editFilmstock = () => {
+        let hashKeyToEdit = this.props.selectedFilmstockRow.primaryHashKey;
+        let rangeKeyToEdit = this.props.selectedFilmstockRow.primaryRangeKey;
+        let apiName = config.apiGateway.NAME;
+        let editEndpoint = `/filmstock/${hashKeyToEdit}/${rangeKeyToEdit}`;
+        console.log(`PUT ${editEndpoint}`);
+        API.put(apiName, editEndpoint, this.buildRequest())
+            .then(response => {
+                this.props.setSelectedFilmstockKey("");
+                this.props.setSelectedFilmstockRow({});
+                this.props.setShowAddFilmstockButton(true);
+                this.props.setShowDeleteFilmstockButton(false);
+                this.props.setShowEditFilmstockButton(false);
+                this.dismiss();
+            })
+            .catch(error => {
+                console.log("Error editing item", error);
+                alert("Error editing item:" + error);
+            })
+
     };
 
     dismiss = () => {
@@ -126,6 +171,7 @@ class AddFilmStockModal extends Component {
                     <FormGroup>
                         <FormControl
                             autoFocus
+                            disabled={this.props.modalMode === "EDIT"}
                             value={this.props.filmName}
                             onChange={this.handleNameChange}
                         />
@@ -133,6 +179,7 @@ class AddFilmStockModal extends Component {
                     </FormGroup>
                     <FormGroup>
                         <Select
+                            isDisabled={this.props.modalMode === "EDIT"}
                             options={this.props.defaultFilmFormats}
                             defaultValue={this.props.defaultFilmFormats[0]}
                             onChange={this.handleFormatChange}
@@ -177,8 +224,10 @@ class AddFilmStockModal extends Component {
 }
 
 const mapReduxStoreToProps = store => ({
-    filmStock: store.filmstock.filmStock,
+    modalMode: store.filmstocks.modalMode,
+    selectedFilmstockRow: store.filmstocks.selectedFilmstockRow,
     showModal: store.filmstocks.showAddFilmstockModal,
+    filmStock: store.filmstock.filmStock,
     filmName: store.filmstock.filmName,
     filmFormat: store.filmstock.filmFormat,
     filmIso: store.filmstock.filmIso,
@@ -195,7 +244,12 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setFilmIso,
     setFilmCode,
     setFilmType,
-    setShowAddFilmstockModal
+    setShowAddFilmstockModal,
+    setSelectedFilmstockKey,
+    setSelectedFilmstockRow,
+    setShowAddFilmstockButton,
+    setShowEditFilmstockButton,
+    setShowDeleteFilmstockButton
 }, dispatch);
 
-export default connect(mapReduxStoreToProps, mapDispatchToProps)(AddFilmStockModal);
+export default connect(mapReduxStoreToProps, mapDispatchToProps)(AddEditFilmStockModal);

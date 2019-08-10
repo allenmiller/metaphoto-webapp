@@ -5,11 +5,13 @@ import {
     SET_SHOW_ADD_FILMSTOCK_MODAL,
     SET_SHOW_ADD_FILMSTOCK_BUTTON,
     SET_SHOW_DELETE_FILMSTOCK_BUTTON,
-    SET_SHOW_EDIT_FILMSTOCK_BUTTON
+    SET_SHOW_EDIT_FILMSTOCK_BUTTON,
+    SET_MODAL_MODE
 } from "../actions/filmstocks";
 
 const initialState = {
     filmStocks: [],
+    modalMode: "",
     showAddFilmstockModal: false,
     showAddFilmstockButton: true,
     showDeleteFilmstockButton: false,
@@ -24,6 +26,13 @@ export default(state = initialState, action) => {
             ...state,
             filmStocks: [...action.filmStocks]
         };
+    }
+
+    if (action.type === SET_MODAL_MODE) {
+        return {
+            ...state,
+            modalMode: action.modalMode
+        }
     }
 
     if (action.type === SET_SELECTED_FILMSTOCK_KEY) {
