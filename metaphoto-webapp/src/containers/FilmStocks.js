@@ -11,7 +11,12 @@ import selectTableHOC from "react-table/lib/hoc/selectTable";
 import {setIsAuthenticated} from "../actions/authentication";
 import {
     setDefaultFilmFormats,
-    setDefaultFilmTypes
+    setDefaultFilmTypes,
+    setFilmCode,
+    setFilmFormat,
+    setFilmIso,
+    setFilmName,
+    setFilmType,
 } from "../actions/filmstock"
 import {
     setFilmStocks,
@@ -46,29 +51,6 @@ class FilmStocks extends Component {
     displayEditModal = () => {
         this.props.setModalMode("EDIT");
         this.props.setShowAddFilmstockModal(true);
-    };
-
-    editFilmstock = () => {
-        let hashKeyToEdit = this.props.selectedFilmstockRow.primaryHashKey;
-        let rangeKeyToEdit = this.props.selectedFilmstockRow.primaryRangeKey;
-        let apiName = config.apiGateway.NAME;
-        let editEndpoint = `/filmstock/${hashKeyToEdit}/${rangeKeyToEdit}`;
-        console.log(`PUT ${editEndpoint}`);
-        API.put(apiName, editEndpoint, {})
-            .then(response => {
-                console.log("back from delete()", response);
-                this.props.setSelectedFilmstockKey("");
-                this.props.setSelectedFilmstockRow({});
-                this.props.setShowAddFilmstockButton(true);
-                this.props.setShowDeleteFilmstockButton(false);
-                this.props.setShowEditFilmstockButton(false);
-                this.getFilmStocks();  //TODO: don't need to re-read the entire table, just modify item from props.
-            })
-            .catch(error => {
-                console.log("Error deleting item", error);
-                alert("Error deleting item:" + error);
-            })
-
     };
 
     deleteFilmstock = () => {
@@ -139,6 +121,11 @@ class FilmStocks extends Component {
             this.props.setShowAddFilmstockButton(false);
             this.props.setShowDeleteFilmstockButton(true);
             this.props.setShowEditFilmstockButton(true);
+            this.props.setFilmName(row.data.filmName);  // When selecting a row, load those values into state
+            this.props.setFilmFormat(row.data.filmFormat);
+            this.props.setFilmIso(row.data.iso);
+            this.props.setFilmCode(row.data.filmCode);
+            this.props.setFilmType(row.data.filmType);
         }
     };
 
@@ -226,8 +213,13 @@ class FilmStocks extends Component {
 
 const mapReduxStoreToProps = store => ({
     isAuthenticated: store.authentication.isAuthenticated,
-    filmStocks: store.filmstocks.filmStocks,
     filmStockDefaults: store.filmstock.defaults,
+    filmName: store.filmstock.filmName,
+    filmFormat: store.filmstock.filmFormat,
+    filmIso: store.filmstock.filmIso,
+    filmCode: store.filmstock.filmCode,
+    filmType: store.filmstock.filmType,
+    filmStocks: store.filmstocks.filmStocks,
     modalMode: store.filmstocks.modalMode,
     selectedFilmstockKey: store.filmstocks.selectedFilmstockKey,
     selectedFilmstockRow: store.filmstocks.selectedFilmstockRow,
@@ -240,6 +232,11 @@ const mapReduxStoreToProps = store => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     setIsAuthenticated,
     setFilmStocks,
+    setFilmName,
+    setFilmFormat,
+    setFilmIso,
+    setFilmCode,
+    setFilmType,
     setModalMode,
     setSelectedFilmstockKey,
     setSelectedFilmstockRow,
