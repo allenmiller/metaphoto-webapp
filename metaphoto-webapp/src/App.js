@@ -53,6 +53,9 @@ class App extends Component {
                                 <LinkContainer to={"/filmStocks"}>
                                     <NavItem>Film Stocks</NavItem>
                                 </LinkContainer>
+                                <LinkContainer to={"/film"}>
+                                    <NavItem>Film</NavItem>
+                                </LinkContainer>
                             </Nav>
                             : <p/>
                         }
