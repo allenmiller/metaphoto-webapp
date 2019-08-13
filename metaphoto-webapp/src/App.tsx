@@ -10,6 +10,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
 import { setIsAuthenticated, setIsAuthenticating } from "./actions/authentication";
+import AppStore from './store';
 
 class App extends Component {
     constructor(props) {
@@ -80,12 +81,12 @@ class App extends Component {
     }
 }
 
-const mapReduxStoreToProps = store => ({
+const mapReduxStoreToProps = (store: AppStore) => ({
     isAuthenticated: store.authentication.isAuthenticated,
     isAuthenticating: store.authentication.isAuthenticating
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch: any) => bindActionCreators({  //TODO: what is the right type here?
     setIsAuthenticating,
     setIsAuthenticated
 }, dispatch);

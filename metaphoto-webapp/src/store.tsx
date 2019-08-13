@@ -27,6 +27,6 @@ const composedEnhancers = compose(
     ...enhancers
 );
 
-const store = createStore(rootReducer, initialState, composedEnhancers);
+const AppStore = createStore(rootReducer, initialState, composedEnhancers);
 
-export default store;
+export default AppStore;

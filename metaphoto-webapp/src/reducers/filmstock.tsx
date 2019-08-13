@@ -1,5 +1,5 @@
+import {ActionType} from 'typesafe-actions'
 import {
-    ADD_FILM_STOCK,
     SET_FILM_CODE,
     SET_FILM_FORMAT,
     SET_FILM_ISO,
@@ -9,6 +9,19 @@ import {
     SET_DEFAULT_FILM_TYPES
 } from "../actions/filmstock";
 
+import * as filmStockActions from '../actions/filmstock';
+
+export type FilmStockState = Readonly<{
+    filmStock: object,
+    filmName: string,
+    filmFormat: string,
+    filmIso: string,
+    filmCode: string,
+    filmType: string,
+    defaultFilmFormats: string[],
+    defaultFilmTypes: string[]
+}>;
+export type FilmStockAction = ActionType<typeof filmStockActions>;
 const initialState = {
     filmStock: {},
     filmName: "",
@@ -18,16 +31,8 @@ const initialState = {
     filmType: "",
     defaultFilmFormats: [],
     defaultFilmTypes: []
-};
-
-export default(state = initialState, action) => {
-    if (action.type === ADD_FILM_STOCK) {
-        return {
-            ...state,
-            filmStock: [...state.filmStock, action.filmStock]
-        };
-    }
-
+}
+export default(state = initialState, ) => {
     if (action.type === SET_FILM_NAME) {
         return {
             ...state,

@@ -5,7 +5,6 @@ import Select from "react-select";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
-    addFilmStock,
     setFilmName,
     setFilmFormat,
     setFilmIso,
@@ -31,7 +30,7 @@ import {FormGroup} from "react-bootstrap";
 import config from '../config';
 
 
-class AddEditFilmStockModal extends Component {
+class AddEditFilmStockModal extends Component<props, state>  {
 
     validate = () => {
         let messages=[];
@@ -58,11 +57,11 @@ class AddEditFilmStockModal extends Component {
         return messages;
     };
 
-    handleNameChange = event => {
+    handleNameChange = (event: React.FormEvent<HTMLInputElement>) => {
         this.props.setFilmName(event.target.value);
     };
 
-    handleFormatChange = event => {
+    handleFormatChange = (event: React.FormEvent<HTMLInputElement>) => {
         this.props.setFilmFormat(event.value);
     };
 
@@ -238,7 +237,6 @@ const mapReduxStoreToProps = store => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    addFilmStock,
     setFilmName,
     setFilmFormat,
     setFilmIso,
