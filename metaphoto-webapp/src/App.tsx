@@ -1,21 +1,23 @@
 import React, { Component, Fragment } from "react";
+import {Provider} from 'react-redux';
+import {ConnectedRouter} from 'connected-react-router';
 
 import "./App.css";
-import Routes from "./Routes";
-import { Link, withRouter } from "react-router-dom";
+import store, {history} from "./store";
+import { Link } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
-import {bindActionCreators} from "redux";
+import {bindActionCreators, Dispatch} from "redux";
 import {connect} from "react-redux";
 
 import { setIsAuthenticated, setIsAuthenticating } from "./actions/authentication";
-
-class App extends Component {
-    constructor(props) {
+import {AuthenticationState} from './reducers/authentication';
+class App extends Component<AuthenticationState> {
+     constructor(props) {
         super(props);
         props.setIsAuthenticating(true);
-    }
+    } 
 
     async componentDidMount() {
         try {
@@ -38,6 +40,8 @@ class App extends Component {
 
     render() {
         return (
+            <Provider store={store}>
+                <ConnectedRouter history={history}>
             !this.props.isAuthenticating &&
             <div className="App container">
                 <Navbar fluid collapseOnSelect>
@@ -74,20 +78,21 @@ class App extends Component {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-                <Routes />
             </div>
+            </ConnectedRouter>
+            </Provider>
         );
     }
 }
 
-const mapReduxStoreToProps = store => ({
-    isAuthenticated: store.authentication.isAuthenticated,
-    isAuthenticating: store.authentication.isAuthenticating
+const mapReduxStoreToProps = (store: AuthenticationState) => ({
+    isAuthenticated: store.isAuthenticated,
+    isAuthenticating: store.isAuthenticating
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
     setIsAuthenticating,
     setIsAuthenticated
 }, dispatch);
 
-export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(App));
+export default connect(mapReduxStoreToProps, mapDispatchToProps)(App);
