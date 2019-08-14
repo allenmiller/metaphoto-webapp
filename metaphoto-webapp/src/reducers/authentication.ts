@@ -17,14 +17,18 @@ export type  AuthenticationState = Readonly<{
     isAuthenticated: boolean,
     isAuthenticating: boolean,
     email: string,
-    password: string
+    password: string,
+    setIsAuthenticated: (isAuthenticated: boolean) => void,
+    setIsAuthenticating: (isAuthenticating: boolean) => void
 }>;
 
 const initialState: AuthenticationState = {
     isAuthenticated: false,
     isAuthenticating: false,
     email: '',
-    password: ''
+    password: '',
+    setIsAuthenticated: ()=>{},
+    setIsAuthenticating: ()=>{}
 };
 
 const isAuthenticated = createReducer(initialState.isAuthenticated) 

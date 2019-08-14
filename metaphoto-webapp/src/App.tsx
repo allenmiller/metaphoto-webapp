@@ -1,10 +1,6 @@
 import React, { Component, Fragment } from "react";
-import {Provider} from 'react-redux';
-import {ConnectedRouter} from 'connected-react-router';
-
 import "./App.css";
-import store, {history} from "./store";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
@@ -14,12 +10,9 @@ import {connect} from "react-redux";
 import { setIsAuthenticated, setIsAuthenticating } from "./actions/authentication";
 import {AuthenticationState} from './reducers/authentication';
 class App extends Component<AuthenticationState> {
-     constructor(props) {
-        super(props);
-        props.setIsAuthenticating(true);
-    } 
 
     async componentDidMount() {
+        this.props.setIsAuthenticating(true);
         try {
             await Auth.currentSession();
             this.props.setIsAuthenticated(true);
@@ -32,16 +25,14 @@ class App extends Component<AuthenticationState> {
         this.props.setIsAuthenticating(false);
     }
 
-    handleLogout = async event => {
+    handleLogout = async (event:any) => {    //TODO: better type
         await Auth.signOut();
         this.props.setIsAuthenticated(false);
-        this.props.history.push("/login");
+//        this.props.history.push("/login");
     };
 
     render() {
         return (
-            <Provider store={store}>
-                <ConnectedRouter history={history}>
             !this.props.isAuthenticating &&
             <div className="App container">
                 <Navbar fluid collapseOnSelect>
@@ -53,7 +44,8 @@ class App extends Component<AuthenticationState> {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         {this.props.isAuthenticated
-                            ? < Nav pullLeft>
+//                            ? < Nav pullLeft>  // TODO: how to define pullLeft here?
+                            ? <Nav>
                                 <LinkContainer to={"/filmStocks"}>
                                     <NavItem>Film Stocks</NavItem>
                                 </LinkContainer>
@@ -79,8 +71,6 @@ class App extends Component<AuthenticationState> {
                     </Navbar.Collapse>
                 </Navbar>
             </div>
-            </ConnectedRouter>
-            </Provider>
         );
     }
 }
@@ -95,4 +85,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
     setIsAuthenticated
 }, dispatch);
 
-export default connect(mapReduxStoreToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(App));
