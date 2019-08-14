@@ -27,8 +27,8 @@ const initialState: AuthenticationState = {
     isAuthenticating: false,
     email: '',
     password: '',
-    setIsAuthenticated: ()=>{},
-    setIsAuthenticating: ()=>{}
+    setIsAuthenticated: actions.setIsAuthenticated,
+    setIsAuthenticating: actions.setIsAuthenticating
 };
 
 const isAuthenticated = createReducer(initialState.isAuthenticated) 
