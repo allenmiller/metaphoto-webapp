@@ -8,7 +8,7 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Amplify from "aws-amplify";
 import config from "./config";
-import store from './store';
+import configureStore from './store';
 
 Amplify.configure({
     Auth: {
@@ -34,6 +34,7 @@ Amplify.configure({
     }
 });
 
+const store = configureStore();
 ReactDOM.render(
     <Provider store={store}>
         <Router>

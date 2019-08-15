@@ -1,14 +1,15 @@
 import React, { Component, Fragment } from "react";
 import "./App.css";
-import { Link, withRouter } from "react-router-dom";
+//import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
-import {bindActionCreators, Dispatch} from "redux";
+//import {bindActionCreators, Dispatch} from "redux";
 import {connect} from "react-redux";
 
-import { setIsAuthenticated, setIsAuthenticating } from "./actions/authentication";
-import {AuthenticationState} from './reducers/authentication';
+import { setIsAuthenticated, setIsAuthenticating } from "./store/authentication/actions";
+import {AuthenticationState} from './store/authentication/types';
 class App extends Component<AuthenticationState> {
 
     async componentDidMount() {
@@ -75,14 +76,14 @@ class App extends Component<AuthenticationState> {
     }
 }
 
-const mapReduxStoreToProps = (store: AuthenticationState) => ({
-    isAuthenticated: store.isAuthenticated,
-    isAuthenticating: store.isAuthenticating
+const mapReduxStateToProps = (state: AuthenticationState) => ({
+    isAuthenticated: state.isAuthenticated,
+    isAuthenticating: state.isAuthenticating
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+/* const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
     setIsAuthenticating,
     setIsAuthenticated
 }, dispatch);
-
-export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(App));
+ */
+export default connect(mapReduxStateToProps, {setIsAuthenticated, setIsAuthenticating})(App);

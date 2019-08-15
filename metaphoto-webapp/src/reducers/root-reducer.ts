@@ -2,7 +2,7 @@ import {combineReducers} from "redux";
 import {History} from 'history';
 import {connectRouter} from 'connected-react-router';
 
-import authenticationReducer from "./authentication";
+//import authenticationReducer from "./authentication";
 //import feedback from "./feedback";
 //import film from "./film";
 //import filmstock from "./filmstock";
@@ -10,7 +10,7 @@ import authenticationReducer from "./authentication";
 
 const rootReducer = (history: History) => combineReducers({
     router: connectRouter(history),
-    authentication: authenticationReducer,
+//    authentication: authenticationReducer,
 //    feedback,
 //    film,
 //    filmstock,
