@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
+//import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
 import { Auth } from "aws-amplify";
 
@@ -12,6 +12,7 @@ import {
     setPassword
 } from "../store/authentication/actions";
 import {AppState} from '../store';
+import { withRouter } from "react-router";
 
 class Login extends Component<AppState> {
  
@@ -84,11 +85,11 @@ class Login extends Component<AppState> {
     }
 }
 
-const mapReduxStoreToProps = (state:AppState) => ({
+const mapReduxStoreToProps = (state:AppState, ownProps:any) => ({
     isAuthenticated: state.authentication.isAuthenticated,
     email: state.authentication.email,
     password: state.authentication.password,
     isLoading: state.feedback.isLoading
 });
 
-export default connect(mapReduxStoreToProps,{setEmail, setPassword, setIsLoading})(Login);
+export default withRouter(connect(mapReduxStoreToProps,{setEmail, setPassword, setIsLoading})(Login));

@@ -7,15 +7,22 @@ import {
     AuthenticationActionTypes
 } from "./types";
 
+import {
+    setIsAuthenticated,
+    setIsAuthenticating,
+    setEmail,
+    setPassword
+} from './actions';
+
 const initialState: AuthenticationState = {
     isAuthenticated: false,
     isAuthenticating: false,
     email: '',
     password: '',
-    setIsAuthenticated: () => {},
-    setIsAuthenticating: () => {},
-    setEmail: () => {},
-    setPassword: () => {}
+    setIsAuthenticated: setIsAuthenticated,
+    setIsAuthenticating: setIsAuthenticating,
+    setEmail: setEmail,
+    setPassword: setPassword
 };
 
 export const authenticationReducer = ( state = initialState, action: AuthenticationActionTypes) : AuthenticationState  => {

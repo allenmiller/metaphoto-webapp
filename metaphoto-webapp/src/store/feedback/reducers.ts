@@ -1,20 +1,10 @@
 import {SET_IS_LOADING, FeedbackState, FeedbackActionTypes} from "./types";
+import {setIsLoading} from './actions';
 
 const initialState: FeedbackState= {
     isLoading: false,
-    setIsLoading: () => {}
+    setIsLoading: setIsLoading
 };
-
-export default(state = initialState, action) => {
-    if (action.type === SET_IS_LOADING) {
-        return {
-            ...state,
-            isLoading: action.isLoading
-        }
-    } else {
-        return state;
-    }
-}
 
 export const feedbackReducer = ( state = initialState, action: FeedbackActionTypes) : FeedbackState  => {
     switch (action.type) {

@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import "./App.css";
-//import { Link, withRouter } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
@@ -9,32 +8,41 @@ import { Auth } from "aws-amplify";
 import {connect} from "react-redux";
 
 import { setIsAuthenticated, setIsAuthenticating } from "./store/authentication/actions";
-import {AuthenticationState} from './store/authentication/types';
-class App extends Component<AuthenticationState> {
+import { AppState } from "./store";
+
+type AppProps = Readonly<{
+    authentication : {
+        isAuthenticated: boolean,
+        isAuthenticating: boolean,
+        setIsAuthenticated: typeof setIsAuthenticated,
+        setIsAuthenticating: typeof setIsAuthenticating
+    }
+}>;
+class App extends Component<AppProps> {
 
     async componentDidMount() {
-        this.props.setIsAuthenticating(true);
+        this.props.authentication.setIsAuthenticating(true);
         try {
             await Auth.currentSession();
-            this.props.setIsAuthenticated(true);
+            this.props.authentication.setIsAuthenticated(true);
         }
         catch(e) {
             if (e !== 'No current user') {
                 alert(e);
             }
         }
-        this.props.setIsAuthenticating(false);
+        this.props.authentication.setIsAuthenticating(false);
     }
 
     handleLogout = async (event:any) => {    //TODO: better type
         await Auth.signOut();
-        this.props.setIsAuthenticated(false);
+        this.props.authentication.setIsAuthenticated(false);
 //        this.props.history.push("/login");
     };
 
     render() {
         return (
-            !this.props.isAuthenticating &&
+            !this.props.authentication.isAuthenticating &&
             <div className="App container">
                 <Navbar fluid collapseOnSelect>
                     <Navbar.Header>
@@ -44,7 +52,7 @@ class App extends Component<AuthenticationState> {
                         <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
-                        {this.props.isAuthenticated
+                        {this.props.authentication.isAuthenticated
 //                            ? < Nav pullLeft>  // TODO: how to define pullLeft here?
                             ? <Nav>
                                 <LinkContainer to={"/filmStocks"}>
@@ -57,7 +65,7 @@ class App extends Component<AuthenticationState> {
                             : <p/>
                         }
                         <Nav pullRight>
-                            {this.props.isAuthenticated
+                            {this.props.authentication.isAuthenticated
                                 ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
                                 : <Fragment>
                                     <LinkContainer to="/signup">
@@ -76,9 +84,13 @@ class App extends Component<AuthenticationState> {
     }
 }
 
-const mapReduxStateToProps = (state: AuthenticationState) => ({
-    isAuthenticated: state.isAuthenticated,
-    isAuthenticating: state.isAuthenticating
+const mapReduxStateToProps = (state: AppState, ownProps:any) => ({
+    authentication:{
+        isAuthenticated: state.authentication.isAuthenticated,
+        isAuthenticating: state.authentication.isAuthenticating,
+        setIsAuthenticated: state.authentication.setIsAuthenticated,
+        setIsAuthenticating: state.authentication.setIsAuthenticating
+    }
 });
 
 /* const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
@@ -86,4 +98,4 @@ const mapReduxStateToProps = (state: AuthenticationState) => ({
     setIsAuthenticated
 }, dispatch);
  */
-export default connect(mapReduxStateToProps, {setIsAuthenticated, setIsAuthenticating})(App);
+export default withRouter(connect(mapReduxStateToProps, {setIsAuthenticated, setIsAuthenticating})(App));
