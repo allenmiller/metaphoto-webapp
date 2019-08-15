@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import "./App.css";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
@@ -20,7 +20,13 @@ type AppProps = Readonly<{
 }>;
 class App extends Component<AppProps> {
 
+        constructor(props:AppProps)  {
+            super(props);
+            console.log("In App constructor");
+        }
+
     async componentDidMount() {
+        console.log("App  has mounted");
         this.props.authentication.setIsAuthenticating(true);
         try {
             await Auth.currentSession();
@@ -37,7 +43,6 @@ class App extends Component<AppProps> {
     handleLogout = async (event:any) => {    //TODO: better type
         await Auth.signOut();
         this.props.authentication.setIsAuthenticated(false);
-//        this.props.history.push("/login");
     };
 
     render() {
@@ -47,14 +52,13 @@ class App extends Component<AppProps> {
                 <Navbar fluid collapseOnSelect>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <Link to="/">Metaphoto</Link>
+                            <LinkContainer to="/"><NavItem>Metaphoto</NavItem></LinkContainer>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
                         {this.props.authentication.isAuthenticated
-//                            ? < Nav pullLeft>  // TODO: how to define pullLeft here?
-                            ? <Nav>
+                            ? <Nav>  
                                 <LinkContainer to={"/filmStocks"}>
                                     <NavItem>Film Stocks</NavItem>
                                 </LinkContainer>

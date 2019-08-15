@@ -9,14 +9,36 @@ import {connect} from "react-redux";
 import {setIsLoading} from "../store/feedback/actions";
 import {
     setEmail,
-    setPassword
+    setPassword,
+    setIsAuthenticated,
+    setIsAuthenticating
 } from "../store/authentication/actions";
 import {AppState} from '../store';
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 
-class Login extends Component<AppState> {
+type LoginProps = Readonly<{
+    authentication : {
+        isAuthenticated: boolean,
+        isAuthenticating: boolean,
+        email: string,
+        password: string,
+        setIsAuthenticated: typeof setIsAuthenticated,
+        setIsAuthenticating: typeof setIsAuthenticating,
+        setEmail: typeof setEmail,
+        setPassword: typeof setPassword
+    },
+    feedback: {
+        setIsLoading: typeof setIsLoading
+    }
+}>;
+class Login extends Component<LoginProps> {
  
+    constructor(props:LoginProps) {
+        super(props);
+        console.log("Login constructor");
+    }
     componentDidMount() {
+        console.log("Login did mount");
         this.props.feedback.setIsLoading(false);
     }
     validateForm() {
@@ -49,8 +71,7 @@ class Login extends Component<AppState> {
             }
             this.props.authentication.setIsAuthenticated(true);
             this.props.authentication.setPassword("");
- //           this.props.history.push("/");
-        } catch (e) {
+         } catch (e) {
             alert(e.message);
             this.props.authentication.setPassword("");
             this.props.feedback.setIsLoading(false);
@@ -86,10 +107,19 @@ class Login extends Component<AppState> {
 }
 
 const mapReduxStoreToProps = (state:AppState, ownProps:any) => ({
-    isAuthenticated: state.authentication.isAuthenticated,
-    email: state.authentication.email,
-    password: state.authentication.password,
-    isLoading: state.feedback.isLoading
+    authentication : {
+        isAuthenticated: state.authentication.isAuthenticated,
+        isAuthenticating: state.authentication.isAuthenticating,
+        email: state.authentication.email,
+        password: state.authentication.password,
+        setIsAuthenticated: setIsAuthenticated,
+        setIsAuthenticating: setIsAuthenticating,
+        setEmail: setEmail,
+        setPassword: setPassword
+        },
+    feedback: {
+        setIsLoading: setIsLoading
+    }
 });
 
 export default withRouter(connect(mapReduxStoreToProps,{setEmail, setPassword, setIsLoading})(Login));
