@@ -13,7 +13,9 @@ const initialState: AuthenticationState = {
     email: '',
     password: '',
     setIsAuthenticated: () => {},
-    setIsAuthenticating: () => {}
+    setIsAuthenticating: () => {},
+    setEmail: () => {},
+    setPassword: () => {}
 };
 
 export function authenticationReducer( state = initialState, action: AuthenticationActionTypes) : AuthenticationState  {

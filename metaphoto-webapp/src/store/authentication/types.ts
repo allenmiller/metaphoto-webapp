@@ -1,4 +1,4 @@
-import { setIsAuthenticated, setIsAuthenticating } from "./actions";
+import { setIsAuthenticated, setIsAuthenticating, setEmail } from "./actions";
 
 export const SET_IS_AUTHENTICATING = 'SET_IS_AUTHENTICATING';
 export const SET_IS_AUTHENTICATED = 'SET_IS_AUTHENTICATED';
@@ -6,7 +6,7 @@ export const SET_EMAIL = 'SET_EMAIL';
 export const SET_PASSWORD = 'SET_PASSWORD';
 
 
-//export type AuthenticationAction = ActionType<typeof actions>
+//export type AuthenticationAction = ActionType<typeof actions
 
 export type  AuthenticationState = Readonly<{
     isAuthenticated: boolean,
@@ -14,7 +14,9 @@ export type  AuthenticationState = Readonly<{
     email: string,
     password: string,
     setIsAuthenticated: (isAuthenticated:boolean) => void,
-    setIsAuthenticating: (isAuthenticating: boolean) => void
+    setIsAuthenticating: (isAuthenticating: boolean) => void,
+    setEmail: (email: string) => void,
+    setPassword: (password: string) => void
 }>;
 
 interface SetIsAuthenticatedAction {
