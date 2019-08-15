@@ -8,9 +8,11 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 //const routerMiddleware = createRouterMiddleware(history);
 
 import {authenticationReducer} from './authentication/reducers';
+import {feedbackReducer} from './feedback/reducers';
 
 const rootReducer = combineReducers({
-    authentication: authenticationReducer
+    authentication: authenticationReducer,
+    feedback: feedbackReducer
 })
 
 export type AppState = ReturnType<typeof rootReducer>;

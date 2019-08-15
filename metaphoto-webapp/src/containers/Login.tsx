@@ -6,30 +6,29 @@ import { Auth } from "aws-amplify";
 
 import {connect} from "react-redux";
 
-//import {setIsLoading} from "../actions/feedback";
+import {setIsLoading} from "../store/feedback/actions";
 import {
-    setIsAuthenticated,
     setEmail,
     setPassword
 } from "../store/authentication/actions";
-import {AuthenticationState} from '../store/authentication/types';
+import {AppState} from '../store';
 
-class Login extends Component<AuthenticationState> {
+class Login extends Component<AppState> {
  
     componentDidMount() {
-        //this.props.setIsLoading(false);
+        this.props.feedback.setIsLoading(false);
     }
     validateForm() {
-        return this.props.email.length > 0 && this.props.password.length > 0;
+        return this.props.authentication.email.length > 0 && this.props.authentication.password.length > 0;
     }
 
     handleChange = (event:any) => {  // TODO: better type
         switch (event.target.id) {
             case "email":
-                this.props.setEmail(event.target.value);
+                this.props.authentication.setEmail(event.target.value);
                 break;
             case "password":
-                this.props.setPassword(event.target.value);
+                this.props.authentication.setPassword(event.target.value);
                 break;
             default:
                 console.log("ERROR, unexpected event: ", event.target.id)
@@ -38,22 +37,22 @@ class Login extends Component<AuthenticationState> {
 
     handleSubmit = async (event:any) => {
         event.preventDefault();
- //       this.props.setIsLoading(true);
+        this.props.feedback.setIsLoading(true);
         try {
-            const user = await Auth.signIn(this.props.email, this.props.password);
+            const user = await Auth.signIn(this.props.authentication.email, this.props.authentication.password);
             if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
                 console.log("new password required");  //TODO: add password reset
 //                const loggedUser = await Auth.completeNewPassword(user, "ZZZZZZZZ", {"email":"test@ajmiller.net", "phone_number":"+19705551212"});
 //                console.log(loggedUser);
 
             }
-            this.props.setIsAuthenticated(true);
-            this.props.setPassword("");
+            this.props.authentication.setIsAuthenticated(true);
+            this.props.authentication.setPassword("");
  //           this.props.history.push("/");
         } catch (e) {
             alert(e.message);
-            this.props.setPassword("");
-//            this.props.setIsLoading(false);
+            this.props.authentication.setPassword("");
+            this.props.feedback.setIsLoading(false);
         }
     };
 
@@ -67,14 +66,14 @@ class Login extends Component<AuthenticationState> {
                         <FormControl
                             autoFocus
                             type="email"
-                            value={this.props.email}
+                            value={this.props.authentication.email}
                             onChange={this.handleChange}
                         />
                     </FormGroup>
                     <FormGroup controlId="password" bsSize="large">
                         <ControlLabel>Password</ControlLabel>
                         <FormControl
-                            value={this.props.password}
+                            value={this.props.authentication.password}
                             onChange={this.handleChange}
                             type="password"
                         />
@@ -85,18 +84,11 @@ class Login extends Component<AuthenticationState> {
     }
 }
 
-const mapReduxStoreToProps = (state:AuthenticationState) => ({
-    isAuthenticated: state.isAuthenticated,
-    email: state.email,
-    password: state.password,
-    //isLoading: state.feedback.isLoading
+const mapReduxStoreToProps = (state:AppState) => ({
+    isAuthenticated: state.authentication.isAuthenticated,
+    email: state.authentication.email,
+    password: state.authentication.password,
+    isLoading: state.feedback.isLoading
 });
 
-const mapDispatchToProps = {
-    setIsAuthenticated,
- //   setIsLoading,
-    setEmail,
-    setPassword
-};
-
-export default connect(mapReduxStoreToProps,{setEmail, setPassword})(Login);
+export default connect(mapReduxStoreToProps,{setEmail, setPassword, setIsLoading})(Login);

@@ -18,7 +18,7 @@ const initialState: AuthenticationState = {
     setPassword: () => {}
 };
 
-export function authenticationReducer( state = initialState, action: AuthenticationActionTypes) : AuthenticationState  {
+export const authenticationReducer = ( state = initialState, action: AuthenticationActionTypes) : AuthenticationState  => {
     switch (action.type) {
         case SET_IS_AUTHENTICATED: return {...state, isAuthenticated: action.isAuthenticated};
         case SET_IS_AUTHENTICATING: return {...state, isAuthenticating: action.isAuthenticating};
