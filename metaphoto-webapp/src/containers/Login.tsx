@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, FormEvent } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-//import LoaderButton from "../components/LoaderButton";
-import "./Login.css";
+import LoaderButton from "../components/LoaderButton";
 import { Auth } from "aws-amplify";
-
 import {connect} from "react-redux";
+import { withRouter } from "react-router-dom";
 
+import "./Login.css";
 import {setIsLoading} from "../store/feedback/actions";
 import {
     setEmail,
@@ -14,7 +14,6 @@ import {
     setIsAuthenticating
 } from "../store/authentication/actions";
 import {AppState} from '../store';
-import { withRouter } from "react-router-dom";
 
 type LoginProps = Readonly<{
     authentication : {
@@ -28,6 +27,7 @@ type LoginProps = Readonly<{
         setPassword: typeof setPassword
     },
     feedback: {
+        isLoading: boolean,
         setIsLoading: typeof setIsLoading
     }
 }>;
@@ -42,23 +42,26 @@ class Login extends Component<LoginProps> {
         this.props.feedback.setIsLoading(false);
     }
     validateForm() {
+        console.log("in validateForm()");
         return this.props.authentication.email.length > 0 && this.props.authentication.password.length > 0;
     }
 
-    handleChange = (event:any) => {  // TODO: better type
-        switch (event.target.id) {
+    handleChange = (event:any) => {  // TODO: follow https://github.com/DefinitelyTyped/DefinitelyTyped/issues/16208 and strengthen typing when that dumpster fire gets fixed.
+        console.log("in handleChange:", event.currentTarget.value);
+        switch (event.currentTarget.id) {
             case "email":
-                this.props.authentication.setEmail(event.target.value);
+                this.props.authentication.setEmail(event.currentTarget.value);
+                console.log(this.props.authentication.email);
                 break;
             case "password":
-                this.props.authentication.setPassword(event.target.value);
+                this.props.authentication.setPassword(event.currentTarget.value);
                 break;
             default:
                 console.log("ERROR, unexpected event: ", event.target.id)
         }
     };
 
-    handleSubmit = async (event:any) => {
+    handleSubmit = async (event:FormEvent) => {
         event.preventDefault();
         this.props.feedback.setIsLoading(true);
         try {
@@ -100,6 +103,15 @@ class Login extends Component<LoginProps> {
                             type="password"
                         />
                     </FormGroup>
+                    <LoaderButton
+                        block
+                        bsSize="large"
+                        disabled={!this.validateForm()}
+                        type="submit"
+                        isLoading={this.props.feedback.isLoading}
+                        text="Login"
+                        loadingText="Logging in…"
+                    />
                 </form>
             </div>
         );
@@ -118,6 +130,7 @@ const mapReduxStoreToProps = (state:AppState, ownProps:any) => ({
         setPassword: setPassword
         },
     feedback: {
+        isLoading: state.feedback.isLoading,
         setIsLoading: setIsLoading
     }
 });
