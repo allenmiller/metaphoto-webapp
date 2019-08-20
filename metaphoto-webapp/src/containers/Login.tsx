@@ -3,7 +3,7 @@ import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import { Auth } from "aws-amplify";
 import {connect} from "react-redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import "./Login.css";
 import {setIsLoading} from "../store/feedback/actions";
@@ -25,7 +25,7 @@ type LoginProps = Readonly<{
         setIsAuthenticating: typeof setIsAuthenticating,
         setEmail: typeof setEmail,
         setPassword: typeof setPassword
-    },
+     },
     feedback: {
         isLoading: boolean,
         setIsLoading: typeof setIsLoading
@@ -118,7 +118,7 @@ class Login extends Component<LoginProps> {
     }
 }
 
-const mapReduxStoreToProps = (state:AppState, ownProps:any) => ({
+const mapReduxStoreToProps = (state:AppState, routeProps: RouteComponentProps) => ({
     authentication : {
         isAuthenticated: state.authentication.isAuthenticated,
         isAuthenticating: state.authentication.isAuthenticating,
@@ -132,7 +132,14 @@ const mapReduxStoreToProps = (state:AppState, ownProps:any) => ({
     feedback: {
         isLoading: state.feedback.isLoading,
         setIsLoading: setIsLoading
-    }
+     }
 });
 
-export default withRouter(connect(mapReduxStoreToProps,{setEmail, setPassword, setIsLoading})(Login));
+const mapDispatchToProps = {
+    isAuthenticated: setIsAuthenticated,
+    isAuthenticating: setIsAuthenticating,
+    email: setEmail,
+    password: setPassword,
+    isLoading: setIsLoading
+}
+export default withRouter(connect(mapReduxStoreToProps,mapDispatchToProps)(Login));

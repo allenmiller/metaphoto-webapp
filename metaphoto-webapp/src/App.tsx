@@ -97,9 +97,13 @@ const mapReduxStateToProps = (state: AppState, ownProps:any) => ({
     }
 });
 
+const dispatchToProps = {
+    setIsAuthenticated: setIsAuthenticated,
+    setIsAuthenticating: setIsAuthenticating
+}
 /* const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
     setIsAuthenticating,
     setIsAuthenticated
 }, dispatch);
  */
-export default withRouter(connect(mapReduxStateToProps, {setIsAuthenticated, setIsAuthenticating})(App));
+export default withRouter(connect(mapReduxStateToProps, dispatchToProps)(App));

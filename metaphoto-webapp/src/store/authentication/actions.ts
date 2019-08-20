@@ -25,6 +25,7 @@ export const setIsAuthenticating = (isAuthenticating: boolean) => {
 
 
 export const setEmail = (email: string) => {
+    console.log("in setEmail(): ", email);
     return {
         type: SET_EMAIL,
         email
