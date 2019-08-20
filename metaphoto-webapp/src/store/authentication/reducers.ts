@@ -26,7 +26,6 @@ const initialState: AuthenticationState = {
 };
 
 export const authenticationReducer = ( state = initialState, action: AuthenticationActionTypes) : AuthenticationState  => {
-    console.log("in authenticationReducer(), state:", state);
     switch (action.type) {
         case SET_IS_AUTHENTICATED: return {...state, isAuthenticated: action.isAuthenticated};
         case SET_IS_AUTHENTICATING: return {...state, isAuthenticating: action.isAuthenticating};

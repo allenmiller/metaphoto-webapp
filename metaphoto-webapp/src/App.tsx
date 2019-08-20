@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from "react";
 import "./App.css";
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
-//import {bindActionCreators, Dispatch} from "redux";
 import {connect} from "react-redux";
 
 import { setIsAuthenticated, setIsAuthenticating } from "./store/authentication/actions";
@@ -13,36 +12,31 @@ import { AppState } from "./store";
 type AppProps = Readonly<{
     authentication : {
         isAuthenticated: boolean,
-        isAuthenticating: boolean,
-        setIsAuthenticated: typeof setIsAuthenticated,
-        setIsAuthenticating: typeof setIsAuthenticating
-    }
+        isAuthenticating: boolean
+    },
+    setIsAuthenticated: typeof setIsAuthenticated,
+    setIsAuthenticating: typeof setIsAuthenticating
 }>;
 class App extends Component<AppProps> {
 
-        constructor(props:AppProps)  {
-            super(props);
-            console.log("In App constructor");
-        }
-
     async componentDidMount() {
-        console.log("App  has mounted");
-        this.props.authentication.setIsAuthenticating(true);
+        console.log("App has mounted");
+        this.props.setIsAuthenticating(true);
         try {
             await Auth.currentSession();
-            this.props.authentication.setIsAuthenticated(true);
+            this.props.setIsAuthenticated(true);
         }
         catch(e) {
             if (e !== 'No current user') {
                 alert(e);
             }
         }
-        this.props.authentication.setIsAuthenticating(false);
+        this.props.setIsAuthenticating(false);
     }
 
     handleLogout = async (event:any) => {    //TODO: better type
         await Auth.signOut();
-        this.props.authentication.setIsAuthenticated(false);
+        this.props.setIsAuthenticated(false);
     };
 
     render() {
@@ -88,22 +82,16 @@ class App extends Component<AppProps> {
     }
 }
 
-const mapReduxStateToProps = (state: AppState, ownProps:any) => ({
+const mapReduxStateToProps = (state: AppState, routeProps:RouteComponentProps) => ({
     authentication:{
         isAuthenticated: state.authentication.isAuthenticated,
         isAuthenticating: state.authentication.isAuthenticating,
-        setIsAuthenticated: state.authentication.setIsAuthenticated,
-        setIsAuthenticating: state.authentication.setIsAuthenticating
     }
 });
 
-const dispatchToProps = {
-    setIsAuthenticated: setIsAuthenticated,
-    setIsAuthenticating: setIsAuthenticating
+const mapDispatchToProps = {
+        setIsAuthenticated,
+        setIsAuthenticating
 }
-/* const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-    setIsAuthenticating,
-    setIsAuthenticated
-}, dispatch);
- */
-export default withRouter(connect(mapReduxStateToProps, dispatchToProps)(App));
+
+export default withRouter(connect(mapReduxStateToProps, mapDispatchToProps)(App));

@@ -20,41 +20,33 @@ type LoginProps = Readonly<{
         isAuthenticated: boolean,
         isAuthenticating: boolean,
         email: string,
-        password: string,
-        setIsAuthenticated: typeof setIsAuthenticated,
-        setIsAuthenticating: typeof setIsAuthenticating,
-        setEmail: typeof setEmail,
-        setPassword: typeof setPassword
+        password: string
      },
     feedback: {
-        isLoading: boolean,
-        setIsLoading: typeof setIsLoading
-    }
+        isLoading: boolean
+    },
+    setIsAuthenticated: typeof setIsAuthenticated,
+    setIsAuthenticating: typeof setIsAuthenticating,
+    setEmail: typeof setEmail,
+    setPassword: typeof setPassword,
+    setIsLoading: typeof setIsLoading
 }>;
 class Login extends Component<LoginProps> {
- 
-    constructor(props:LoginProps) {
-        super(props);
-        console.log("Login constructor");
-    }
     componentDidMount() {
-        console.log("Login did mount");
-        this.props.feedback.setIsLoading(false);
+        this.props.setIsAuthenticated(false);
+        this.props.setIsAuthenticating(true);
     }
     validateForm() {
-        console.log("in validateForm()");
         return this.props.authentication.email.length > 0 && this.props.authentication.password.length > 0;
     }
 
     handleChange = (event:any) => {  // TODO: follow https://github.com/DefinitelyTyped/DefinitelyTyped/issues/16208 and strengthen typing when that dumpster fire gets fixed.
-        console.log("in handleChange:", event.currentTarget.value);
         switch (event.currentTarget.id) {
             case "email":
-                this.props.authentication.setEmail(event.currentTarget.value);
-                console.log(this.props.authentication.email);
+                this.props.setEmail(event.currentTarget.value);
                 break;
             case "password":
-                this.props.authentication.setPassword(event.currentTarget.value);
+                this.props.setPassword(event.currentTarget.value);
                 break;
             default:
                 console.log("ERROR, unexpected event: ", event.target.id)
@@ -63,7 +55,7 @@ class Login extends Component<LoginProps> {
 
     handleSubmit = async (event:FormEvent) => {
         event.preventDefault();
-        this.props.feedback.setIsLoading(true);
+        this.props.setIsLoading(true);
         try {
             const user = await Auth.signIn(this.props.authentication.email, this.props.authentication.password);
             if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
@@ -72,12 +64,14 @@ class Login extends Component<LoginProps> {
 //                console.log(loggedUser);
 
             }
-            this.props.authentication.setIsAuthenticated(true);
-            this.props.authentication.setPassword("");
+            this.props.setIsAuthenticated(true);
+            this.props.setIsAuthenticating(false);
+            this.props.setPassword("");
          } catch (e) {
-            alert(e.message);
-            this.props.authentication.setPassword("");
-            this.props.feedback.setIsLoading(false);
+             console.log("Error authorizing user ", this.props.authentication.email, e, e.message);
+            alert(`Error authorizing user ${this.props.authentication.email} : ${e.message}`);
+            this.props.setPassword("");
+            this.props.setIsLoading(false);
         }
     };
 
@@ -123,23 +117,19 @@ const mapReduxStoreToProps = (state:AppState, routeProps: RouteComponentProps) =
         isAuthenticated: state.authentication.isAuthenticated,
         isAuthenticating: state.authentication.isAuthenticating,
         email: state.authentication.email,
-        password: state.authentication.password,
-        setIsAuthenticated: setIsAuthenticated,
-        setIsAuthenticating: setIsAuthenticating,
-        setEmail: setEmail,
-        setPassword: setPassword
+        password: state.authentication.password
         },
     feedback: {
         isLoading: state.feedback.isLoading,
-        setIsLoading: setIsLoading
      }
 });
 
 const mapDispatchToProps = {
-    isAuthenticated: setIsAuthenticated,
-    isAuthenticating: setIsAuthenticating,
-    email: setEmail,
-    password: setPassword,
-    isLoading: setIsLoading
+    setIsAuthenticated,
+    setIsAuthenticating,
+    setEmail,
+    setPassword,
+    setIsLoading
 }
-export default withRouter(connect(mapReduxStoreToProps,mapDispatchToProps)(Login));
+
+export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(Login));
