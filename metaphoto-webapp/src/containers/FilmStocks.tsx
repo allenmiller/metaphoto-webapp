@@ -35,7 +35,7 @@ import { AppState } from "../store";
 import "./Login.css";
 import config from '../config';
 import AddEditFilmStockModal from "./AddEditFilmStockModal";
-import { FilmstockDefaultsResponse } from "../store/filmstock/types";
+import { FilmstockDefaultsResponse, FilmstockRow } from "../store/filmstock/types";
 
 type FilmStocksProps = Readonly<{
     authentication: {
@@ -75,20 +75,6 @@ type FilmStocksProps = Readonly<{
     setShowAddFilmstockButton: typeof setShowAddFilmstockButton,
     setShowDeleteFilmstockButton: typeof setShowDeleteFilmstockButton,
     setShowEditFilmstockButton: typeof setShowEditFilmstockButton
-}>
-
-type FilmstockRow = Readonly<{
-    primaryHashKey: string,
-    primaryRangeKey: string,
-    data: FilmstockData
-}>
-
-type FilmstockData = Readonly<{
-        filmName: string,
-        filmFormat: string,
-        filmIso: string,
-        filmCode: string,
-        filmType: string
 }>
 
 class FilmStocks extends Component<FilmStocksProps> {

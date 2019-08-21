@@ -17,6 +17,21 @@ export type FilmstockState = Readonly<{
     defaultFilmFormats: FilmValueLabelPair[],
     defaultFilmTypes: FilmValueLabelPair[]
 }>
+
+export type FilmstockRow = Readonly<{
+    primaryHashKey: string,
+    primaryRangeKey: string,
+    data: FilmstockData
+}>
+
+export type FilmstockData = Readonly<{
+        filmName: string,
+        filmFormat: string,
+        filmIso: string,
+        filmCode: string,
+        filmType: string
+}>
+
 export type FilmValueLabelPair = Readonly<{
     value: string,
     label: string
