@@ -4,10 +4,12 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
 import {authenticationReducer} from './authentication/reducers';
 import {feedbackReducer} from './feedback/reducers';
+import { filmReducer } from './film/reducers';
 
 const rootReducer = combineReducers({
     authentication: authenticationReducer,
-    feedback: feedbackReducer
+    feedback: feedbackReducer,
+    film: filmReducer
 })
 
 export type AppState = ReturnType<typeof rootReducer>;

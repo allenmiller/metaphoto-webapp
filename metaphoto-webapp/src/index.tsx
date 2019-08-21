@@ -12,6 +12,7 @@ import Login from './containers/Login';
 import config from "./config";
 import configureStore from './store';
 import NotFound from './containers/NotFound';
+import Film from './containers/Film';
 //import FilmStocks from './containers/FilmStocks';
 //import Film from './containers/Film';
 
@@ -46,6 +47,7 @@ ReactDOM.render(
             <Switch>
                 <Route exact path="/" component={App} />
                 <Route exact path="/login" component={Login} />
+                <Route exact path="/film" component={Film} />
                 <Route component={NotFound}/>
             </Switch>
         </Router>
