@@ -1,5 +1,4 @@
 import { SET_FILMSTOCK_ID, FilmActionTypes } from "./types";
-import { setFilmstockId } from './actions';
 
 const initialState = {
     filmstockId: ""
