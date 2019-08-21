@@ -14,23 +14,8 @@ import {
     setIsAuthenticating
 } from "../store/authentication/actions";
 import {AppState} from '../store';
+import { LoginProps } from '../store/authentication/types';
 
-type LoginProps = Readonly<{
-    authentication : {
-        isAuthenticated: boolean,
-        isAuthenticating: boolean,
-        email: string,
-        password: string
-     },
-    feedback: {
-        isLoading: boolean
-    },
-    setIsAuthenticated: typeof setIsAuthenticated,
-    setIsAuthenticating: typeof setIsAuthenticating,
-    setEmail: typeof setEmail,
-    setPassword: typeof setPassword,
-    setIsLoading: typeof setIsLoading
-}>;
 class Login extends Component<LoginProps> {
     componentDidMount() {
         this.props.setIsAuthenticated(false);

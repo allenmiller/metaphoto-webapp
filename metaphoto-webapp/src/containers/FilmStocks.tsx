@@ -16,7 +16,7 @@ import {
     setFilmIso,
     setFilmName,
     setFilmType,
-} from "../actions/filmstock"
+} from "../store/filmstock/actions"
 import {
     setFilmStocks,
     setModalMode,
@@ -35,8 +35,63 @@ import { AppState } from "../store";
 import "./Login.css";
 import config from '../config';
 import AddEditFilmStockModal from "./AddEditFilmStockModal";
+import { FilmstockDefaultsResponse } from "../store/filmstock/types";
 
-class FilmStocks extends Component {
+type FilmStocksProps = Readonly<{
+    authentication: {
+        isAuthenticated: boolean
+    },
+//    filmStockDefaults: state.filmstock.defaults,
+    filmstock: {
+        filmName: string,
+        filmFormat: string,
+        filmIso: string,
+        filmCode: string,
+        filmType: string
+    },
+    filmstocks: {
+        filmStocks: FilmstockRow[],
+        modalMode: string,
+        selectedFilmstockKey: string,
+        selectedFilmstockRow: FilmstockRow,
+        showAddFilmstockModal: boolean,
+        showAddFilmstockButton: boolean,
+        showDeleteFilmstockButton: boolean,
+        showEditFilmstockButton: boolean
+    }
+    setIsAuthenticated: typeof setIsAuthenticated,
+    setFilmStocks: typeof setFilmStocks,
+    setFilmName: typeof setFilmName,
+    setFilmFormat: typeof setFilmFormat,
+    setFilmIso: typeof setFilmIso,
+    setFilmCode: typeof setFilmCode,
+    setFilmType: typeof setFilmType,
+    setModalMode: typeof setModalMode,
+    setSelectedFilmstockKey: typeof setSelectedFilmstockKey,
+    setSelectedFilmstockRow: typeof setSelectedFilmstockRow,
+    setDefaultFilmFormats: typeof setDefaultFilmFormats,
+    setDefaultFilmTypes: typeof setDefaultFilmTypes,
+    setShowAddFilmstockModal: typeof setShowAddFilmstockModal,
+    setShowAddFilmstockButton: typeof setShowAddFilmstockButton,
+    setShowDeleteFilmstockButton: typeof setShowDeleteFilmstockButton,
+    setShowEditFilmstockButton: typeof setShowEditFilmstockButton
+}>
+
+type FilmstockRow = Readonly<{
+    primaryHashKey: string,
+    primaryRangeKey: string,
+    data: FilmstockData
+}>
+
+type FilmstockData = Readonly<{
+        filmName: string,
+        filmFormat: string,
+        filmIso: string,
+        filmCode: string,
+        filmType: string
+}>
+
+class FilmStocks extends Component<FilmStocksProps> {
 
     componentDidMount() {
         this.getFilmStocks();
@@ -54,8 +109,8 @@ class FilmStocks extends Component {
     };
 
     deleteFilmstock = () => {
-        let hashKeyToDelete = this.props.selectedFilmstockRow.primaryHashKey;
-        let rangeKeyToDelete = this.props.selectedFilmstockRow.primaryRangeKey;
+        let hashKeyToDelete = this.props.filmstocks.selectedFilmstockRow.primaryHashKey;
+        let rangeKeyToDelete = this.props.filmstocks.selectedFilmstockRow.primaryRangeKey;
         let apiName = config.apiGateway.NAME;
         let deleteEndpoint = `/filmstock/${hashKeyToDelete}/${rangeKeyToDelete}`;
         console.log(`DELETE ${deleteEndpoint}`);
@@ -79,9 +134,9 @@ class FilmStocks extends Component {
         let apiName = config.apiGateway.NAME;
         let getFilmStockDefaults = "/filmstock/defaults";
         API.get(apiName, getFilmStockDefaults, {})
-            .then(response => {
-                this.props.setDefaultFilmTypes(response);
-                this.props.setDefaultFilmFormats(response);
+            .then((response:FilmstockDefaultsResponse) => {
+                this.props.setDefaultFilmTypes(response.filmTypes);
+                this.props.setDefaultFilmFormats(response.filmFormats);
             })
             .catch(error => {
                 console.log("error in getFilmStockDefaults()", error);
@@ -104,8 +159,8 @@ class FilmStocks extends Component {
         event.preventDefault();
     };
 
-    toggleSelection = (key, shift, row) => {
-        let selectedFilmstockKey = this.props.selectedFilmstockKey;
+    toggleSelection = (key:string, shift:any, row:FilmstockRow) => {
+        let selectedFilmstockKey = this.props.filmstocks.selectedFilmstockKey;
         if (selectedFilmstockKey === key) {
             this.props.setSelectedFilmstockKey("");
             this.props.setSelectedFilmstockRow({});
@@ -118,16 +173,16 @@ class FilmStocks extends Component {
             this.props.setShowAddFilmstockButton(false);
             this.props.setShowDeleteFilmstockButton(true);
             this.props.setShowEditFilmstockButton(true);
-            this.props.setFilmName(row.data.filmName);  // When selecting a row, load those values into state
+            this.props.setFilmName(row.data.filmName);
             this.props.setFilmFormat(row.data.filmFormat);
-            this.props.setFilmIso(row.data.iso);
+            this.props.setFilmIso(row.data.filmIso);
             this.props.setFilmCode(row.data.filmCode);
             this.props.setFilmType(row.data.filmType);
         }
     };
 
-    isSelected = (key) => {
-        return (this.props.selectedFilmstockKey === "select-" + key);
+    isSelected = (key: string) => {
+        return (this.props.filmstocks.selectedFilmstockKey === "select-" + key);
     };
 
     render() {
@@ -137,42 +192,42 @@ class FilmStocks extends Component {
             {
                 id: "primaryHashKey",
                 Header: "Key",
-                accessor: d => d.primaryHashKey,
+                accessor: (d:FilmstockRow) => d.primaryHashKey,
                 show: false
             },
             {
                 id: "filmName",
                 Header: "Name",
-                accessor: d => d.data.filmName
+                accessor: (d:FilmstockRow) => d.data.filmName
             },
             {
                 id: 'Format',
                 Header: "Format",
-                accessor: d => d.data.filmFormat
+                accessor: (d:FilmstockRow) => d.data.filmFormat
             },
             {
                 id: 'filmCode',
                 Header: "Film Code",
-                accessor: d => d.data.filmCode
+                accessor: (d:FilmstockRow) => d.data.filmCode
             },
             {
                 id: 'iso',
                 Header: 'ISO',
-                accessor: d => d.data.iso
+                accessor: (d:FilmstockRow) => d.data.filmIso
             },
             {
                 id: 'filmType',
                 Header: 'Type',
-                accessor: d => d.data.filmType
+                accessor: (d:FilmstockRow) => d.data.filmType
             }
 
         ];
         return (
-            (this.props.filmStocks !== undefined) &&
+            (this.props.filmstocks.filmStocks !== undefined) &&
             <div className="FilmStocks">
                 <SelectTable
-                    data = {this.props.filmStocks}
-                    pageSize={(this.props.filmStocks.length > MAX_TABLE_LENGTH) ? MAX_TABLE_LENGTH : this.props.filmStocks.length}
+                    data = {this.props.filmstocks.filmStocks}
+                    pageSize={(this.props.filmstocks.filmStocks.length > MAX_TABLE_LENGTH) ? MAX_TABLE_LENGTH : this.props.filmstocks.filmStocks.length}
                     columns = {columns}
                     keyField="primaryHashKey"
                     selectType="radio"
@@ -182,25 +237,25 @@ class FilmStocks extends Component {
                 <ButtonToolbar>
                     <Button
                         onClick={this.displayAddModal}
-                        disabled={!this.props.showAddFilmstockButton}
+                        disabled={!this.props.filmstocks.showAddFilmstockButton}
                     >
                         Add
                     </Button>
                     <Button
                         onClick={this.displayEditModal}
-                        disabled={!this.props.showEditFilmstockButton}
+                        disabled={!this.props.filmstocks.showEditFilmstockButton}
                     >
                         Edit
                     </Button>
                     <Button
                         onClick={this.deleteFilmstock}
-                        disabled={!this.props.showDeleteFilmstockButton}
+                        disabled={!this.props.filmstocks.showDeleteFilmstockButton}
                     >
                         Delete
                     </Button>
                 </ButtonToolbar>
                 <AddEditFilmStockModal
-                    show={this.props.showAddFilmstockModal}
+                    show={this.props.filmstocks.showAddFilmstockModal}
                     onExiting={this.getFilmStocks}
                 />
             </div>
@@ -209,21 +264,27 @@ class FilmStocks extends Component {
 }
 
 const mapReduxStoreToProps = (state: AppState, ownProps: RouteComponentProps) => ({
-    isAuthenticated: state.authentication.isAuthenticated,
-    filmStockDefaults: state.filmstock.defaults,
-    filmName: state.filmstock.filmName,
-    filmFormat: state.filmstock.filmFormat,
-    filmIso: state.filmstock.filmIso,
-    filmCode: state.filmstock.filmCode,
-    filmType: state.filmstock.filmType,
-    filmStocks: state.filmstocks.filmstocks,
-    modalMode: state.filmstocks.modalMode,
-    selectedFilmstockKey: state.filmstocks.selectedFilmstockKey,
-    selectedFilmstockRow: state.filmstocks.selectedFilmstockRow,
-    showAddFilmstockModal: state.filmstocks.showAddFilmstockModal,
-    showAddFilmstockButton: state.filmstocks.showAddFilmstockButton,
-    showDeleteFilmstockButton: state.filmstocks.showDeleteFilmstockButton,
-    showEditFilmstockButton: state.filmstocks.showEditFilmstockButton
+    authentication: {
+        isAuthenticated: state.authentication.isAuthenticated
+    },
+//    filmStockDefaults: state.filmstock.defaults,
+    filmstock: {
+        filmName: state.filmstock.filmName,
+        filmFormat: state.filmstock.filmFormat,
+        filmIso: state.filmstock.filmIso,
+        filmCode: state.filmstock.filmCode,
+        filmType: state.filmstock.filmType,
+    },
+    filmstocks: {
+        filmStocks: state.filmstocks.filmstocks,
+        modalMode: state.filmstocks.modalMode,
+        selectedFilmstockKey: state.filmstocks.selectedFilmstockKey,
+        selectedFilmstockRow: state.filmstocks.selectedFilmstockRow,
+        showAddFilmstockModal: state.filmstocks.showAddFilmstockModal,
+        showAddFilmstockButton: state.filmstocks.showAddFilmstockButton,
+        showDeleteFilmstockButton: state.filmstocks.showDeleteFilmstockButton,
+        showEditFilmstockButton: state.filmstocks.showEditFilmstockButton
+    }
 });
 
 const mapDispatchToProps = {

@@ -5,12 +5,14 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { authenticationReducer } from './authentication/reducers';
 import { feedbackReducer } from './feedback/reducers';
 import { filmReducer } from './film/reducers';
+import { filmstockReducer } from './filmstock/reducers';
 import { filmstocksReducer } from './filmstocks/reducers';
 
 const rootReducer = combineReducers({
     authentication: authenticationReducer,
     feedback: feedbackReducer,
     film: filmReducer,
+    filmstock: filmstockReducer,
     filmstocks: filmstocksReducer
 })
 
