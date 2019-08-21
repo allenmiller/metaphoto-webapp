@@ -6,11 +6,13 @@ import {
     SET_SHOW_ADD_FILMSTOCK_BUTTON,
     SET_SHOW_DELETE_FILMSTOCK_BUTTON,
     SET_SHOW_EDIT_FILMSTOCK_BUTTON,
-    SET_MODAL_MODE
-} from "../actions/filmstocks";
+    SET_MODAL_MODE,
+    FilmstocksState,
+    FilmstocksActionTypes
+} from "./types";
 
-const initialState = {
-    filmStocks: [],
+const initialState: FilmstocksState = {
+    filmstocks: [],
     modalMode: "",
     showAddFilmstockModal: false,
     showAddFilmstockButton: true,
@@ -20,11 +22,11 @@ const initialState = {
     selectedFilmstockRow: {}
 };
 
-export default(state = initialState, action) => {
+export const filmstocksReducer = (state = initialState, action: FilmstocksActionTypes): FilmstocksState => {
     if (action.type === SET_FILM_STOCKS) {
         return {
             ...state,
-            filmStocks: [...action.filmStocks]
+            filmstocks: [...action.filmstocks]
         };
     }
 
@@ -52,28 +54,28 @@ export default(state = initialState, action) => {
     if (action.type === SET_SHOW_ADD_FILMSTOCK_MODAL) {
         return {
             ...state,
-            showAddFilmstockModal: action.showModal
+            showAddFilmstockModal: action.showAddFilmstockModal
         }
     }
 
     if (action.type === SET_SHOW_ADD_FILMSTOCK_BUTTON) {
         return {
             ...state,
-            showAddFilmstockButton: action.showButton
+            showAddFilmstockButton: action.showAddFilmstockButton
         }
     }
 
     if (action.type === SET_SHOW_DELETE_FILMSTOCK_BUTTON) {
         return {
             ...state,
-            showDeleteFilmstockButton: action.showButton
+            showDeleteFilmstockButton: action.showDeleteFilmstockButton
         }
     }
 
     if (action.type === SET_SHOW_EDIT_FILMSTOCK_BUTTON) {
         return {
             ...state,
-            showEditFilmstockButton: action.showButton
+            showEditFilmstockButton: action.showEditFilmstockButton
         }
     }
 

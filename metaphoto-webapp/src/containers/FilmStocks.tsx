@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 
 import {API} from "aws-amplify";
-import {bindActionCreators} from "redux";
-import {withRouter} from "react-router-dom";
+import {withRouter, RouteComponentProps} from "react-router-dom";
 import {connect} from "react-redux";
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import selectTableHOC from "react-table/lib/hoc/selectTable";
 
-import {setIsAuthenticated} from "../actions/authentication";
+import {setIsAuthenticated} from "../store/authentication/actions";
 import {
     setDefaultFilmFormats,
     setDefaultFilmTypes,
@@ -27,11 +26,12 @@ import {
     setShowAddFilmstockButton,
     setShowDeleteFilmstockButton,
     setShowEditFilmstockButton
-} from "../actions/filmstocks";
+} from "../store/filmstocks/actions";
 
 import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
 import Button from "react-bootstrap/es/Button";
 
+import { AppState } from "../store";
 import "./Login.css";
 import config from '../config';
 import AddEditFilmStockModal from "./AddEditFilmStockModal";
@@ -44,7 +44,7 @@ class FilmStocks extends Component {
     }
 
     displayAddModal = () => {
-        this.props.setModalMode("ADD");
+        this.props.setModalMode("ADD");  //TODO: typesafe
         this.props.setShowAddFilmstockModal(true);
     };
 
@@ -208,25 +208,25 @@ class FilmStocks extends Component {
     }
 }
 
-const mapReduxStoreToProps = store => ({
-    isAuthenticated: store.authentication.isAuthenticated,
-    filmStockDefaults: store.filmstock.defaults,
-    filmName: store.filmstock.filmName,
-    filmFormat: store.filmstock.filmFormat,
-    filmIso: store.filmstock.filmIso,
-    filmCode: store.filmstock.filmCode,
-    filmType: store.filmstock.filmType,
-    filmStocks: store.filmstocks.filmStocks,
-    modalMode: store.filmstocks.modalMode,
-    selectedFilmstockKey: store.filmstocks.selectedFilmstockKey,
-    selectedFilmstockRow: store.filmstocks.selectedFilmstockRow,
-    showAddFilmstockModal: store.filmstocks.showAddFilmstockModal,
-    showAddFilmstockButton: store.filmstocks.showAddFilmstockButton,
-    showDeleteFilmstockButton: store.filmstocks.showDeleteFilmstockButton,
-    showEditFilmstockButton: store.filmstocks.showEditFilmstockButton
+const mapReduxStoreToProps = (state: AppState, ownProps: RouteComponentProps) => ({
+    isAuthenticated: state.authentication.isAuthenticated,
+    filmStockDefaults: state.filmstock.defaults,
+    filmName: state.filmstock.filmName,
+    filmFormat: state.filmstock.filmFormat,
+    filmIso: state.filmstock.filmIso,
+    filmCode: state.filmstock.filmCode,
+    filmType: state.filmstock.filmType,
+    filmStocks: state.filmstocks.filmstocks,
+    modalMode: state.filmstocks.modalMode,
+    selectedFilmstockKey: state.filmstocks.selectedFilmstockKey,
+    selectedFilmstockRow: state.filmstocks.selectedFilmstockRow,
+    showAddFilmstockModal: state.filmstocks.showAddFilmstockModal,
+    showAddFilmstockButton: state.filmstocks.showAddFilmstockButton,
+    showDeleteFilmstockButton: state.filmstocks.showDeleteFilmstockButton,
+    showEditFilmstockButton: state.filmstocks.showEditFilmstockButton
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = {
     setIsAuthenticated,
     setFilmStocks,
     setFilmName,
@@ -243,6 +243,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setShowAddFilmstockButton,
     setShowDeleteFilmstockButton,
     setShowEditFilmstockButton
-}, dispatch);
+};
 
 export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(FilmStocks));

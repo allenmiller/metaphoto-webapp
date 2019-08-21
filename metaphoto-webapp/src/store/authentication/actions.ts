@@ -3,17 +3,21 @@ import {
     SET_IS_AUTHENTICATED,
     SET_IS_AUTHENTICATING,
     SET_EMAIL,
-    SET_PASSWORD
+    SET_PASSWORD,
+    SetIsAuthenticatedAction,
+    SetIsAuthenticatingAction,
+    SetEmailAction,
+    SetPasswordAction
 } from './types'
 
-export const setIsAuthenticated = (isAuthenticated: boolean) => {
+export const setIsAuthenticated = (isAuthenticated: boolean) : SetIsAuthenticatedAction => {
     return {
         type: SET_IS_AUTHENTICATED,
         isAuthenticated
     }
 };
 
-export const setIsAuthenticating = (isAuthenticating: boolean) => {
+export const setIsAuthenticating = (isAuthenticating: boolean) : SetIsAuthenticatingAction => {
 //    action(SET_IS_AUTHENTICATING, {
 //        isAuthenticating
 //    })
@@ -24,7 +28,7 @@ export const setIsAuthenticating = (isAuthenticating: boolean) => {
 };
 
 
-export const setEmail = (email: string) => {
+export const setEmail = (email: string) : SetEmailAction => {
     console.log("in setEmail(): ", email);
     return {
         type: SET_EMAIL,
@@ -32,7 +36,7 @@ export const setEmail = (email: string) => {
     }
 };
 
-export const setPassword = (password: string) => {
+export const setPassword = (password: string) : SetPasswordAction => {
     return {
         type: SET_PASSWORD,
         password

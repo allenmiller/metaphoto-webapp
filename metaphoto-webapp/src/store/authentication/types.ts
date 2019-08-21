@@ -16,22 +16,22 @@ export type  AuthenticationState = Readonly<{
     setPassword: typeof setPassword
 }>;
 
-interface SetIsAuthenticatedAction {
+export interface SetIsAuthenticatedAction {
     type: typeof SET_IS_AUTHENTICATED;
     isAuthenticated: boolean;
 }
 
-interface SetIsAuthenticatingAction {
+export interface SetIsAuthenticatingAction {
     type: typeof SET_IS_AUTHENTICATING;
     isAuthenticating: boolean;
 }
 
-interface SetEmailAction {
+export interface SetEmailAction {
     type: typeof SET_EMAIL;
     email: string;
 }
 
-interface SetPasswordAction {
+export interface SetPasswordAction {
     type: typeof SET_PASSWORD;
     password: string;
 }
