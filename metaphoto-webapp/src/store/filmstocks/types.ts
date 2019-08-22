@@ -1,3 +1,5 @@
+import { FilmstockRow } from "../filmstock/types";
+
 export const SET_SHOW_ADD_FILMSTOCK_MODAL = 'SET_SHOW_ADD_FILMSTOCK_MODAL';
 export const SET_FILM_STOCKS = 'SET_FILM_STOCKS';
 export const SET_SHOW_ADD_FILMSTOCK_BUTTON = 'SET_SHOW_ADD_FILMSTOCK_BUTTON';
@@ -15,7 +17,7 @@ export type FilmstocksState = Readonly<{
     showDeleteFilmstockButton: boolean,
     showEditFilmstockButton: boolean,
     selectedFilmstockKey: string,
-    selectedFilmstockRow: object
+    selectedFilmstockRow: FilmstockRow
 }>;
 
 export interface SetFilmstocks {
@@ -55,7 +57,7 @@ export interface SetSelectedFilmstockKey {
 
 export interface SetSelectedFilmstockRow {
     type: typeof SET_SELECTED_FILMSTOCK_ROW;
-    selectedFilmstockRow: object;
+    selectedFilmstockRow: FilmstockRow;
 }
 
 export type FilmstocksActionTypes = SetFilmstocks
@@ -66,3 +68,14 @@ export type FilmstocksActionTypes = SetFilmstocks
                                     | SetShowEditFilmstockButton
                                     | SetSelectedFilmstockKey
                                     | SetSelectedFilmstockRow;
+export const EmptyFilmstockRow:FilmstockRow = {
+        primaryHashKey:"",
+        primaryRangeKey:"",
+        data:{
+            filmCode: "",
+            filmFormat: "",
+            filmIso: "",
+            filmName: "",
+            filmType: ""
+        }
+    }

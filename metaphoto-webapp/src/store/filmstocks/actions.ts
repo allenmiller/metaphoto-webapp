@@ -16,6 +16,7 @@ import {
     SetShowDeleteFilmstockButton,
     SetShowEditFilmstockButton
 } from './types';
+import { FilmstockRow } from '../filmstock/types';
 
 export const setFilmStocks = (filmstocks:object[]) : SetFilmstocks => {  //TODO: better
     return {
@@ -38,7 +39,7 @@ export const setSelectedFilmstockKey = (selectedFilmstockKey: string) : SetSelec
     }
 }
 
-export const setSelectedFilmstockRow = (selectedFilmstockRow: object) : SetSelectedFilmstockRow => {  //TODO: better type
+export const setSelectedFilmstockRow = (selectedFilmstockRow: FilmstockRow) : SetSelectedFilmstockRow => {
     return {
         type: SET_SELECTED_FILMSTOCK_ROW,
         selectedFilmstockRow

@@ -36,6 +36,7 @@ import "./Login.css";
 import config from '../config';
 import AddEditFilmStockModal from "./AddEditFilmStockModal";
 import { FilmstockDefaultsResponse, FilmstockRow } from "../store/filmstock/types";
+import { EmptyFilmstockRow } from "../store/filmstocks/types";
 
 type FilmStocksProps = Readonly<{
     authentication: {
@@ -103,7 +104,7 @@ class FilmStocks extends Component<FilmStocksProps> {
         API.del(apiName, deleteEndpoint, {})
             .then(response => {
                 this.props.setSelectedFilmstockKey("");
-                this.props.setSelectedFilmstockRow({});
+                this.props.setSelectedFilmstockRow(EmptyFilmstockRow);
                 this.props.setShowAddFilmstockButton(true);
                 this.props.setShowDeleteFilmstockButton(false);
                 this.props.setShowEditFilmstockButton(false);
@@ -149,7 +150,7 @@ class FilmStocks extends Component<FilmStocksProps> {
         let selectedFilmstockKey = this.props.filmstocks.selectedFilmstockKey;
         if (selectedFilmstockKey === key) {
             this.props.setSelectedFilmstockKey("");
-            this.props.setSelectedFilmstockRow({});
+            this.props.setSelectedFilmstockRow(EmptyFilmstockRow);
             this.props.setShowAddFilmstockButton(true);
             this.props.setShowDeleteFilmstockButton(false);
             this.props.setShowEditFilmstockButton(false);

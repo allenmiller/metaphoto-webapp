@@ -30,10 +30,11 @@ import config from '../config';
 import { RouteComponentProps } from 'react-router';
 import { AppState } from '../store';
 import { FilmValueLabelPair, FilmstockRow } from '../store/filmstock/types';
+import { EmptyFilmstockRow } from '../store/filmstocks/types';
 
 type AddEditFilmStockModalProps = Readonly<{
     show: boolean,
-    onExiting: any, // TODO
+    onExiting: () => void,
     filmstock: {
         filmstock: any //TODO
         filmName: string,
@@ -169,7 +170,7 @@ class AddEditFilmStockModal extends Component<AddEditFilmStockModalProps> {
         API.put(apiName, editEndpoint, this.buildRequest())
             .then(response => {
                 this.props.setSelectedFilmstockKey("");
-                this.props.setSelectedFilmstockRow({});
+                this.props.setSelectedFilmstockRow(EmptyFilmstockRow);
                 this.props.setShowAddFilmstockButton(true);
                 this.props.setShowDeleteFilmstockButton(false);
                 this.props.setShowEditFilmstockButton(false);

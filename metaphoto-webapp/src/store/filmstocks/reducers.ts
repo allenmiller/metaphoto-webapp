@@ -8,7 +8,8 @@ import {
     SET_SHOW_EDIT_FILMSTOCK_BUTTON,
     SET_MODAL_MODE,
     FilmstocksState,
-    FilmstocksActionTypes
+    FilmstocksActionTypes,
+    EmptyFilmstockRow
 } from "./types";
 
 const initialState: FilmstocksState = {
@@ -19,8 +20,8 @@ const initialState: FilmstocksState = {
     showDeleteFilmstockButton: false,
     showEditFilmstockButton: false,
     selectedFilmstockKey: "",
-    selectedFilmstockRow: {}
-};
+    selectedFilmstockRow: EmptyFilmstockRow
+    };
 
 export const filmstocksReducer = (state = initialState, action: FilmstocksActionTypes): FilmstocksState => {
     if (action.type === SET_FILM_STOCKS) {
