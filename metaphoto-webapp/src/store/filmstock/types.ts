@@ -8,7 +8,6 @@ export const SET_DEFAULT_FILM_TYPES = 'SET_DEFAULT_FILM_TYPES';
 export const SET_DEFAULT_FILM_FORMATS = 'SET_DEFAULT_FILM_FORMATS';
 
 export type FilmstockState = Readonly<{
-    filmstock: object,
     filmName: string,
     filmFormat: string,
     filmIso: string,
@@ -44,7 +43,7 @@ export type FilmstockDefaultsResponse = Readonly<{
 
 export interface AddFilmstockAction {
     type: typeof ADD_FILM_STOCK;
-    filmstock: object;
+    filmstock: FilmstockState;
 }
 
 export interface SetFilmCodeAction {

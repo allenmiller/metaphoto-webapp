@@ -9,28 +9,28 @@ import {
     SET_DEFAULT_FILM_TYPES,
     FilmstockState,
     FilmstockActionTypes,
-    FilmstockDefaultsResponse,
-    FilmValueLabelPair
+    FilmValueLabelPair,
+
 } from "./types";
+import { EmptyFilmstockRow } from "../filmstocks/types";
 
 const initialState : FilmstockState = {
-    filmstock: {},
     filmName: "",
     filmFormat: "",
     filmIso: "",
     filmCode: "",
     filmType: "",
-    defaultFilmFormats: [],
+    defaultFilmFormats:[],
     defaultFilmTypes: []
 };
 
 export const filmstockReducer = (state = initialState, action: FilmstockActionTypes) : FilmstockState => {
-    if (action.type === ADD_FILM_STOCK) {
+/*     if (action.type === ADD_FILM_STOCK) {
         return {
             ...state,
             filmstock: action.filmstock
         };
-    }
+    } */
 
     if (action.type === SET_FILM_NAME) {
         return {

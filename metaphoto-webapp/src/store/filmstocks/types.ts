@@ -68,6 +68,7 @@ export type FilmstocksActionTypes = SetFilmstocks
                                     | SetShowEditFilmstockButton
                                     | SetSelectedFilmstockKey
                                     | SetSelectedFilmstockRow;
+
 export const EmptyFilmstockRow:FilmstockRow = {
         primaryHashKey:"",
         primaryRangeKey:"",

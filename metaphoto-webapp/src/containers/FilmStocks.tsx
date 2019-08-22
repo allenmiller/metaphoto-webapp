@@ -35,7 +35,7 @@ import { AppState } from "../store";
 import "./Login.css";
 import config from '../config';
 import AddEditFilmStockModal from "./AddEditFilmStockModal";
-import { FilmstockDefaultsResponse, FilmstockRow } from "../store/filmstock/types";
+import { FilmstockDefaultsResponse, FilmstockRow, FilmstockData } from "../store/filmstock/types";
 import { EmptyFilmstockRow } from "../store/filmstocks/types";
 
 type FilmStocksProps = Readonly<{
@@ -43,15 +43,9 @@ type FilmStocksProps = Readonly<{
         isAuthenticated: boolean
     },
 //    filmStockDefaults: state.filmstock.defaults,
-    filmstock: {
-        filmName: string,
-        filmFormat: string,
-        filmIso: string,
-        filmCode: string,
-        filmType: string
-    },
+    filmstockData: FilmstockData,
     filmstocks: {
-        filmStocks: FilmstockRow[],
+        filmStocks: FilmstockData[],
         modalMode: string,
         selectedFilmstockKey: string,
         selectedFilmstockRow: FilmstockRow,
@@ -244,7 +238,7 @@ class FilmStocks extends Component<FilmStocksProps> {
                 <AddEditFilmStockModal
                     show={this.props.filmstocks.showAddFilmstockModal}
                     onExiting={this.getFilmStocks}
-                />
+                 />
             </div>
         );
     }

@@ -7,11 +7,11 @@ import {
     SET_FILM_TYPE,
     SET_DEFAULT_FILM_TYPES,
     SET_DEFAULT_FILM_FORMATS,
-    FilmstockDefaultsResponse,
-    FilmValueLabelPair
+        FilmValueLabelPair,
+    FilmstockRow
 } from "./types";
 
-export function addFilmStock(filmStock: object) {
+export function addFilmStock(filmStock: FilmstockRow) {
     return {
         type: ADD_FILM_STOCK,
         filmStock

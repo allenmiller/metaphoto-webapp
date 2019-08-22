@@ -29,14 +29,14 @@ import { FormGroup } from "react-bootstrap";
 import config from '../config';
 import { RouteComponentProps } from 'react-router';
 import { AppState } from '../store';
-import { FilmValueLabelPair, FilmstockRow } from '../store/filmstock/types';
+import { FilmValueLabelPair, FilmstockRow, FilmstockData } from '../store/filmstock/types';
 import { EmptyFilmstockRow } from '../store/filmstocks/types';
 
 type AddEditFilmStockModalProps = Readonly<{
-    show: boolean,
+/*     show: boolean,
     onExiting: () => void,
-    filmstock: {
-        filmstock: any //TODO
+ */    filmstock: {
+        filmstock: FilmstockData, //TODO
         filmName: string,
         filmFormat: string,
         filmIso: string,
@@ -195,7 +195,7 @@ class AddEditFilmStockModal extends Component<AddEditFilmStockModalProps> {
             this.props.setFilmType(this.props.filmstock.defaultFilmTypes[0].value);
         }
         return (
-        <Modal show={this.props.filmstocks.showModal} onHide={this.dismiss} onExiting={this.props.onExiting}>
+        <Modal show={this.props.filmstocks.showModal} onHide={this.dismiss} /* onExiting={this.props.onExiting */>
             <Modal.Header closeButton>
                 <Modal.Title>Add a new film stock</Modal.Title>
             </Modal.Header>
