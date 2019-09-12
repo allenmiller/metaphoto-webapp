@@ -27,44 +27,12 @@ import { FormControl } from "react-bootstrap";
 import { FormGroup } from "react-bootstrap";
 
 import config from '../config';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { AppState } from '../store';
-import { FilmValueLabelPair, FilmstockRow, FilmstockData } from '../store/filmstock/types';
-import { EmptyFilmstockRow } from '../store/filmstocks/types';
+import { EmptyFilmstockRow, FilmStocksProps } from '../store/filmstocks/types';
 
-type AddEditFilmStockModalProps = Readonly<{
-/*     show: boolean,
-    onExiting: () => void,
- */    filmstock: {
-        filmstock: FilmstockData, //TODO
-        filmName: string,
-        filmFormat: string,
-        filmIso: string,
-        filmCode: string,
-        filmType: string,
-        defaultFilmFormats: FilmValueLabelPair[],
-        defaultFilmTypes: FilmValueLabelPair[]
-    },
-    filmstocks: {
-        modalMode: string,
-        selectedFilmstockRow: FilmstockRow,
-        showModal: boolean
-    },
-    addFilmStock: typeof addFilmStock
-    setFilmName: typeof setFilmName,
-    setFilmFormat: typeof setFilmFormat,
-    setFilmIso: typeof setFilmIso,
-    setFilmCode: typeof setFilmCode,
-    setFilmType: typeof setFilmType,
-    setShowAddFilmstockModal: typeof setShowAddFilmstockModal,
-    setSelectedFilmstockKey: typeof setSelectedFilmstockKey,
-    setSelectedFilmstockRow: typeof setSelectedFilmstockRow,
-    setShowAddFilmstockButton: typeof setShowAddFilmstockButton,
-    setShowEditFilmstockButton: typeof setShowEditFilmstockButton,
-    setShowDeleteFilmstockButton: typeof setShowDeleteFilmstockButton
-  
-}>
-class AddEditFilmStockModal extends Component<AddEditFilmStockModalProps> {
+//class AddEditFilmStockModal extends Component<AddEditFilmStockModalProps> {
+class AddEditFilmStockModal extends Component<FilmStocksProps> {
 
     validate = () => {
         let messages=[];
@@ -258,7 +226,6 @@ class AddEditFilmStockModal extends Component<AddEditFilmStockModalProps> {
 
 const mapReduxStoreToProps = (state: AppState, ownProps: RouteComponentProps) => ({
     filmstock: {
-        filmstock: state.filmstock.filmstock,
         filmName: state.filmstock.filmName,
         filmFormat: state.filmstock.filmFormat,
         filmIso: state.filmstock.filmIso,
@@ -268,9 +235,15 @@ const mapReduxStoreToProps = (state: AppState, ownProps: RouteComponentProps) =>
         defaultFilmTypes: state.filmstock.defaultFilmTypes
     },
     filmstocks: {
+        filmstocks: state.filmstocks.filmstocks,
         modalMode: state.filmstocks.modalMode,
+        selectedFilmstockKey: state.filmstocks.selectedFilmstockKey,
         selectedFilmstockRow: state.filmstocks.selectedFilmstockRow,
-        showModal: state.filmstocks.showAddFilmstockModal
+        showAddFilmstockModal: state.filmstocks.showAddFilmstockModal,
+        showAddFilmstockButton: state.filmstocks.showAddFilmstockButton,
+        showDeleteFilmstockButton: state.filmstocks.showDeleteFilmstockButton,
+        showEditFilmstockButton: state.filmstocks.showEditFilmstockButton,
+        showModal: state.filmstocks.showModal
     }
 });
 
@@ -289,4 +262,4 @@ const mapDispatchToProps = {
     setShowDeleteFilmstockButton
 };
 
-export default connect(mapReduxStoreToProps, mapDispatchToProps)(AddEditFilmStockModal);
+export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(AddEditFilmStockModal));

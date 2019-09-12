@@ -1,4 +1,7 @@
-import { FilmstockRow } from "../filmstock/types";
+import { FilmstockRow, FilmstockData, FilmstockState } from "../filmstock/types";
+import { setIsAuthenticated } from "../authentication/actions";
+import { setFilmStocks, setModalMode, setSelectedFilmstockKey, setSelectedFilmstockRow, setShowAddFilmstockModal, setShowAddFilmstockButton, setShowDeleteFilmstockButton, setShowEditFilmstockButton } from "./actions";
+import { setFilmName, setFilmIso, setFilmCode, setFilmType, setFilmFormat, setDefaultFilmFormats, setDefaultFilmTypes } from "../filmstock/actions";
 
 export const SET_SHOW_ADD_FILMSTOCK_MODAL = 'SET_SHOW_ADD_FILMSTOCK_MODAL';
 export const SET_FILM_STOCKS = 'SET_FILM_STOCKS';
@@ -9,15 +12,42 @@ export const SET_SELECTED_FILMSTOCK_KEY = 'SET_SELECTED_FILMSTOCK_KEY';
 export const SET_SELECTED_FILMSTOCK_ROW = 'SET_SELECTED_FILMSTOCK_ROW';
 export const SET_MODAL_MODE = 'SET_MODAL_MODE';
 
+export type FilmStocksProps = Readonly<{
+    authentication: {
+        isAuthenticated: boolean
+    },
+//    filmStockDefaults: state.filmstock.defaults,
+    filmstockData: FilmstockData,
+    filmstocks: FilmstocksState,
+    filmstock: FilmstockState,
+    setIsAuthenticated: typeof setIsAuthenticated,
+    setFilmStocks: typeof setFilmStocks,
+    setFilmName: typeof setFilmName,
+    setFilmFormat: typeof setFilmFormat,
+    setFilmIso: typeof setFilmIso,
+    setFilmCode: typeof setFilmCode,
+    setFilmType: typeof setFilmType,
+    setModalMode: typeof setModalMode,
+    setSelectedFilmstockKey: typeof setSelectedFilmstockKey,
+    setSelectedFilmstockRow: typeof setSelectedFilmstockRow,
+    setDefaultFilmFormats: typeof setDefaultFilmFormats,
+    setDefaultFilmTypes: typeof setDefaultFilmTypes,
+    setShowAddFilmstockModal: typeof setShowAddFilmstockModal,
+    setShowAddFilmstockButton: typeof setShowAddFilmstockButton,
+    setShowDeleteFilmstockButton: typeof setShowDeleteFilmstockButton,
+    setShowEditFilmstockButton: typeof setShowEditFilmstockButton
+}>
+
 export type FilmstocksState = Readonly<{
-    filmstocks: object[],
+    filmstocks: object[],  //TODO: better type
     modalMode: string,
     showAddFilmstockButton: boolean,
     showAddFilmstockModal: boolean,
     showDeleteFilmstockButton: boolean,
     showEditFilmstockButton: boolean,
     selectedFilmstockKey: string,
-    selectedFilmstockRow: FilmstockRow
+    selectedFilmstockRow: FilmstockRow,
+    showModal: boolean
 }>;
 
 export interface SetFilmstocks {

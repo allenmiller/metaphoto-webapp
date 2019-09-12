@@ -28,49 +28,15 @@ import {
     setShowEditFilmstockButton
 } from "../store/filmstocks/actions";
 
-import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
-import Button from "react-bootstrap/es/Button";
+import {ButtonToolbar} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 
 import { AppState } from "../store";
 import "./Login.css";
 import config from '../config';
 import AddEditFilmStockModal from "./AddEditFilmStockModal";
 import { FilmstockDefaultsResponse, FilmstockRow, FilmstockData } from "../store/filmstock/types";
-import { EmptyFilmstockRow } from "../store/filmstocks/types";
-
-type FilmStocksProps = Readonly<{
-    authentication: {
-        isAuthenticated: boolean
-    },
-//    filmStockDefaults: state.filmstock.defaults,
-    filmstockData: FilmstockData,
-    filmstocks: {
-        filmStocks: FilmstockData[],
-        modalMode: string,
-        selectedFilmstockKey: string,
-        selectedFilmstockRow: FilmstockRow,
-        showAddFilmstockModal: boolean,
-        showAddFilmstockButton: boolean,
-        showDeleteFilmstockButton: boolean,
-        showEditFilmstockButton: boolean
-    }
-    setIsAuthenticated: typeof setIsAuthenticated,
-    setFilmStocks: typeof setFilmStocks,
-    setFilmName: typeof setFilmName,
-    setFilmFormat: typeof setFilmFormat,
-    setFilmIso: typeof setFilmIso,
-    setFilmCode: typeof setFilmCode,
-    setFilmType: typeof setFilmType,
-    setModalMode: typeof setModalMode,
-    setSelectedFilmstockKey: typeof setSelectedFilmstockKey,
-    setSelectedFilmstockRow: typeof setSelectedFilmstockRow,
-    setDefaultFilmFormats: typeof setDefaultFilmFormats,
-    setDefaultFilmTypes: typeof setDefaultFilmTypes,
-    setShowAddFilmstockModal: typeof setShowAddFilmstockModal,
-    setShowAddFilmstockButton: typeof setShowAddFilmstockButton,
-    setShowDeleteFilmstockButton: typeof setShowDeleteFilmstockButton,
-    setShowEditFilmstockButton: typeof setShowEditFilmstockButton
-}>
+import { EmptyFilmstockRow, FilmStocksProps } from "../store/filmstocks/types";
 
 class FilmStocks extends Component<FilmStocksProps> {
 
@@ -136,7 +102,7 @@ class FilmStocks extends Component<FilmStocksProps> {
             })
     };
 
-    handleSubmit = async event => {
+    handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
     };
 
@@ -203,13 +169,13 @@ class FilmStocks extends Component<FilmStocksProps> {
             }
 
         ];
-        return (
-            (this.props.filmstocks.filmStocks !== undefined) &&
+         return (
+            (this.props.filmstocks.filmstocks !== undefined) &&
             <div className="FilmStocks">
                 <SelectTable
-                    data = {this.props.filmstocks.filmStocks}
-                    pageSize={(this.props.filmstocks.filmStocks.length > MAX_TABLE_LENGTH) ? MAX_TABLE_LENGTH : this.props.filmstocks.filmStocks.length}
-                    columns = {columns}
+                    data = {this.props.filmstocks.filmstocks}
+                    pageSize={(this.props.filmstocks.filmstocks.length > MAX_TABLE_LENGTH) ? MAX_TABLE_LENGTH : this.props.filmstocks.filmstocks.length}
+//                    columns = {this.columns}
                     keyField="primaryHashKey"
                     selectType="radio"
                     isSelected={this.isSelected}
@@ -235,10 +201,7 @@ class FilmStocks extends Component<FilmStocksProps> {
                         Delete
                     </Button>
                 </ButtonToolbar>
-                <AddEditFilmStockModal
-                    show={this.props.filmstocks.showAddFilmstockModal}
-                    onExiting={this.getFilmStocks}
-                 />
+                <AddEditFilmStockModal {...this.props} />
             </div>
         );
     }
@@ -255,16 +218,19 @@ const mapReduxStoreToProps = (state: AppState, ownProps: RouteComponentProps) =>
         filmIso: state.filmstock.filmIso,
         filmCode: state.filmstock.filmCode,
         filmType: state.filmstock.filmType,
+        defaultFilmFormats: state.filmstock.defaultFilmFormats,
+        defaultFilmTypes: state.filmstock.defaultFilmTypes
     },
     filmstocks: {
-        filmStocks: state.filmstocks.filmstocks,
+        filmstocks: state.filmstocks.filmstocks,
         modalMode: state.filmstocks.modalMode,
         selectedFilmstockKey: state.filmstocks.selectedFilmstockKey,
         selectedFilmstockRow: state.filmstocks.selectedFilmstockRow,
         showAddFilmstockModal: state.filmstocks.showAddFilmstockModal,
         showAddFilmstockButton: state.filmstocks.showAddFilmstockButton,
         showDeleteFilmstockButton: state.filmstocks.showDeleteFilmstockButton,
-        showEditFilmstockButton: state.filmstocks.showEditFilmstockButton
+        showEditFilmstockButton: state.filmstocks.showEditFilmstockButton,
+        showModal: state.filmstocks.showModal
     }
 });
 

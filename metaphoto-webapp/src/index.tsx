@@ -13,8 +13,6 @@ import config from "./config";
 import configureStore from './store';
 import NotFound from './containers/NotFound';
 import Film from './containers/Film';
-//import FilmStocks from './containers/FilmStocks';
-//import Film from './containers/Film';
 
 Amplify.configure({
     Auth: {
