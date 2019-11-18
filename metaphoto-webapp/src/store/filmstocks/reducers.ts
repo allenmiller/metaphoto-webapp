@@ -20,7 +20,8 @@ const initialState: FilmstocksState = {
     showDeleteFilmstockButton: false,
     showEditFilmstockButton: false,
     selectedFilmstockKey: "",
-    selectedFilmstockRow: EmptyFilmstockRow
+    selectedFilmstockRow: EmptyFilmstockRow,
+    showModal: false
     };
 
 export const filmstocksReducer = (state = initialState, action: FilmstocksActionTypes): FilmstocksState => {
