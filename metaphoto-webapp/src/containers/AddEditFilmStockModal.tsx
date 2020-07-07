@@ -3,7 +3,7 @@ import {API} from "aws-amplify";
 import {Component} from "react";
 import Select from "react-select";
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+
 import {
     addFilmStock,
     setFilmName,
@@ -11,7 +11,7 @@ import {
     setFilmIso,
     setFilmCode,
     setFilmType,
-} from '../actions/filmstock';
+} from '../store/filmstock/actions';
 
 import {
     setShowAddFilmstockModal,
@@ -20,66 +20,67 @@ import {
     setShowAddFilmstockButton,
     setShowEditFilmstockButton,
     setShowDeleteFilmstockButton
-} from "../actions/filmstocks";
+} from "../store/filmstocks/actions";
 
-import Button from "react-bootstrap/es/Button";
-import Modal from "react-bootstrap/es/Modal";
-import {Form} from "react-bootstrap";
-import {FormControl} from "react-bootstrap";
-import {FormGroup} from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
+import { FormGroup } from "react-bootstrap";
 
 import config from '../config';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { AppState } from '../store';
+import { EmptyFilmstockRow, FilmStocksProps } from '../store/filmstocks/types';
 
-
-class AddEditFilmStockModal extends Component {
+//class AddEditFilmStockModal extends Component<AddEditFilmStockModalProps> {
+class AddEditFilmStockModal extends Component<FilmStocksProps> {
 
     validate = () => {
         let messages=[];
-        if (!this.props.filmName) {
+        if (!this.props.filmstock.filmName) {
             messages.push(" Name");
         }
 
-        if (!this.props.filmFormat) {
+        if (!this.props.filmstock.filmFormat) {
             messages.push(" Format");
         }
 
-        if (!this.props.filmIso) {
+        if (!this.props.filmstock.filmIso) {
             messages.push(" ISO");
         }
 
-        if (!this.props.filmCode) {
+        if (!this.props.filmstock.filmCode) {
             messages.push(" Code");
         }
 
-        if (!this.props.filmType) {
+        if (!this.props.filmstock.filmType) {
             messages.push(" Type");
         }
 
         return messages;
     };
 
-    handleNameChange = event => {
+    handleNameChange = (event:any) => {
         this.props.setFilmName(event.target.value);
     };
 
-    handleFormatChange = event => {
+    handleFormatChange = (event:any) => {
         this.props.setFilmFormat(event.value);
     };
 
-    handleIsoChange = event => {
+    handleIsoChange = (event:any) => {
         this.props.setFilmIso(event.target.value);
     };
 
-    handleCodeChange = event => {
+    handleCodeChange = (event:any) => {
         this.props.setFilmCode(event.target.value);
     };
 
-    handleTypeChange = event => {
+    handleTypeChange = (event:any) => {
         this.props.setFilmType(event.value);
     };
 
     saveFilmStock = () => {
-        switch (this.props.modalMode) {
+        switch (this.props.filmstocks.modalMode) {
             case "ADD":
                 this.saveNewFilmStock();
                 return;
@@ -87,7 +88,7 @@ class AddEditFilmStockModal extends Component {
                 this.editFilmstock();
                 return;
             default:
-                console.log("ERROR: invalid modal mode ", this.props.modalMode);
+                console.log("ERROR: invalid modal mode ", this.props.filmstocks.modalMode);
         }
 
     };
@@ -95,11 +96,11 @@ class AddEditFilmStockModal extends Component {
     buildRequest = () => {
         return {
             body: {
-                filmName: this.props.filmName,
-                filmFormat: this.props.filmFormat,
-                filmCode: this.props.filmCode,
-                iso: this.props.filmIso,
-                filmType: this.props.filmType
+                filmName: this.props.filmstock.filmName,
+                filmFormat: this.props.filmstock.filmFormat,
+                filmCode: this.props.filmstock.filmCode,
+                iso: this.props.filmstock.filmIso,
+                filmType: this.props.filmstock.filmType
             }
         };
     };
@@ -129,15 +130,15 @@ class AddEditFilmStockModal extends Component {
     };
 
     editFilmstock = () => {
-        let hashKeyToEdit = this.props.selectedFilmstockRow.primaryHashKey;
-        let rangeKeyToEdit = this.props.selectedFilmstockRow.primaryRangeKey;
+        let hashKeyToEdit = this.props.filmstocks.selectedFilmstockRow.primaryHashKey;
+        let rangeKeyToEdit = this.props.filmstocks.selectedFilmstockRow.primaryRangeKey;
         let apiName = config.apiGateway.NAME;
         let editEndpoint = `/filmstock/${hashKeyToEdit}/${rangeKeyToEdit}`;
         console.log(`PUT ${editEndpoint}`);
         API.put(apiName, editEndpoint, this.buildRequest())
             .then(response => {
                 this.props.setSelectedFilmstockKey("");
-                this.props.setSelectedFilmstockRow({});
+                this.props.setSelectedFilmstockRow(EmptyFilmstockRow);
                 this.props.setShowAddFilmstockButton(true);
                 this.props.setShowDeleteFilmstockButton(false);
                 this.props.setShowEditFilmstockButton(false);
@@ -155,14 +156,14 @@ class AddEditFilmStockModal extends Component {
     };
 
     render() {
-        if (this.props.filmFormat === "" && this.props.defaultFilmFormats && this.props.defaultFilmFormats.length > 0) {
-            this.props.setFilmFormat(this.props.defaultFilmFormats[0].value);
+        if (this.props.filmstock.filmFormat === "" && this.props.filmstock.defaultFilmFormats && this.props.filmstock.defaultFilmFormats.length > 0) {
+            this.props.setFilmFormat(this.props.filmstock.defaultFilmFormats[0].value);
         }
-        if (this.props.filmType === "" && this.props.defaultFilmTypes && this.props.defaultFilmTypes.length > 0) {
-            this.props.setFilmType(this.props.defaultFilmTypes[0].value);
+        if (this.props.filmstock.filmType === "" && this.props.filmstock.defaultFilmTypes && this.props.filmstock.defaultFilmTypes.length > 0) {
+            this.props.setFilmType(this.props.filmstock.defaultFilmTypes[0].value);
         }
         return (
-        <Modal show={this.props.showModal} onHide={this.dismiss} onExiting={this.props.onExiting}>
+        <Modal show={this.props.filmstocks.showModal} onHide={this.dismiss} /* onExiting={this.props.onExiting */>
             <Modal.Header closeButton>
                 <Modal.Title>Add a new film stock</Modal.Title>
             </Modal.Header>
@@ -171,39 +172,39 @@ class AddEditFilmStockModal extends Component {
                     <FormGroup>
                         <FormControl
                             autoFocus
-                            disabled={this.props.modalMode === "EDIT"}
-                            value={this.props.filmName}
+                            disabled={this.props.filmstocks.modalMode === "EDIT"}
+                            value={this.props.filmstock.filmName}
                             onChange={this.handleNameChange}
                         />
                         Name
                     </FormGroup>
                     <FormGroup>
                         <Select
-                            isDisabled={this.props.modalMode === "EDIT"}
-                            options={this.props.defaultFilmFormats}
-                            defaultValue={this.props.defaultFilmFormats[0]}
+                            isDisabled={this.props.filmstocks.modalMode === "EDIT"}
+                            options={this.props.filmstock.defaultFilmFormats}
+                            defaultValue={this.props.filmstock.defaultFilmFormats[0]}
                             onChange={this.handleFormatChange}
                         />
                         Format
                     </FormGroup>
                     <FormGroup>
                         <FormControl
-                            value={this.props.filmIso}
+                            value={this.props.filmstock.filmIso}
                             onChange={this.handleIsoChange}
                         />
                         ISO
                     </FormGroup>
                     <FormGroup>
                         <FormControl
-                            value={this.props.filmCode}
+                            value={this.props.filmstock.filmCode}
                             onChange={this.handleCodeChange}
                         />
                         Code
                     </FormGroup>
                     <FormGroup>
                         <Select
-                            options={this.props.defaultFilmTypes}
-                            defaultValue={this.props.defaultFilmTypes[0]}
+                            options={this.props.filmstock.defaultFilmTypes}
+                            defaultValue={this.props.filmstock.defaultFilmTypes[0]}
                             onChange={this.handleTypeChange}
                         />
                         Type
@@ -223,21 +224,30 @@ class AddEditFilmStockModal extends Component {
     }
 }
 
-const mapReduxStoreToProps = store => ({
-    modalMode: store.filmstocks.modalMode,
-    selectedFilmstockRow: store.filmstocks.selectedFilmstockRow,
-    showModal: store.filmstocks.showAddFilmstockModal,
-    filmStock: store.filmstock.filmStock,
-    filmName: store.filmstock.filmName,
-    filmFormat: store.filmstock.filmFormat,
-    filmIso: store.filmstock.filmIso,
-    filmCode: store.filmstock.filmCode,
-    filmType: store.filmstock.filmType,
-    defaultFilmFormats: store.filmstock.defaultFilmFormats,
-    defaultFilmTypes: store.filmstock.defaultFilmTypes
+const mapReduxStoreToProps = (state: AppState, ownProps: RouteComponentProps) => ({
+    filmstock: {
+        filmName: state.filmstock.filmName,
+        filmFormat: state.filmstock.filmFormat,
+        filmIso: state.filmstock.filmIso,
+        filmCode: state.filmstock.filmCode,
+        filmType: state.filmstock.filmType,
+        defaultFilmFormats: state.filmstock.defaultFilmFormats,
+        defaultFilmTypes: state.filmstock.defaultFilmTypes
+    },
+    filmstocks: {
+        filmstocks: state.filmstocks.filmstocks,
+        modalMode: state.filmstocks.modalMode,
+        selectedFilmstockKey: state.filmstocks.selectedFilmstockKey,
+        selectedFilmstockRow: state.filmstocks.selectedFilmstockRow,
+        showAddFilmstockModal: state.filmstocks.showAddFilmstockModal,
+        showAddFilmstockButton: state.filmstocks.showAddFilmstockButton,
+        showDeleteFilmstockButton: state.filmstocks.showDeleteFilmstockButton,
+        showEditFilmstockButton: state.filmstocks.showEditFilmstockButton,
+        showModal: state.filmstocks.showModal
+    }
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = {
     addFilmStock,
     setFilmName,
     setFilmFormat,
@@ -250,6 +260,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setShowAddFilmstockButton,
     setShowEditFilmstockButton,
     setShowDeleteFilmstockButton
-}, dispatch);
+};
 
-export default connect(mapReduxStoreToProps, mapDispatchToProps)(AddEditFilmStockModal);
+export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(AddEditFilmStockModal));

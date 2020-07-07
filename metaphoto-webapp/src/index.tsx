@@ -1,13 +1,18 @@
+import 'tslib';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import * as serviceWorker from './serviceWorker';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Amplify from "aws-amplify";
+
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
-import { BrowserRouter as Router } from "react-router-dom";
-import Amplify from "aws-amplify";
+import Login from './containers/Login';
 import config from "./config";
-import store from './store';
+import configureStore from './store';
+import NotFound from './containers/NotFound';
+import Film from './containers/Film';
 
 Amplify.configure({
     Auth: {
@@ -33,10 +38,16 @@ Amplify.configure({
     }
 });
 
+const store = configureStore();
 ReactDOM.render(
     <Provider store={store}>
         <Router>
-            <App />
+            <Switch>
+                <Route exact path="/" component={App} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/film" component={Film} />
+                <Route component={NotFound}/>
+            </Switch>
         </Router>
     </Provider>,
     document.getElementById("root")

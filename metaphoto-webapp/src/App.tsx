@@ -1,23 +1,27 @@
 import React, { Component, Fragment } from "react";
-
 import "./App.css";
-import Routes from "./Routes";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
-import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
-import { setIsAuthenticated, setIsAuthenticating } from "./actions/authentication";
+import { setIsAuthenticated, setIsAuthenticating } from "./store/authentication/actions";
+import { AppState } from "./store";
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        props.setIsAuthenticating(true);
-    }
+type AppProps = Readonly<{
+    authentication : {
+        isAuthenticated: boolean,
+        isAuthenticating: boolean
+    },
+    setIsAuthenticated: typeof setIsAuthenticated,
+    setIsAuthenticating: typeof setIsAuthenticating
+}>;
+class App extends Component<AppProps> {
 
     async componentDidMount() {
+        console.log("App has mounted");
+        this.props.setIsAuthenticating(true);
         try {
             await Auth.currentSession();
             this.props.setIsAuthenticated(true);
@@ -30,34 +34,36 @@ class App extends Component {
         this.props.setIsAuthenticating(false);
     }
 
-    handleLogout = async event => {
+    handleLogout = async (event:any) => {    //TODO: better type
         await Auth.signOut();
         this.props.setIsAuthenticated(false);
-        this.props.history.push("/login");
     };
 
     render() {
         return (
-            !this.props.isAuthenticating &&
+            !this.props.authentication.isAuthenticating &&
             <div className="App container">
                 <Navbar fluid collapseOnSelect>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <Link to="/">Metaphoto</Link>
+                            <LinkContainer to="/"><NavItem>Metaphoto</NavItem></LinkContainer>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
-                        {this.props.isAuthenticated
-                            ? < Nav pullLeft>
+                        {this.props.authentication.isAuthenticated
+                            ? <Nav>  
                                 <LinkContainer to={"/filmStocks"}>
                                     <NavItem>Film Stocks</NavItem>
+                                </LinkContainer>
+                                <LinkContainer to={"/film"}>
+                                    <NavItem>Film</NavItem>
                                 </LinkContainer>
                             </Nav>
                             : <p/>
                         }
                         <Nav pullRight>
-                            {this.props.isAuthenticated
+                            {this.props.authentication.isAuthenticated
                                 ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
                                 : <Fragment>
                                     <LinkContainer to="/signup">
@@ -71,20 +77,21 @@ class App extends Component {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-                <Routes />
             </div>
         );
     }
 }
 
-const mapReduxStoreToProps = store => ({
-    isAuthenticated: store.authentication.isAuthenticated,
-    isAuthenticating: store.authentication.isAuthenticating
+const mapReduxStateToProps = (state: AppState, routeProps:RouteComponentProps) => ({
+    authentication:{
+        isAuthenticated: state.authentication.isAuthenticated,
+        isAuthenticating: state.authentication.isAuthenticating,
+    }
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    setIsAuthenticating,
-    setIsAuthenticated
-}, dispatch);
+const mapDispatchToProps = {
+        setIsAuthenticated,
+        setIsAuthenticating
+}
 
-export default withRouter(connect(mapReduxStoreToProps, mapDispatchToProps)(App));
+export default withRouter(connect(mapReduxStateToProps, mapDispatchToProps)(App));
